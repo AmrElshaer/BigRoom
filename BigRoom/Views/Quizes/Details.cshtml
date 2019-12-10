@@ -1,0 +1,189 @@
+﻿@model IEnumerable<BigRoom.ViewModel.questiongets>
+
+
+
+<h1>Create</h1>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<hr />
+
+<div class="row">
+    <div class="col-md-4">
+        <input style="display:none" type="text" value="@ViewData["filequizename"]" id="filequizename" />
+        <input style="display:none" type="datetime" value="@ViewData["TimeEnd"]" id="TimeEnd" />
+        <input style="display:none" type="text" value="@User.Identity.Name" id="username" />
+        <form method="post" id="questionform" >
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            @for (int i = 0; i < Model.Count(); i++)
+            {
+                <div style="border:1px solid" class="@i">
+                    <div class="form-group">
+                        <label asp-for="ElementAt(i).question" class="control-label"></label>
+                        <input asp-for="ElementAt(i).question" class="form-control" />
+                        <span asp-validation-for="ElementAt(i).question" class="text-danger"></span>
+                    </div>
+
+                    @if (Model.ElementAt(i).choice.Count() == 2)
+                    {
+                        <div class="form-group"><label class="control-label">True</label><input class="form-control" type="radio" name="@i" value="True" /></div>
+                        <div class="form-group"><label class="control-label">False</label><input class="form-control" type="radio" name="@i" value="False" /></div>
+                    }
+                    else
+                    {
+                        <div class="form-group"><input class="form-control" type="radio" name="@i" value="@Model.ElementAt(i).choice.ElementAt(0)" /><label class="control-label">@Model.ElementAt(i).choice.ElementAt(0)</label></div>
+                        <div class="form-group"><input class="form-control" type="radio" name="@i" value="@Model.ElementAt(i).choice.ElementAt(1)" /><label class="control-label">@Model.ElementAt(i).choice.ElementAt(1)</label></div>
+                        <div class="form-group"><input class="form-control" type="radio" name="@i" value="@Model.ElementAt(i).choice.ElementAt(2)" /><label class="control-label">@Model.ElementAt(i).choice.ElementAt(2)</label></div>
+                        <div class="form-group"><input class="form-control" type="radio" name="@i" value="@Model.ElementAt(i).choice.ElementAt(3)" /><label class="control-label">@Model.ElementAt(i).choice.ElementAt(3)</label></div>
+
+                    }
+                </div>
+            }
+
+
+
+            <div class="form-group">
+                <input type="submit" id="sumbitquestion" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+<script>
+    var filename = document.getElementById("filequizename").value;
+    var listofurl = location.pathname.split('/');
+    var quizeid = listofurl[listofurl.length - 1];
+    var TimeEnd = document.getElementById("TimeEnd").value;
+    var EndTime = new Date(TimeEnd);
+    var formsumbit = false;
+
+    var interval = setInterval(endquizefun, 1000);
+     
+    function endquizefun() {
+        currentdate= currentdate + 1;
+        var currentdate = new Date();
+        var currentdatetocompare = currentdate;
+        var endtimetocompare = EndTime;
+        
+
+        if (currentdate >= EndTime)
+        {
+            submitformofquize();
+            
+             
+            
+        }
+
+
+    }
+    function submitformofquize() {
+      
+        $("#sumbitquestion").trigger("click");
+        if (formsumbit) {
+             window.location.replace("https://localhost:44360/Quizes/GoHomeofGroup?Groupid="+1);
+                    clearInterval(interval);
+        }
+       
+    }
+     $(document).ready(function () {
+
+
+         $("#sumbitquestion").on("click", function () {
+             
+            var objdata = {};
+           
+            var pairs = $("#questionform").serializeArray();
+            var degree = 0;
+            
+
+
+
+            var username = document.getElementById("username").value;
+
+            if (filename != "") {
+                alert("Enter");
+              
+                $.ajax({
+                    method: "GET",
+                    url: "/Quizes/GetAnswerfile?filename=" + filename,
+                    success: function (valuesofanswer) {
+                        alert("getfile");
+                        console.log(pairs);
+                        $.each(pairs, function (i, input) {
+
+
+                            objdata[input.name] = input.value;
+
+                        });
+                        console.log("form data");
+                        console.log(valuesofanswer);
+                        console.log("objdata");
+                        console.log(objdata);
+
+                        $.each(valuesofanswer, function (i, values) {
+
+
+                            if (objdata[i] != "undefined" && values == objdata[i]) {
+                                degree = degree + 1;
+                                console.log("increase degree");
+
+                            }
+
+
+                        });
+
+
+
+                        var objtopostdegree = { "degree": degree, "user": username, "quize": quizeid };
+
+                        window.location.replace("https://localhost:44360/Quizes/GoHomeofGroup?Groupid=" + degree);
+                        $.ajax({
+                            method: "POST", url: "/Quizes/Adddegree", data: objtopostdegree, success: function (data) { formsumbit = true; alert(degree + "success"); window.location.replace("https://localhost:44360/Quizes/GoHomeofGroup?Groupid=" + quizeid); }, error: function (x, statux, h) {
+                                formsumbit = true;
+                                alert("exam finished"); window.location.replace("https://localhost:44360/Quizes/GoHomeofGroup?Groupid=" + degree);
+                            }
+                        });
+                      
+
+                    },
+                    error: function (x, status, f) {
+                        formsumbit = true;
+                        alert("file Not found");
+                        window.location.replace("https://localhost:44360/Quizes/GoHomeofGroup?Groupid=" + degree);
+                },
+
+
+                });
+
+            }
+           
+           
+             
+        });
+
+
+
+
+
+
+
+
+
+
+    });
+    
+   
+    
+   
+
+
+
+
+</script>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+}

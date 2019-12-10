@@ -1,0 +1,75 @@
+﻿
+@model BigRoom.ViewModel.quizeview
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Quize</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" enctype="multipart/form-data" id="createquize">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div id="customvalidation"></div>
+            <div class="form-group">
+                <label asp-for="file" class="control-label"></label>
+                <input asp-for="file" type="file" class="form-control" />
+                <span asp-validation-for="file" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="fileanswer" class="control-label"></label>
+                <input asp-for="fileanswer" type="file" class="form-control" />
+                <span asp-validation-for="fileanswer" class="text-danger"></span>
+            </div>
+            <div class="form-group" >
+                <label asp-for="TimeStart" class="control-label"></label>
+                <input asp-for="TimeStart" onchange="checkdate()" class="form-control" id="TimeStart" />
+                <span asp-validation-for="TimeStart" class="text-danger"></span>
+            </div>
+            <div class="form-group" >
+                <label asp-for="TimeEnd" class="control-label"></label>
+                <input asp-for="TimeEnd" id="TimeEnd" onchange="checkdate()" class="form-control" />
+                <span asp-validation-for="TimeEnd" class="text-danger"></span>
+            </div>
+            <div class="form-group" style="display:none">
+                <label asp-for="Groupid"  class="control-label"></label>
+                <input asp-for="Groupid"  value="@ViewData["groupid"]" class="form-control" />
+                <span asp-validation-for="Groupid" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" id="submit"  value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+<script>
+     function checkdate() {
+            var valueofstart = document.getElementById("TimeStart").value;
+            var valueofend = document.getElementById("TimeEnd").value;
+         
+         if (valueofstart >= valueofend) {
+             
+             document.getElementById("customvalidation").innerText = "Start Time Must Lower Than End Time";
+
+             document.getElementById("submit").setAttribute("disabled",true);
+
+         }
+         else {
+             document.getElementById("customvalidation").innerText = "";
+            
+             document.getElementById("submit").removeAttribute("disabled");
+         }
+        }
+   
+</script>

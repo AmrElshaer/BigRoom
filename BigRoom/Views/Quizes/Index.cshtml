@@ -1,0 +1,60 @@
+﻿@model IEnumerable<BigRoom.Models.Quize>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.file)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TimeStart)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TimeEnd)
+            </th>
+            
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.file)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TimeStart)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TimeEnd)
+            </td>
+            
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.id">Edit</a> |
+                @if (item.TimeStart <= DateTime.Now&&DateTime.Now<=item.TimeEnd)
+                {
+                    <a asp-action="Details" asp-route-id="@item.id">Register</a> 
+                 }|
+
+
+                <a asp-action="Delete" asp-route-id="@item.id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<script>
+    $(document).ready(function () {
+
+        setInterval(function () { location.reload() }, 1000);
+    });
+</script>
