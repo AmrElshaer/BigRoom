@@ -1,0 +1,60 @@
+[Route("api/[controller]")]
+public class StreamController : Controller
+{
+    // GET api/values
+    [HttpGet]
+    public async Task Get()
+    {
+        var context = ControllerContext.HttpContext;
+        var isSocketRequest = context.WebSockets.IsWebSocketRequest;
+
+        if (isSocketRequest)
+        {
+            WebSocket webSocket = await context.WebSockets.AcceptWebSocketAsync();
+            await GetMessages(context, webSocket);
+        }
+        else
+        {
+            context.Response.StatusCode = 400;
+        }
+    }
+
+    private async Task GetMessages(HttpContext context, WebSocket webSocket)
+    {
+        var messages = new[]
+        {
+            "Message1",
+            "Message2",
+            "Message3",
+            "Message4",
+            "Message5"
+        };
+        
+        foreach (var message in messages)
+        {
+            var bytes = Encoding.ASCII.GetBytes(message);
+            var arraySegment = new ArraySegment<byte>(bytes);
+            await webSocket.SendAsync(arraySegment, WebSocketMessageType.Text, true, CancellationToken.None);
+            Thread.Sleep(2000); //sleeping so that we can see several messages are sent
+        }
+
+        await webSocket.SendAsync(new ArraySegment<byte>(null), WebSocketMessageType.Binary, false, CancellationToken.None);
+    }
+}
+(function() {
+    var getWebSocketMessages = function(onMessageReceived)
+    {
+        var url = `ws://${location.host}/api/stream`
+        console.log('url is: ' + url);
+
+        var webSocket = new WebSocket(url);
+
+        webSocket.onmessage = onMessageReceived;
+    };
+
+    var ulElement = document.getElementById('StreamToMe');
+
+    getWebSocketMessages(function (message) {
+        ulElement.innerHTML = ulElement.innerHTML += `<li>${message.data}</li>`
+    });
+}());

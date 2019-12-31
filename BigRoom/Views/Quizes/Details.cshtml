@@ -3,16 +3,17 @@
 
 
 <h1>Create</h1>
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
 
 <hr />
 
 <div class="row">
     <div class="col-md-4">
+        <button class="btn btn-primary" value="@ViewData["Timerspan"]" id="TimeSpan">@ViewData["Timerspan"]</button><div id="Timerspancontainer"><span id="hour" class="btn btn-danger">00</span>:<span id="minutes" class="btn btn-danger">00</span>:<span id="second" class="btn btn-danger">00</span></div>
         <input style="display:none" type="text" value="@ViewData["filequizename"]" id="filequizename" />
         <input style="display:none" type="datetime" value="@ViewData["TimeEnd"]" id="TimeEnd" />
         <input style="display:none" type="text" value="@User.Identity.Name" id="username" />
-        <form method="post" id="questionform" >
+        <form method="post" id="questionform">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             @for (int i = 0; i < Model.Count(); i++)
@@ -43,7 +44,7 @@
 
 
             <div class="form-group">
-                <input type="submit" id="sumbitquestion" value="Create" class="btn btn-primary" />
+                <input type="button" id="sumbitquestion" value="Create" class="btn btn-primary" />
             </div>
         </form>
     </div>
@@ -53,131 +54,180 @@
     <a asp-action="Index">Back to List</a>
 </div>
 <script>
-    var filename = document.getElementById("filequizename").value;
-    var listofurl = location.pathname.split('/');
-    var quizeid = listofurl[listofurl.length - 1];
-    var TimeEnd = document.getElementById("TimeEnd").value;
-    var EndTime = new Date(TimeEnd);
-    var formsumbit = false;
-
-    var interval = setInterval(endquizefun, 1000);
-     
-    function endquizefun() {
-        currentdate= currentdate + 1;
-        var currentdate = new Date();
-        var currentdatetocompare = currentdate;
-        var endtimetocompare = EndTime;
-        
-
-        if (currentdate >= EndTime)
-        {
-            submitformofquize();
-            
-             
-            
-        }
 
 
-    }
-    function submitformofquize() {
-      
-        $("#sumbitquestion").trigger("click");
-        if (formsumbit) {
-             window.location.replace("https://localhost:44360/Quizes/GoHomeofGroup?Groupid="+1);
-                    clearInterval(interval);
-        }
+
+
+
+    $(document).ready(function () {
+
+        var filename = document.getElementById("filequizename").value;
+        var listofurl = location.pathname.split('/');
+        var quizeid = listofurl[listofurl.length - 1];
+
+        var Timerspan = document.getElementById("TimeSpan").value.split(':');
+        var Timespan = new Date();
+        Timespan.setHours(Timerspan[0]);
+        Timespan.setMinutes(Timerspan[1]);
+        Timespan.setSeconds(Timerspan[2]);
+
+  
+        $("#sumbitquestion").on("click", function () {
+            if (confirm("You sure You wante To Submit")) {
+                 $("#Timerspancontainer").css({"display":"none"});
+                var objdata = {};
+
+                var pairs = $("#questionform").serializeArray();
+                var degree = 0;
+
+
+
+
+                var username = document.getElementById("username").value;
+
+                if (filename != "") {
+
+
+                    $.ajax({
+                        method: "GET",
+                        url: "/Quizes/GetAnswerfile?filename=" + filename,
+                        success: function (valuesofanswer) {
+                            $.each(pairs, function (i, input) {
+
+
+                                objdata[input.name] = input.value;
+
+                            });
+
+
+                            $.each(valuesofanswer, function (i, values) {
+
+
+                                if (objdata[i] != "undefined" && values == objdata[i]) {
+                                    degree = degree + 1;
+
+
+                                }
+
+
+                            });
+
+
+
+                            var objtopostdegree = { "degree": degree, "user": username, "quize": quizeid };
+
+
+                            $.ajax({
+                                method: "POST", url: "/Quizes/Adddegree", data: objtopostdegree,
+                                success: function (data) {
+                                    alert("degree" + degree);
+                                },
+                                error: function (x, statux, h) {
+                                    alert("You Done Excerise");
+                                }
+                            });
+
+
+                        },
+                        error: function (x, status, f) {
+
+                            alert("error");
+                        },
+
+
+                    });
+
+                }
+            }
+
+
+
+
+
+
+
+        });
        
-    }
-     $(document).ready(function () {
-
-
-         $("#sumbitquestion").on("click", function () {
-             
-            var objdata = {};
-           
-            var pairs = $("#questionform").serializeArray();
-            var degree = 0;
+        var insecond = setInterval(increamentsecond, 1000);
+        var inminute = setInterval(increamentminute, 59000);
+        var endexam = setInterval(endexaim,1000);
+         var EndTimer = new Date();
+            EndTimer.setHours(00);
+            EndTimer.setMinutes(00);
+        EndTimer.setSeconds(00);
+        var second = document.getElementById("second");
+        var minute = document.getElementById("minutes");
+        var hour = document.getElementById("hour");
+        
+        function increamentsecond() {
             
-
-
-
-            var username = document.getElementById("username").value;
-
-            if (filename != "") {
-                alert("Enter");
-              
-                $.ajax({
-                    method: "GET",
-                    url: "/Quizes/GetAnswerfile?filename=" + filename,
-                    success: function (valuesofanswer) {
-                        alert("getfile");
-                        console.log(pairs);
-                        $.each(pairs, function (i, input) {
-
-
-                            objdata[input.name] = input.value;
-
-                        });
-                        console.log("form data");
-                        console.log(valuesofanswer);
-                        console.log("objdata");
-                        console.log(objdata);
-
-                        $.each(valuesofanswer, function (i, values) {
-
-
-                            if (objdata[i] != "undefined" && values == objdata[i]) {
-                                degree = degree + 1;
-                                console.log("increase degree");
-
-                            }
-
-
-                        });
-
-
-
-                        var objtopostdegree = { "degree": degree, "user": username, "quize": quizeid };
-
-                        window.location.replace("https://localhost:44360/Quizes/GoHomeofGroup?Groupid=" + degree);
-                        $.ajax({
-                            method: "POST", url: "/Quizes/Adddegree", data: objtopostdegree, success: function (data) { formsumbit = true; alert(degree + "success"); window.location.replace("https://localhost:44360/Quizes/GoHomeofGroup?Groupid=" + quizeid); }, error: function (x, statux, h) {
-                                formsumbit = true;
-                                alert("exam finished"); window.location.replace("https://localhost:44360/Quizes/GoHomeofGroup?Groupid=" + degree);
-                            }
-                        });
-                      
-
-                    },
-                    error: function (x, status, f) {
-                        formsumbit = true;
-                        alert("file Not found");
-                        window.location.replace("https://localhost:44360/Quizes/GoHomeofGroup?Groupid=" + degree);
-                },
-
-
-                });
+            var seconds = EndTimer.getSeconds();
+            if (seconds != 59) {
+                EndTimer.setSeconds(seconds + 1);
+            }
+            else {
+                EndTimer.setSeconds(00);
+               
 
             }
+            
+
+            second.innerText = EndTimer.getSeconds();
+
+            
+        }
+        function increamentminute() {
+           
+            var minutes = EndTimer.getMinutes();
+            if (minutes != 59) {
+                EndTimer.setMinutes(minutes + 1);
+            }
+            else {
+                EndTimer.setMinutes(00);
+                var hours = EndTimer.getHours() + 1;
+                EndTimer.setHours(hours);
+                hour.innerText = hours;
+            }
+            
+
+            minute.innerText = minutes;
+           
+        }
+        function endexaim() {
+            
+            if (EndTimer.getHours() == Timespan.getHours() && EndTimer.getMinutes() == Timespan.getMinutes() && EndTimer.getSeconds() == Timespan.getSeconds()) {
+                alert("finish");
+                $("#Timerspancontainer").css({"display":"none"});
+                setTimeout(insecond);
+                setTimeout(inminute);
+                endquizefun();
+            }
+            setTimeout(endexam);
+        }
+        function endquizefun() {
            
            
-             
-        });
+
+           
+                alert("trigger");
+
+                $("#sumbitquestion").trigger("click");
 
 
 
 
 
+        }
 
 
 
 
 
     });
-    
-   
-    
-   
+
+
+
+
 
 
 

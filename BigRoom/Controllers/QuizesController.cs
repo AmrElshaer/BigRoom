@@ -62,6 +62,10 @@ namespace BigRoom.Controllers
             var path =Path.Combine(Path.Combine(_IhostEnv.WebRootPath,"quize"),quize.file);
             ViewData["filequizename"] =quize.fileanswer;
             ViewData["TimeEnd"] = quize.TimeEnd;
+          
+                ViewData["Timerspan"] = quize.TimeSpan;
+            
+            
             List<questiongets> questiongets = new List<questiongets>();
             using (var reader=new StreamReader(path))
             {
@@ -181,7 +185,7 @@ namespace BigRoom.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id,file,fileanswer,TimeStart,TimeEnd,Groupid")] quizeview quize)
+        public async Task<IActionResult> Create([Bind("id,file,fileanswer,TimeStart,TimeEnd,Groupid,TimeSpan")] quizeview quize)
         {
             if (ModelState.IsValid)
             {
@@ -255,7 +259,7 @@ namespace BigRoom.Controllers
                     //string realpath = Path.Combine(path, uniquename);
                     //quize.file.CopyTo(new FileStream(realpath, FileMode.Create));
 
-                    Quize quize1 = new Quize { id = 0,file= name,GroupId=quize.Groupid,fileanswer= name.Replace(".csv", ".txt"), TimeStart= quize.TimeStart,TimeEnd=quize.TimeEnd};
+                    Quize quize1 = new Quize { id = 0,file= name,GroupId=quize.Groupid,fileanswer= name.Replace(".csv", ".txt"), TimeStart= quize.TimeStart,TimeEnd=quize.TimeEnd,TimeSpan=quize.TimeEnd-quize.TimeStart};
 
                 _context.Add(quize1);
                 await _context.SaveChangesAsync();
@@ -287,7 +291,7 @@ namespace BigRoom.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("id,file,fileanswer,TimeStart,TimeEnd,GroupId")] Quize quize)
+        public async Task<IActionResult> Edit(int id, [Bind("id,file,fileanswer,TimeStart,TimeEnd,GroupId,TimeSpan")] Quize quize)
         {
             if (id != quize.id)
             {
@@ -298,6 +302,7 @@ namespace BigRoom.Controllers
             {
                 try
                 {
+                    quize.TimeSpan = quize.TimeEnd - quize.TimeStart;
                     _context.Update(quize);
                     await _context.SaveChangesAsync();
                 }

@@ -20,7 +20,15 @@ namespace BigRoom.Controllers
         {
             _context = context;
         }
-
+        public async Task<IActionResult> GoToGroup(string Codejoin)
+        {
+          var Group=  await this._context.Group.FirstOrDefaultAsync(a => a.CodeJion == Codejoin);
+            if (Group!=null)
+            {
+                return RedirectToAction(nameof(Details),new {id=Group.Id });
+            }
+            return RedirectToAction(nameof(Create), "UserGroups");
+        }
         // GET: Groups
         public async Task<IActionResult> Index()
         {

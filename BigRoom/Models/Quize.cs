@@ -24,7 +24,7 @@ namespace BigRoom.Models
        
         public DateTime TimeEnd { get; set; }
         public string GroupId { get; set; }
-        
+        public TimeSpan TimeSpan { get; set; }
         public Group Group { get; set; }
         public ICollection<Degree> Usersfquize { get; set; }
     }

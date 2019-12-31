@@ -5,7 +5,7 @@
 }
 
 <h1>Index</h1>
-
+<h1>Please Refresh Page To Ensure That Quize Is Start</h1>
 <p>
     <a asp-action="Create">Create New</a>
 </p>
@@ -53,8 +53,11 @@
     </tbody>
 </table>
 <script>
-    $(document).ready(function () {
+    function()
+    {
+        var Timenow = new Date();
 
-        setInterval(function () { location.reload() }, 1000);
-    });
+
+    }
+    
 </script>

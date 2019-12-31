@@ -25,7 +25,8 @@ namespace BigRoom.ViewModel
         [DataType(DataType.DateTime)]
         [Display(Name = "TimeEnd")]
 
-        public DateTime TimeEnd { get; set; }
+        public DateTime TimeEnd { get;set; }
+        public TimeSpan TimeSpan { get; set; }
         public string Groupid { get; set; }
        
 

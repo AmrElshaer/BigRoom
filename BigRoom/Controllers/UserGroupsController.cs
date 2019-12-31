@@ -34,23 +34,7 @@ namespace BigRoom.Controllers
             }
             return Json(data: true);
         }
-        // GET: UserGroups/Details/5
-        //public async Task<IActionResult> Details(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var userGroups = await _context.UserGroups
-        //        .FirstOrDefaultAsync(m => m.groupsid == id);
-        //    if (userGroups == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return View(userGroups);
-        //}
+       
 
         // GET: UserGroups/Create
         public IActionResult Create()
@@ -69,9 +53,9 @@ namespace BigRoom.Controllers
             {
                 try
                 {
-                 _context.Add(userGroups);
-                                await _context.SaveChangesAsync();
-                                return RedirectToAction(nameof(Index));
+                    _context.Add(userGroups);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("GoToGroup", "Groups", new { Codejoin =userGroups.CodeJoin});
                 }
                 catch (Exception)
                 {
@@ -82,89 +66,6 @@ namespace BigRoom.Controllers
             return View(userGroups);
         }
 
-        // GET: UserGroups/Edit/5
-        //public async Task<IActionResult> Edit(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var userGroups = await _context.UserGroups.FindAsync(id);
-        //    if (userGroups == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    return View(userGroups);
-        //}
-
-        //// POST: UserGroups/Edit/5
-        //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        //// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit(int? id, [Bind("usersid,groupsid")] UserGroups userGroups)
-        //{
-        //    if (id != userGroups.groupsid)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    if (ModelState.IsValid)
-        //    {
-        //        try
-        //        {
-        //            _context.Update(userGroups);
-        //            await _context.SaveChangesAsync();
-        //        }
-        //        catch (DbUpdateConcurrencyException)
-        //        {
-        //            if (!UserGroupsExists(userGroups.groupsid))
-        //            {
-        //                return NotFound();
-        //            }
-        //            else
-        //            {
-        //                throw;
-        //            }
-        //        }
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    return View(userGroups);
-        //}
-
-        //// GET: UserGroups/Delete/5
-        //public async Task<IActionResult> Delete(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var userGroups = await _context.UserGroups
-        //        .FirstOrDefaultAsync(m => m.groupsid == id);
-        //    if (userGroups == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return View(userGroups);
-        //}
-
-        //// POST: UserGroups/Delete/5
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> DeleteConfirmed(int id)
-        //{
-        //    var userGroups = await _context.UserGroups.FindAsync(id);
-        //    _context.UserGroups.Remove(userGroups);
-        //    await _context.SaveChangesAsync();
-        //    return RedirectToAction(nameof(Index));
-        //}
-
-        //private bool UserGroupsExists(int id)
-        //{
-        //    return _context.UserGroups.Any(e => e.groupsid == id);
-        //}
+      
     }
 }
