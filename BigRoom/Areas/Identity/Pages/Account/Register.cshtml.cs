@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.IO;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
-using BigRoom.Models;
+﻿using BigRoom.Models;
 using Classroom.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
@@ -14,6 +8,11 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using System;
+using System.ComponentModel.DataAnnotations;
+using System.IO;
+using System.Text.Encodings.Web;
+using System.Threading.Tasks;
 
 namespace Classroom.Areas.Identity.Pages.Account
 {
@@ -24,14 +23,16 @@ namespace Classroom.Areas.Identity.Pages.Account
         private readonly UserManager<User> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IHostingEnvironment _IhostEnv;
         private readonly ApplicationDbContext _dbcontext;
         public RegisterModel(IHostingEnvironment hostingEnvironment,
             UserManager<User> userManager,
             SignInManager<User> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender,ApplicationDbContext applicationDbContext)
+            IEmailSender emailSender, ApplicationDbContext applicationDbContext, RoleManager<IdentityRole> roleManager)
         {
+            _roleManager = roleManager;
             _IhostEnv = hostingEnvironment;
             _userManager = userManager;
             _signInManager = signInManager;
@@ -64,7 +65,7 @@ namespace Classroom.Areas.Identity.Pages.Account
             public string ConfirmPassword { get; set; }
             [Required]
             [Display(Name = "RoleName")]
-           
+
             public string RoleId { get; set; }
         }
 
@@ -82,7 +83,7 @@ namespace Classroom.Areas.Identity.Pages.Account
 
                 var user = new User { UserName = Input.Email, Email = Input.Email, Image = uniquename };
                 var result = await _userManager.CreateAsync(user, Input.Password);
-               
+
                 if (result.Succeeded)
                 {
 
@@ -107,10 +108,18 @@ namespace Classroom.Areas.Identity.Pages.Account
                         values: new { userId = user.Id, code = code },
                         protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email", $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
+                    var role = await _roleManager.FindByIdAsync(Input.RoleId);
+                    switch (role.Name)
+                    {
+                        case "Student":
+                            return RedirectToAction(controllerName: "Student", actionName: "Index");
+                        case "Teacher":
+                            return RedirectToAction(controllerName: "Teacher", actionName: "Index");
+
+                    }
                     return LocalRedirect(returnUrl);
                 }
                 foreach (var error in result.Errors)

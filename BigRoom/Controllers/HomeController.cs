@@ -1,18 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using BigRoom.Models;
+using Classroom.Data;
+using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using BigRoom.Models;
 
 namespace BigRoom.Controllers
 {
     public class HomeController : Controller
     {
+        public readonly ApplicationDbContext _context;
+        public HomeController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
         public IActionResult Index()
         {
-            return View();
+
+            return View(_context.Group.ToList());
         }
 
         public IActionResult Privacy()

@@ -1,0 +1,37 @@
+﻿@model IEnumerable<BigRoom.Models.Degree>
+
+
+@section MainStyle{
+
+
+    <!-- bradcam_area_start -->
+    <div class="bradcam_area breadcam_bg overlay2">
+        <h3>Degree Of Students</h3>
+    </div>
+    <!-- bradcam_area_end -->
+
+}
+<table class="table table-hover">
+    <thead class="thead-dark">
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.user)</th>
+            <th>
+                @Html.DisplayNameFor(model => model.degree)
+            </th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.user</td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.degree)
+                </td>
+
+
+            </tr>
+        }
+    </tbody>
+</table>

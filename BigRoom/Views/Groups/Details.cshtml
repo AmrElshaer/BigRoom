@@ -1,33 +1,42 @@
 ﻿@model BigRoom.Models.Group
 
-@{
-    ViewData["Title"] = "Details";
+@section MainStyle{
+
+
+    <!-- bradcam_area_start -->
+    <div class="bradcam_area breadcam_bg overlay2">
+        <h3>Group Details</h3>
+    </div>
+    <!-- bradcam_area_end -->
+
 }
 
-<h1>Details</h1>
-
-<div>
-    <h4>Group</h4>
-    <hr />
+<div style="text-align:center">
+    <button class=" w-100 btn btn-outline-primary">Group</button>
+  
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-6 btn btn-primary" style="margin-top: 6%;">
             @Html.DisplayNameFor(model => model.CodeJion)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-6" style="margin-top: 6%;">
             @Html.DisplayFor(model => model.CodeJion)
         </dd>
-        <dt class = "col-sm-2">
+
+        <dt class="col-sm-6 btn btn-primary" style="margin-top: 6%;">
             @Html.DisplayNameFor(model => model.Name)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-6" style="margin-top: 6%;">
             @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class="col-sm-6" style="margin-top: 6%;">
+            <a class="boxed_btn_orange" asp-action="Index" asp-controller="UserGroups" asp-route-CodeJoin="@Model.CodeJion">AllJoiners</a>
+        </dt>
+        <dd class="col-sm-6" style="margin-top: 6%;">
+            <a class="boxed_btn_orange" asp-action="Index" asp-controller="Quizes" asp-route-Groupid="@Model.Id" asp-route-role="Student">All Quizes</a>
         </dd>
     </dl>
 </div>
-<a asp-action="Index" asp-controller="UserGroups" asp-route-CodeJoin="@Model.CodeJion">AllJoiners</a>
-<a asp-action="Create" asp-controller="Quizes" asp-route-groupid="@Model.Id">Create Quize</a>
-<a asp-action="Index" asp-controller="Quizes" asp-route-Groupid="@Model.Id">All Quizes</a>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+
+
+
+

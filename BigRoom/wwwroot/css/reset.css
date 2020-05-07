@@ -1,0 +1,312 @@
+@import url("https://fonts.googleapis.com/css?family=Playfair+Display:400,400i,700,700i,900|Roboto:100,100i,300,400,400i,500,500i,700,900&display=swap");
+/* 1. Theme default css */
+/* line 4, ../../Arafath/CL/CL september/205. Barber/HTML/scss/reset.scss */
+body {
+  font-family: "Roboto", sans-serif;
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* line 11, ../../Arafath/CL/CL september/205. Barber/HTML/scss/reset.scss */
+.img {
+  max-width: 100%;
+  -webkit-transition: 0.3s;
+  -moz-transition: 0.3s;
+  -o-transition: 0.3s;
+  transition: 0.3s;
+}
+
+/* line 15, ../../Arafath/CL/CL september/205. Barber/HTML/scss/reset.scss */
+a,
+.button {
+  -webkit-transition: 0.3s;
+  -moz-transition: 0.3s;
+  -o-transition: 0.3s;
+  transition: 0.3s;
+}
+
+/* line 19, ../../Arafath/CL/CL september/205. Barber/HTML/scss/reset.scss */
+a:focus,
+.button:focus, button:focus {
+  text-decoration: none;
+  outline: none;
+}
+
+/* line 24, ../../Arafath/CL/CL september/205. Barber/HTML/scss/reset.scss */
+a:focus {
+  color: #fff;
+  text-decoration: none;
+}
+
+/* line 28, ../../Arafath/CL/CL september/205. Barber/HTML/scss/reset.scss */
+a:focus,
+a:hover,
+.portfolio-cat a:hover,
+.footer -menu li a:hover {
+  text-decoration: none;
+  color: #1F1F1F;
+}
+
+/* line 35, ../../Arafath/CL/CL september/205. Barber/HTML/scss/reset.scss */
+a,
+button {
+  color: #1F1F1F;
+  outline: medium none;
+}
+
+/* line 40, ../../Arafath/CL/CL september/205. Barber/HTML/scss/reset.scss */
+h1, h2, h3, h4, h5 {
+  font-family: "Playfair Display", serif;
+  color: #1F1F1F;
+}
+
+/* line 44, ../../Arafath/CL/CL september/205. Barber/HTML/scss/reset.scss */
+h1 a,
+h2 a,
+h3 a,
+h4 a,
+h5 a,
+h6 a {
+  color: inherit;
+}
+
+/* line 53, ../../Arafath/CL/CL september/205. Barber/HTML/scss/reset.scss */
+ul {
+  margin: 0px;
+  padding: 0px;
+}
+
+/* line 57, ../../Arafath/CL/CL september/205. Barber/HTML/scss/reset.scss */
+li {
+  list-style: none;
+}
+
+/* line 60, ../../Arafath/CL/CL september/205. Barber/HTML/scss/reset.scss */
+p {
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 28px;
+  color: #727272;
+  margin-bottom: 13px;
+  font-family: "Roboto", sans-serif;
+}
+
+/* line 69, ../../Arafath/CL/CL september/205. Barber/HTML/scss/reset.scss */
+label {
+  color: #7e7e7e;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+/* line 75, ../../Arafath/CL/CL september/205. Barber/HTML/scss/reset.scss */
+*::-moz-selection {
+  background: #444;
+  color: #fff;
+  text-shadow: none;
+}
+
+/* line 80, ../../Arafath/CL/CL september/205. Barber/HTML/scss/reset.scss */
+::-moz-selection {
+  background: #444;
+  color: #fff;
+  text-shadow: none;
+}
+
+/* line 85, ../../Arafath/CL/CL september/205. Barber/HTML/scss/reset.scss */
+::selection {
+  background: #444;
+  color: #fff;
+  text-shadow: none;
+}
+
+/* line 90, ../../Arafath/CL/CL september/205. Barber/HTML/scss/reset.scss */
+*::-webkit-input-placeholder {
+  color: #cccccc;
+  font-size: 14px;
+  opacity: 1;
+}
+
+/* line 95, ../../Arafath/CL/CL september/205. Barber/HTML/scss/reset.scss */
+*:-ms-input-placeholder {
+  color: #cccccc;
+  font-size: 14px;
+  opacity: 1;
+}
+
+/* line 100, ../../Arafath/CL/CL september/205. Barber/HTML/scss/reset.scss */
+*::-ms-input-placeholder {
+  color: #cccccc;
+  font-size: 14px;
+  opacity: 1;
+}
+
+/* line 105, ../../Arafath/CL/CL september/205. Barber/HTML/scss/reset.scss */
+*::placeholder {
+  color: #cccccc;
+  font-size: 14px;
+  opacity: 1;
+}
+
+/* line 111, ../../Arafath/CL/CL september/205. Barber/HTML/scss/reset.scss */
+h3 {
+  font-size: 24px;
+}
+
+/* line 115, ../../Arafath/CL/CL september/205. Barber/HTML/scss/reset.scss */
+.mb-65 {
+  margin-bottom: 67px;
+}
+
+/* line 119, ../../Arafath/CL/CL september/205. Barber/HTML/scss/reset.scss */
+.black-bg {
+  background: #020c26 !important;
+}
+
+/* line 123, ../../Arafath/CL/CL september/205. Barber/HTML/scss/reset.scss */
+.white-bg {
+  background: #ffffff;
+}
+
+/* line 126, ../../Arafath/CL/CL september/205. Barber/HTML/scss/reset.scss */
+.gray-bg {
+  background: #f5f5f5;
+}
+
+/* line 131, ../../Arafath/CL/CL september/205. Barber/HTML/scss/reset.scss */
+.bg-img-1 {
+  background-image: url(../img/slider/slider-img-1.jpg);
+}
+
+/* line 134, ../../Arafath/CL/CL september/205. Barber/HTML/scss/reset.scss */
+.bg-img-2 {
+  background-image: url(../img/background-img/bg-img-2.jpg);
+}
+
+/* line 137, ../../Arafath/CL/CL september/205. Barber/HTML/scss/reset.scss */
+.cta-bg-1 {
+  background-image: url(../img/background-img/bg-img-3.jpg);
+}
+
+/* line 142, ../../Arafath/CL/CL september/205. Barber/HTML/scss/reset.scss */
+.overlay {
+  position: relative;
+  z-index: 0;
+}
+
+/* line 146, ../../Arafath/CL/CL september/205. Barber/HTML/scss/reset.scss */
+.overlay::before {
+  position: absolute;
+  content: "";
+  background-color: #1f1f1f;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  opacity: .5;
+}
+
+/* line 158, ../../Arafath/CL/CL september/205. Barber/HTML/scss/reset.scss */
+.overlay2 {
+  position: relative;
+  z-index: 0;
+}
+
+/* line 162, ../../Arafath/CL/CL september/205. Barber/HTML/scss/reset.scss */
+.overlay2::before {
+  position: absolute;
+  content: "";
+  background-color: #2E2200;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  opacity: 0.5;
+}
+
+/* line 174, ../../Arafath/CL/CL september/205. Barber/HTML/scss/reset.scss */
+.section-padding {
+  padding-top: 120px;
+  padding-bottom: 120px;
+}
+
+/* line 178, ../../Arafath/CL/CL september/205. Barber/HTML/scss/reset.scss */
+.pt-120 {
+  padding-top: 120px;
+}
+
+/* button style */
+/* line 184, ../../Arafath/CL/CL september/205. Barber/HTML/scss/reset.scss */
+.owl-carousel .owl-nav div {
+  background: transparent;
+  height: 54px;
+  left: 0px;
+  line-height: 54px;
+  position: absolute;
+  text-align: center;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  -webkit-transition: all 0.3s ease 0s;
+  -o-transition: all 0.3s ease 0s;
+  transition: all 0.3s ease 0s;
+  width: 54px;
+  font-size: 25px;
+  color: #fff;
+  background-color: white;
+  border-radius: 50%;
+  left: 50px;
+  font-size: 18px;
+  line-height: 54px;
+  left: -26px;
+  font-size: 18px;
+  line-height: 54px;
+  color: #000;
+}
+
+/* line 215, ../../Arafath/CL/CL september/205. Barber/HTML/scss/reset.scss */
+.owl-carousel .owl-nav div.owl-next {
+  left: auto;
+  right: -30px;
+}
+
+/* line 220, ../../Arafath/CL/CL september/205. Barber/HTML/scss/reset.scss */
+.owl-carousel .owl-nav div.owl-next i {
+  position: relative;
+  right: 0;
+  top: 1px;
+}
+
+/* line 227, ../../Arafath/CL/CL september/205. Barber/HTML/scss/reset.scss */
+.owl-carousel .owl-nav div.owl-prev i {
+  position: relative;
+  right: 1px;
+  top: 0px;
+}
+
+/* line 237, ../../Arafath/CL/CL september/205. Barber/HTML/scss/reset.scss */
+.owl-carousel:hover .owl-nav div {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* line 240, ../../Arafath/CL/CL september/205. Barber/HTML/scss/reset.scss */
+.owl-carousel:hover .owl-nav div:hover {
+  color: #fff;
+  background: #4A3600;
+}
+
+/* line 249, ../../Arafath/CL/CL september/205. Barber/HTML/scss/reset.scss */
+.mb-20px {
+  margin-bottom: 20px;
+}
+
+/* line 252, ../../Arafath/CL/CL september/205. Barber/HTML/scss/reset.scss */
+.mb-90 {
+  margin-bottom: 90px;
+}
+
+/*# sourceMappingURL=reset.css.map */

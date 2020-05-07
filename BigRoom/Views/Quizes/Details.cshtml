@@ -2,14 +2,21 @@
 
 
 
-<h1>Create</h1>
+
+@section MainStyle{
 
 
-<hr />
+    <!-- bradcam_area_start -->
+    <div class="bradcam_area breadcam_bg overlay2">
+        <h3>Quize</h3>
+    </div>
+    <!-- bradcam_area_end -->
 
+}
 <div class="row">
     <div class="col-md-4">
-        <button class="btn btn-primary" value="@ViewData["Timerspan"]" id="TimeSpan">@ViewData["Timerspan"]</button><div id="Timerspancontainer"><span id="hour" class="btn btn-danger">00</span>:<span id="minutes" class="btn btn-danger">00</span>:<span id="second" class="btn btn-danger">00</span></div>
+        <button class="btn btn-primary mb-3" value="@ViewData["Timerspan"]" id="TimeSpan">@ViewData["Timerspan"]</button>
+        <div id="Timerspancontainer" class="mb-3"><span id="hour" class="btn btn-danger">00</span>:<span id="minutes" class="btn btn-danger">00</span>:<span id="second" class="btn btn-danger">00</span></div>
         <input style="display:none" type="text" value="@ViewData["filequizename"]" id="filequizename" />
         <input style="display:none" type="datetime" value="@ViewData["TimeEnd"]" id="TimeEnd" />
         <input style="display:none" type="text" value="@User.Identity.Name" id="username" />
@@ -18,127 +25,132 @@
 
             @for (int i = 0; i < Model.Count(); i++)
             {
-                <div style="border:1px solid" class="@i">
-                    <div class="form-group">
-                        <label asp-for="ElementAt(i).question" class="control-label"></label>
+                <div class="@i mb-5">
+                    <div class="form-group mb-3">
+
                         <input asp-for="ElementAt(i).question" class="form-control" />
                         <span asp-validation-for="ElementAt(i).question" class="text-danger"></span>
                     </div>
 
                     @if (Model.ElementAt(i).choice.Count() == 2)
                     {
-                        <div class="form-group"><label class="control-label">True</label><input class="form-control" type="radio" name="@i" value="True" /></div>
-                        <div class="form-group"><label class="control-label">False</label><input class="form-control" type="radio" name="@i" value="False" /></div>
+                        <div class="form-check"><input class="form-check-input" type="radio" name="@i" value="@Model.ElementAt(i).choice.ElementAt(0)" /><label class="form-check-label">@Model.ElementAt(i).choice.ElementAt(0)</label></div>
+                        <div class="form-check"><input class="form-check-input" type="radio" name="@i" value="@Model.ElementAt(i).choice.ElementAt(1)" /><label class="form-check-label">@Model.ElementAt(i).choice.ElementAt(1)</label></div>
+
                     }
                     else
                     {
-                        <div class="form-group"><input class="form-control" type="radio" name="@i" value="@Model.ElementAt(i).choice.ElementAt(0)" /><label class="control-label">@Model.ElementAt(i).choice.ElementAt(0)</label></div>
-                        <div class="form-group"><input class="form-control" type="radio" name="@i" value="@Model.ElementAt(i).choice.ElementAt(1)" /><label class="control-label">@Model.ElementAt(i).choice.ElementAt(1)</label></div>
-                        <div class="form-group"><input class="form-control" type="radio" name="@i" value="@Model.ElementAt(i).choice.ElementAt(2)" /><label class="control-label">@Model.ElementAt(i).choice.ElementAt(2)</label></div>
-                        <div class="form-group"><input class="form-control" type="radio" name="@i" value="@Model.ElementAt(i).choice.ElementAt(3)" /><label class="control-label">@Model.ElementAt(i).choice.ElementAt(3)</label></div>
+                        <div class="form-check"><input class="form-check-input" type="radio" name="@i" value="@Model.ElementAt(i).choice.ElementAt(0)" /><label class="form-check-label">@Model.ElementAt(i).choice.ElementAt(0)</label></div>
+                        <div class="form-check"><input class="form-check-input" type="radio" name="@i" value="@Model.ElementAt(i).choice.ElementAt(1)" /><label class="form-check-label">@Model.ElementAt(i).choice.ElementAt(1)</label></div>
+                        <div class="form-check"><input class="form-check-input" type="radio" name="@i" value="@Model.ElementAt(i).choice.ElementAt(2)" /><label class="form-check-label">@Model.ElementAt(i).choice.ElementAt(2)</label></div>
+                        <div class="form-check"><input class="form-check-input" type="radio" name="@i" value="@Model.ElementAt(i).choice.ElementAt(3)" /><label class="form-check-label">@Model.ElementAt(i).choice.ElementAt(3)</label></div>
 
                     }
+
+
+
                 </div>
             }
 
 
 
             <div class="form-group">
-                <input type="button" id="sumbitquestion" value="Create" class="btn btn-primary" />
+                <input type="button" id="sumbitquestion" value="Submit" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-<script>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
 
 
 
 
 
-    $(document).ready(function () {
+        $(document).ready(function () {
 
-        var filename = document.getElementById("filequizename").value;
-        var listofurl = location.pathname.split('/');
-        var quizeid = listofurl[listofurl.length - 1];
+            var filename = document.getElementById("filequizename").value;
+            var listofurl = location.pathname.split('/');
+            var quizeid = listofurl[listofurl.length - 1];
 
-        var Timerspan = document.getElementById("TimeSpan").value.split(':');
-        var Timespan = new Date();
-        Timespan.setHours(Timerspan[0]);
-        Timespan.setMinutes(Timerspan[1]);
-        Timespan.setSeconds(Timerspan[2]);
-
-  
-        $("#sumbitquestion").on("click", function () {
-            if (confirm("You sure You wante To Submit")) {
-                 $("#Timerspancontainer").css({"display":"none"});
-                var objdata = {};
-
-                var pairs = $("#questionform").serializeArray();
-                var degree = 0;
+            var Timerspan = document.getElementById("TimeSpan").value.split(':');
+            var Timespan = new Date();
+            Timespan.setHours(Timerspan[0]);
+            Timespan.setMinutes(Timerspan[1]);
+            Timespan.setSeconds(Timerspan[2]);
 
 
+            $("#sumbitquestion").on("click", function () {
+                if (confirm("You sure You wante To Submit")) {
+                    $("#Timerspancontainer").css({ "display": "none" });
+                    var objdata = {};
 
-
-                var username = document.getElementById("username").value;
-
-                if (filename != "") {
-
-
-                    $.ajax({
-                        method: "GET",
-                        url: "/Quizes/GetAnswerfile?filename=" + filename,
-                        success: function (valuesofanswer) {
-                            $.each(pairs, function (i, input) {
-
-
-                                objdata[input.name] = input.value;
-
-                            });
-
-
-                            $.each(valuesofanswer, function (i, values) {
-
-
-                                if (objdata[i] != "undefined" && values == objdata[i]) {
-                                    degree = degree + 1;
-
-
-                                }
-
-
-                            });
+                    var pairs = $("#questionform").serializeArray();
+                    var degree = 0;
 
 
 
-                            var objtopostdegree = { "degree": degree, "user": username, "quize": quizeid };
+
+                    var username = document.getElementById("username").value;
+
+                    if (filename != "") {
 
 
-                            $.ajax({
-                                method: "POST", url: "/Quizes/Adddegree", data: objtopostdegree,
-                                success: function (data) {
-                                    alert("degree" + degree);
-                                },
-                                error: function (x, statux, h) {
-                                    alert("You Done Excerise");
-                                }
-                            });
+                        $.ajax({
+                            method: "GET",
+                            url: "/Quizes/GetAnswerfile?filename=" + filename,
+                            success: function (valuesofanswer) {
+                                $.each(pairs, function (i, input) {
 
 
-                        },
-                        error: function (x, status, f) {
+                                    objdata[input.name] = input.value;
 
-                            alert("error");
-                        },
+                                });
 
 
-                    });
+                                $.each(valuesofanswer, function (i, values) {
 
+
+                                    if (objdata[i] != "undefined" && values == objdata[i]) {
+                                        degree = degree + 1;
+
+
+                                    }
+
+
+                                });
+
+
+
+                                var objtopostdegree = { "degree": degree, "user": username, "quize": quizeid };
+
+
+                                $.ajax({
+                                    method: "POST", url: "/Quizes/Adddegree", data: objtopostdegree,
+                                    success: function (data) {
+                                        alert("degree" + degree);
+                                    },
+                                    error: function (x, statux, h) {
+                                        alert("You Done Excerise");
+                                    }
+                                });
+
+
+                            },
+                            error: function (x, status, f) {
+
+                                alert("error");
+                            },
+
+
+                        });
+
+                    }
                 }
-            }
 
 
 
@@ -146,69 +158,69 @@
 
 
 
-        });
-       
-        var insecond = setInterval(increamentsecond, 1000);
-        var inminute = setInterval(increamentminute, 59000);
-        var endexam = setInterval(endexaim,1000);
-         var EndTimer = new Date();
+            });
+
+            var insecond = setInterval(increamentsecond, 1000);
+            var inminute = setInterval(increamentminute, 59000);
+            var endexam = setInterval(endexaim, 1000);
+            var EndTimer = new Date();
             EndTimer.setHours(00);
             EndTimer.setMinutes(00);
-        EndTimer.setSeconds(00);
-        var second = document.getElementById("second");
-        var minute = document.getElementById("minutes");
-        var hour = document.getElementById("hour");
-        
-        function increamentsecond() {
-            
-            var seconds = EndTimer.getSeconds();
-            if (seconds != 59) {
-                EndTimer.setSeconds(seconds + 1);
-            }
-            else {
-                EndTimer.setSeconds(00);
-               
+            EndTimer.setSeconds(00);
+            var second = document.getElementById("second");
+            var minute = document.getElementById("minutes");
+            var hour = document.getElementById("hour");
+
+            function increamentsecond() {
+
+                var seconds = EndTimer.getSeconds();
+                if (seconds != 59) {
+                    EndTimer.setSeconds(seconds + 1);
+                }
+                else {
+                    EndTimer.setSeconds(00);
+
+
+                }
+
+
+                second.innerText = EndTimer.getSeconds();
+
 
             }
-            
+            function increamentminute() {
 
-            second.innerText = EndTimer.getSeconds();
+                var minutes = EndTimer.getMinutes();
+                if (minutes != 59) {
+                    EndTimer.setMinutes(minutes + 1);
+                }
+                else {
+                    EndTimer.setMinutes(00);
+                    var hours = EndTimer.getHours() + 1;
+                    EndTimer.setHours(hours);
+                    hour.innerText = hours;
+                }
 
-            
-        }
-        function increamentminute() {
-           
-            var minutes = EndTimer.getMinutes();
-            if (minutes != 59) {
-                EndTimer.setMinutes(minutes + 1);
+
+                minute.innerText = minutes;
+
             }
-            else {
-                EndTimer.setMinutes(00);
-                var hours = EndTimer.getHours() + 1;
-                EndTimer.setHours(hours);
-                hour.innerText = hours;
-            }
-            
+            function endexaim() {
 
-            minute.innerText = minutes;
-           
-        }
-        function endexaim() {
-            
-            if (EndTimer.getHours() == Timespan.getHours() && EndTimer.getMinutes() == Timespan.getMinutes() && EndTimer.getSeconds() == Timespan.getSeconds()) {
-                alert("finish");
-                $("#Timerspancontainer").css({"display":"none"});
-                setTimeout(insecond);
-                setTimeout(inminute);
-                endquizefun();
+                if (EndTimer.getHours() == Timespan.getHours() && EndTimer.getMinutes() == Timespan.getMinutes() && EndTimer.getSeconds() == Timespan.getSeconds()) {
+                    alert("finish");
+                    $("#Timerspancontainer").css({ "display": "none" });
+                    setTimeout(insecond);
+                    setTimeout(inminute);
+                    endquizefun();
+                }
+                setTimeout(endexam);
             }
-            setTimeout(endexam);
-        }
-        function endquizefun() {
-           
-           
+            function endquizefun() {
 
-           
+
+
+
                 alert("trigger");
 
                 $("#sumbitquestion").trigger("click");
@@ -217,13 +229,13 @@
 
 
 
-        }
+            }
 
 
 
 
 
-    });
+        });
 
 
 
@@ -232,8 +244,5 @@
 
 
 
-</script>
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-
+    </script>
 }

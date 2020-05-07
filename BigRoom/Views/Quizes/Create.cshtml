@@ -1,75 +1,127 @@
 ﻿
 @model BigRoom.ViewModel.quizeview
 
-@{
-    ViewData["Title"] = "Create";
-}
+@section MainStyle{
 
-<h1>Create</h1>
 
-<h4>Quize</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create" enctype="multipart/form-data" id="createquize">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div id="customvalidation"></div>
-            <div class="form-group">
-                <label asp-for="file" class="control-label"></label>
-                <input asp-for="file" type="file" class="form-control" />
-                <span asp-validation-for="file" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="fileanswer" class="control-label"></label>
-                <input asp-for="fileanswer" type="file" class="form-control" />
-                <span asp-validation-for="fileanswer" class="text-danger"></span>
-            </div>
-            <div class="form-group" >
-                <label asp-for="TimeStart" class="control-label"></label>
-                <input asp-for="TimeStart" onchange="checkdate()" class="form-control" id="TimeStart" />
-                <span asp-validation-for="TimeStart" class="text-danger"></span>
-            </div>
-            <div class="form-group" >
-                <label asp-for="TimeEnd" class="control-label"></label>
-                <input asp-for="TimeEnd" id="TimeEnd" onchange="checkdate()" class="form-control" />
-                <span asp-validation-for="TimeEnd" class="text-danger"></span>
-            </div>
-            <div class="form-group" style="display:none">
-                <label asp-for="Groupid"  class="control-label"></label>
-                <input asp-for="Groupid"  value="@ViewData["groupid"]" class="form-control" />
-                <span asp-validation-for="Groupid" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" id="submit"  value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+    <!-- bradcam_area_start -->
+    <div class="bradcam_area breadcam_bg overlay2">
+        <h3>Create Quize</h3>
     </div>
+    <!-- bradcam_area_end -->
+
+}
+<style>
+    .popup_box {
+        background: #85399ecf;
+        display: inline-block;
+        width: 558px;
+        padding: 60px 40px;
+        border-radius: 5px;
+        z-index: 9;
+    }
+</style>
+<div class="mb-5 mt-5 row">
+    <form asp-action="Create" enctype="multipart/form-data" id="createquize" style="margin:auto">
+        <div class="popup_box ">
+            <div class="popup_inner">
+                <div class="logo text-center">
+                    <a href="#">
+                        <img src="img/form-logo.png" alt="">
+                    </a>
+                </div>
+                <h3 style="text-align:center">Create Group</h3>
+
+                <div class="row">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+
+                    <div class="col-xl-12 col-md-12 mb-5">
+                        <div class="input-group">
+
+                            <div class="custom-file">
+                                <input asp-for="file" type="file" class="custom-file-input" id="inputGroupFile01"
+                                       aria-describedby="inputGroupFileAddon01">
+                                <label class="custom-file-label" for="inputGroupFile01">Question file</label>
+                            </div>
+                        </div>
+                    </div>
+                    <span asp-validation-for="file" class="text-danger"></span>
+                    <div class="col-xl-12 col-md-12 mb-5">
+                        <div class="input-group">
+
+                            <div class="custom-file">
+                                <input asp-for="fileanswer" type="file" class="custom-file-input" id="inputGroupFile02"
+                                       aria-describedby="inputGroupFileAddon01">
+                                <label class="custom-file-label" for="inputGroupFile02">Answer file</label>
+                            </div>
+                        </div>
+                    </div>
+                    <span asp-validation-for="fileanswer" class="text-danger"></span>
+
+                    <div class="col-xl-12 col-md-12">
+                        <label style="color:white;font-size:20px" asp-for="TimeStart"></label>
+                        <input asp-for="TimeStart" onchange="checkdate()" id="TimeStart" />
+                        <span asp-validation-for="TimeStart" class="text-danger"></span>
+                    </div>
+                    <div class="col-xl-12 col-md-12">
+                        <label style="color:white;font-size:20px" asp-for="TimeEnd"></label>
+                        <input asp-for="TimeEnd" id="TimeEnd" onchange="checkdate()" />
+                        <span asp-validation-for="TimeEnd" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-xl-12 col-md-12">
+                        <label style="color:white;font-size:20px" asp-for="Description"></label>
+                        <input asp-for="Description" id="TimeEnd" onchange="checkdate()" />
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                    <div class="form-group" style="display:none">
+                        <label style="color:white;font-size:20px" asp-for="Groupid" class="control-label"></label>
+                        <input asp-for="Groupid" value="@ViewData["groupid"]" class="form-control" />
+                        <span asp-validation-for="Groupid" class="text-danger"></span>
+                    </div>
+                    <div class="col-xl-12">
+
+                        <button type="submit" id="submit" class="boxed_btn_orange">Create</button>
+                    </div>
+                </div>
+
+
+            </div>
+        </div><button title="Close (Esc)" type="button" class="mfp-close">×</button>
+    </form>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
-<script>
-     function checkdate() {
+    <script>
+        $('#inputGroupFile01,#inputGroupFile02').on('change', function () {
+            //get the file name
+            console.log(this);
+            var fileName = $(this).val();
+            //replace the "Choose a file" label
+            $(this).next('.custom-file-label').html(fileName);
+        })
+        function checkdate() {
             var valueofstart = document.getElementById("TimeStart").value;
             var valueofend = document.getElementById("TimeEnd").value;
-         
-         if (valueofstart >= valueofend) {
-             
-             document.getElementById("customvalidation").innerText = "Start Time Must Lower Than End Time";
 
-             document.getElementById("submit").setAttribute("disabled",true);
+            if (valueofstart >= valueofend) {
 
-         }
-         else {
-             document.getElementById("customvalidation").innerText = "";
-            
-             document.getElementById("submit").removeAttribute("disabled");
-         }
+                document.getElementById("customvalidation").innerText = "Start Time Must Lower Than End Time";
+
+                document.getElementById("submit").setAttribute("disabled", true);
+
+            }
+            else {
+                document.getElementById("customvalidation").innerText = "";
+
+                document.getElementById("submit").removeAttribute("disabled");
+            }
         }
-   
-</script>
+
+    </script>
+}
+

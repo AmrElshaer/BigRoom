@@ -1,5 +1,3 @@
-using System;
-
 namespace BigRoom.Models
 {
     public class ErrorViewModel

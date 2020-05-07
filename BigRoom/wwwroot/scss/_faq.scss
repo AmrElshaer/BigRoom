@@ -1,0 +1,96 @@
+.courses_details_info{
+    padding-top: 190px;
+    @media #{$mobile_device}{
+        padding-top: 60px;
+    }
+    .accordion_heading{
+        margin-bottom: 100px;
+        @media #{$mobile_device} {
+            margin-bottom: 30px;
+        }
+        @media #{$tablet_device} {
+            margin-bottom: 30px;
+        }
+        h3{
+            font-size: 42px;
+            font-weight: 400;
+            margin-bottom: 0;
+            @media #{$mobile_device}{
+                font-size: 28px;
+            }
+        }
+    }
+    #accordion{
+       .card{
+           h5{
+
+            button{
+                font-size: 22px;
+                font-weight: 400;
+                color: #1F1F1F;
+                @media #{$mobile_device}{
+                    font-size: 13px;
+                }
+                @media #{$tablet_device}{
+                    font-size: 18px;
+                }
+                i{
+                    color: #00D363;
+                    padding-right: 15px;
+                }
+            }
+          
+           }
+           .card-body{
+            padding: 0 0 40px 76px;
+            @media #{$mobile_device} {
+                padding: 0 20px 10px 20px;
+            }
+           }
+       } 
+       .card {
+        position: relative;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        min-width: 0;
+        word-wrap: break-word;
+        background-color: #fff;
+        background-clip: border-box;
+        border: 1px solid rgba(0, 0, 0, .125);
+        border-radius: .25rem;
+        background: #fff !important;
+        border: 1px solid #E9E5EC;
+        border: 5px;
+        margin-bottom: 30px;
+        border: 1px solid #E9E5EC;
+        .card-header {
+            margin-bottom: 0;
+            background-color: #fff;
+            border-bottom: none;
+            // padding: 14px 0 0 14px;
+            padding: 14px 0 16px 14px;
+            span{
+                @media #{$mobile_device} {
+                    display: none;
+                }
+            }
+        }
+    }
+    }
+    .btn-link.focus, .btn-link:focus {
+        text-decoration: none;
+        border-color: transparent;
+        box-shadow: none;
+    }
+    .btn-link:hover {
+        color: #0056b3;
+        text-decoration: none;
+        background-color: transparent;
+        border-color: transparent;
+    }
+}

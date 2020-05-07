@@ -1,0 +1,77 @@
+﻿@model BigRoom.Models.User
+
+
+@section MainStyle{
+    <!-- bradcam_area_start -->
+    <div class="courses_details_banner">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-6">
+                    <div class="course_text">
+                        <h3>BigRoom </h3>
+                        <h3> Wellcom With Us</h3>
+                        <h3>@User.Identity.Name</h3>
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- bradcam_area_end -->
+}
+
+<div style="text-align:center">
+    <p class="mb-5 mt-5">
+        <a asp-action="Create" asp-controller="Groups" class="boxed_btn">Create New</a>
+    </p>
+
+    <table class="table table-bordered table-active">
+        <caption style="text-align:center">Group You Join</caption>
+        <thead>
+            <tr>
+                <th>GroupName</th>
+                <th>VisitGroup</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Groups)
+            {
+                <tr>
+                    <td style="padding: 22px;">
+                        @item.group.Name
+                    </td>
+                    <td style="float:right; padding: 20px;">
+                        <a href="/Groups/Details/@item.groupId" class="btn btn-outline-warning">Visit Group</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <table class="table table-bordered table-active">
+        <caption style="text-align:center">Groups you Admin</caption>
+
+        <thead>
+            <tr>
+                <th>GroupName</th>
+                <th>VisitGroup</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.GroupsThatAdmin)
+            {
+                <tr>
+                    <td style="padding: 22px;">
+                        @item.Name
+                    </td>
+                    <td style="float:right; padding: 20px;">
+                        <a href="/Groups/GroupYouAdmin/@item.Id" class="btn btn-outline-warning">Visit Group</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>

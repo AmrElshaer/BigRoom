@@ -1,7 +1,78 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@model IEnumerable<Group>
+@section MainStyle{
+    <div class="slider_area ">
+        <div class="single_slider d-flex align-items-center justify-content-center slider_bg_1">
+            <div class="container">
+                <div class="row align-items-center justify-content-center">
+                    <div class="col-xl-6 col-md-6">
+                        <div class="illastrator_png">
+                            <img src="~/img/banner/edu_ilastration.png" alt="">
+                        </div>
+                    </div>
+                    <div class="col-xl-6 col-md-6">
+                        <div class="slider_info">
+                            <h3>
+                                BigRoom <br>
+                                Favorite System <br>
+                                For Online Exam
+                            </h3>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome To BigRoom System For Colleage Exerices</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<div class="about_area">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-5 col-lg-6">
+                <div class="single_about_info">
+                    <h3>
+                        BigRoom The Best Way To Save Your Time
+                    </h3>
+                    <p>
+                        Our set he for firmament morning sixth subdue darkness creeping gathered divide our let god
+                        moving. Moving in fourth air night bring upon you’re it beast let you dominion likeness open
+                        place day great wherein heaven sixth lesser subdue fowl
+                    </p>
+                    <a asp-area="Identity" asp-page="/Account/Register" class="boxed_btn">Join With Us</a>
+                </div>
+            </div>
+            <div class="col-xl-6 offset-xl-1 col-lg-6">
+                <div class="about_tutorials">
+                    <div class="courses">
+                        <div class="inner_courses">
+                            <div class="text_info">
+                                <span>20500</span>
+                                <p> Teacher</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="courses-blue">
+                        <div class="inner_courses">
+                            <div class="text_info">
+                                <span>7638</span>
+                                <p> Groups</p>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="courses-sky">
+                        <div class="inner_courses">
+                            <div class="text_info">
+                                <span>45824</span>
+                                <p> Student</p>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+
+

@@ -1,0 +1,54 @@
+﻿@page
+@model LoginModel
+@section MainStyle{
+
+
+    <!-- bradcam_area_start -->
+    <div class="bradcam_area breadcam_bg overlay2">
+        <h3>Login</h3>
+    </div>
+    <!-- bradcam_area_end -->
+
+}
+
+<div class="mb-5 mt-5 row">
+    <form id="account" method="post" style="margin:auto">
+        <div class="popup_box ">
+            <div class="popup_inner">
+                <div class="logo text-center">
+                    <a href="#">
+                        <img src="img/form-logo.png" alt="">
+                    </a>
+                </div>
+                <h3>Sign in</h3>
+
+                <div class="row">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <div class="col-xl-12 col-md-12">
+                        <input asp-for="Input.Email" placeholder="Enter email">
+                    </div>
+                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                    <div class="col-xl-12 col-md-12">
+                        <input asp-for="Input.Password" placeholder="Password">
+                    </div>
+
+                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                    <div class="col-xl-12">
+                        <button type="submit" class="boxed_btn_orange">Sign in</button>
+                    </div>
+                </div>
+
+                <p class="doen_have_acc">
+                    Don’t have an account? <a class="" href="/Identity/Account/Register" >Sign Up</a>
+                </p>
+            </div>
+        </div><button title="Close (Esc)" type="button" class="mfp-close">×</button>
+    </form>
+</div>
+
+
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

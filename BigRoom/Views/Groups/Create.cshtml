@@ -1,37 +1,50 @@
 ﻿@model BigRoom.Models.Group
 
-@{
-    ViewData["Title"] = "Create";
-}
+@section MainStyle{
 
-<h1>Create</h1>
 
-<h4>Group</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="CodeJion"  class="control-label"></label>
-                <input asp-for="CodeJion" value="@ViewData["Guid"]" class="form-control" />
-                <span asp-validation-for="CodeJion" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+    <!-- bradcam_area_start -->
+    <div class="bradcam_area breadcam_bg overlay2">
+        <h3>Create Group</h3>
     </div>
+    <!-- bradcam_area_end -->
+
+}
+<div class="mb-5 mt-5 row">
+    <form id="account" asp-action="Create" method="post" style="margin:auto">
+        <div class="popup_box ">
+            <div class="popup_inner">
+                <div class="logo text-center">
+                    <a href="#">
+                        <img src="img/form-logo.png" alt="">
+                    </a>
+                </div>
+                <h3>Create Group</h3>
+
+                <div class="row">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <div class="col-xl-12 col-md-12">
+                        <input asp-for="CodeJion" value="@ViewData["Guid"]">
+                    </div>
+                    <span asp-validation-for="CodeJion" class="text-danger"></span>
+                    <div class="col-xl-12 col-md-12">
+                        <input asp-for="Name" placeholder="Name">
+                    </div>
+
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                    <div class="col-xl-12">
+                        <button type="submit" class="boxed_btn_orange">Create</button>
+                    </div>
+                </div>
+
+               
+            </div>
+        </div><button title="Close (Esc)" type="button" class="mfp-close">×</button>
+    </form>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

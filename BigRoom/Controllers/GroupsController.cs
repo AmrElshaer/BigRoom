@@ -1,31 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using BigRoom.Models;
+﻿using BigRoom.Models;
 using Classroom.Data;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace BigRoom.Controllers
 {
     [Authorize]
     public class GroupsController : Controller
     {
+        private readonly UserManager<User> _userManager;
         private readonly ApplicationDbContext _context;
 
-        public GroupsController(ApplicationDbContext context)
+        public GroupsController(ApplicationDbContext context, UserManager<User> userManager)
         {
+            _userManager = userManager;
             _context = context;
         }
         public async Task<IActionResult> GoToGroup(string Codejoin)
         {
-          var Group=  await this._context.Group.FirstOrDefaultAsync(a => a.CodeJion == Codejoin);
-            if (Group!=null)
+            var Group = await this._context.Group.FirstOrDefaultAsync(a => a.CodeJion == Codejoin);
+            if (Group != null)
             {
-                return RedirectToAction(nameof(Details),new {id=Group.Id });
+                return RedirectToAction(nameof(Details), new { id = Group.Id });
             }
             return RedirectToAction(nameof(Create), "UserGroups");
         }
@@ -36,6 +37,7 @@ namespace BigRoom.Controllers
         }
 
         // GET: Groups/Details/5
+        //Group You Join
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -52,21 +54,38 @@ namespace BigRoom.Controllers
 
             return View(@group);
         }
+        // GET: Groups/GroupYouAdmin/5
+        //Group You Join
+        public async Task<IActionResult> GroupYouAdmin(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
+            var @group = await _context.Group
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (@group == null)
+            {
+                return NotFound();
+            }
+
+            return View(@group);
+        }
         // GET: Groups/Create
         public IActionResult Create()
         {
-            
+
             ViewData["Guid"] = Guid.NewGuid().ToString();
             return View();
         }
-        [AcceptVerbs("Get","Post")]
-        public async  Task<JsonResult> GroupNameUNiqe(string Name)
+        [AcceptVerbs("Get", "Post")]
+        public async Task<JsonResult> GroupNameUNiqe(string Name)
         {
             var GroupName = await _context.Group.FirstOrDefaultAsync(a => a.Name == Name);
             if (GroupName is null)
             {
-                return Json(data:true);
+                return Json(data: true);
             }
             return Json(data: false);
         }
@@ -79,9 +98,14 @@ namespace BigRoom.Controllers
         {
             if (ModelState.IsValid)
             {
+                var user = await _userManager.FindByNameAsync(this.User.Identity.Name);
+                @group.AdminId = user.Id;
                 _context.Add(@group);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+
+                var role = await _userManager.GetRolesAsync(user);
+
+                return RedirectToAction(nameof(Index), controllerName: role.FirstOrDefault()); ;
             }
             return View(@group);
         }
@@ -109,6 +133,7 @@ namespace BigRoom.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,CodeJion,Name")] Group @group)
         {
+            var user = await _userManager.FindByNameAsync(this.User.Identity.Name);
             if (id != @group.Id)
             {
                 return NotFound();
@@ -118,6 +143,7 @@ namespace BigRoom.Controllers
             {
                 try
                 {
+                    @group.AdminId = user.Id;
                     _context.Update(@group);
                     await _context.SaveChangesAsync();
                 }
@@ -132,7 +158,9 @@ namespace BigRoom.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                var role = await _userManager.GetRolesAsync(user);
+
+                return RedirectToAction(nameof(Index), controllerName: role.FirstOrDefault()); ;
             }
             return View(@group);
         }

@@ -1,0 +1,50 @@
+.subscribe_newsletter{
+    background: #04D2C8;
+    padding: 100px 0;
+    .newsletter_text{
+        h3{
+            font-size: 36px;
+            color: #fff;
+            font-weight: 400;
+        }
+        p{
+            color: #fff;
+        }
+    }
+    .newsletter_form{
+        h4{
+            color: #fff;
+            margin-bottom: 20px;
+            font-size: 17px;
+            font-weight: 400;
+        }
+        .newsletter_form{
+            input{
+                height: 60px;
+                width: 70%;
+                background: #fff;
+                border: none;
+                border-top-left-radius: 3px;
+                border-bottom-left-radius: 3px;
+                float: left;
+                padding: 30px;
+                &::placeholder{
+                    font-size: 16px;
+                    font-weight: 400;
+                    font-family: $font2;
+                    color: #919191;
+                }
+            }
+            button{
+                background: #FD8E5E;
+                border: none;
+                cursor: pointer;
+                color: #fff;
+                width: 30%;
+                height: 60px;
+                border-top-right-radius: 3px;
+                border-bottom-right-radius: 3px;
+            }
+        }
+    }
+}

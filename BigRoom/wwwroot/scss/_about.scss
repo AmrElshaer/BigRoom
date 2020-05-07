@@ -1,0 +1,194 @@
+.about_area{
+    padding: 200px 0 270px 0;
+    @media #{$mobile_device} {
+        padding: 100px 0;
+    }
+    @media #{$tablet_device} {
+        padding: 100px 0;
+    }
+    @media #{$mid_device} {
+        padding: 200px 0 200px 0;
+    }
+    .single_about_info{
+        position: relative;
+        h3{
+            font-size: 46px;
+            line-height: 56px;
+            font-weight: 400;
+            @media #{$mobile_device}{
+                font-size: 25px;
+                line-height: 32px;
+            }
+            @media #{$tablet_device}{
+                font-size: 25px;
+                line-height: 32px;
+            }
+        }
+        p{
+            font-size: 17px;
+            font-weight: 400;
+            color: #727272;
+            margin-top: 10px;
+            margin-bottom: 42px;
+        }
+    }
+    .about_tutorials{
+        @media #{$tablet_device} {
+            margin-top: 30px;
+            @include flexbox();
+            @include justify-content(space-evenly);
+        }
+        span{
+            font-size: 60px;
+            color: #fff;
+            font-weight: 400;
+            line-height: 70px;
+            @media #{$tablet_device}{
+                font-size: 35px;
+                line-height: 39px;
+            }
+        }
+        .text_info{
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 50%;
+            @include transform(translateY(-50%));
+            p{
+                color: #fff;
+                font-size: 18px;
+            }
+        }
+        .courses{
+            border-radius: 50%;
+            text-align: center;
+            top: -5px;
+            position: absolute;
+            left: 10%;
+            z-index: 3;
+            
+            @media #{$mobile_device} {
+                position: static;
+                margin-top: 30px;
+                
+            }
+            @media #{$tablet_device} {
+                position: static;
+            }
+            @media #{$mid_device} {
+                left: 0;
+            }
+            .inner_courses{
+                // background: #FD8E5E;
+                width: 270px;
+                height: 270px;
+                border-radius: 50%;
+                text-align: center;
+                position: relative;
+                @media #{$mobile_device} {
+                    width: 290px;
+                    height: 290px;
+                    margin: auto;
+                }
+                @media #{$tablet_device} {
+                    width: 200px;
+                    height: 200px;
+                }
+
+                &::before{
+                    position: absolute;
+                    content: "";
+                    width: 100%;
+                    height: 100%;
+                    background: #FD8E5E;
+                    border-radius: 50%;
+                    opacity: .7;
+                    left: 0;
+                    top: 0;
+                }
+            }
+        }
+        .courses-blue{
+            border-radius: 50%;
+            text-align: center;
+            position: absolute;
+            right: 0;
+            top: -60px;
+            @media #{$mobile_device} {
+                position: static;
+                margin: 30px 0;
+            }
+            @media #{$tablet_device} {
+                position: static;
+            }
+            .inner_courses{
+                width: 310px;
+                height: 310px;
+                border-radius: 50%;
+                text-align: center;
+                position: relative;
+                @media #{$mobile_device} {
+                    width: 290px;
+                    height: 290px;
+                    margin: auto;
+                }
+                @media #{$tablet_device} {
+                    width: 200px;
+                    height: 200px;
+                }
+                &::before{
+                    position: absolute;
+                    content: "";
+                    width: 100%;
+                    height: 100%;
+                    background: #5DB2FF;
+                    border-radius: 50%;
+                    opacity: .7;
+                    left: 0;
+                    top: 0;
+                }
+            }
+        }
+        .courses-sky{
+            border-radius: 50%;
+            text-align: center;
+            position: absolute;
+            top: 0;
+            left: 27%;
+            top: 50%;
+            @media #{$mobile_device} {
+                position: static;
+            }
+            @media #{$tablet_device} {
+                position: static;
+            }
+            .inner_courses{
+                width: 310px;
+                height: 310px;
+                border-radius: 50%;
+                text-align: center;
+                position: relative;
+                @media #{$mobile_device} {
+                    width: 290px;
+                    height: 290px;
+                    margin: auto;
+                }
+                @media #{$tablet_device} {
+                    width: 200px;
+                    height: 200px;
+                }
+                &::before{
+                    position: absolute;
+                    content: "";
+                    width: 100%;
+                    height: 100%;
+                    background: #04D2C8;
+                    border-radius: 50%;
+                    opacity: .7;
+                    left: 0;
+                    top: 0;
+                }
+            }
+        }
+    }
+}

@@ -2,25 +2,45 @@
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
 
-<ul class="navbar-nav">
-    @if (SignInManager.IsSignedIn(User))
-    {
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name!</a>
-        </li>
-        <li class="nav-item">
-            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
-            </form>
-        </li>
-    }
-    else
-    {
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
-        </li>
-    }
-</ul>
+
+@if (SignInManager.IsSignedIn(User))
+{
+
+    <div class="col-xl-3 col-lg-3 d-none d-lg-block">
+        <div class="log_chat_area d-flex align-items-center">
+            <a href="#test-form" class="login popup-with-form">
+                <i class="flaticon-user"></i>
+                <span>Hello @User.Identity.Name!</span>
+            </a>
+            <div class="live_chat_btn">
+                <a >
+                   
+                    <span>
+                        <form  asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                            <button class="boxed_btn_orange" type="submit">Logout</button>
+                        </form>
+                    </span>
+                   
+                </a>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="col-xl-3 col-lg-3 d-none d-lg-block">
+        <div class="log_chat_area d-flex align-items-center">
+            <a  asp-area="Identity" asp-page="/Account/Login" class="login">
+                <i class="flaticon-user"></i>
+                <span>log in</span>
+            </a>
+            <div class="live_chat_btn">
+                <a class="boxed_btn_orange" asp-area="Identity" asp-page="/Account/Register">
+                   
+                    <span>Register</span>
+                </a>
+            </div>
+        </div>
+    </div>
+}
+

@@ -20,9 +20,55 @@
 
 
   <ItemGroup>
-    <Folder Include="wwwroot\Images\" />
+    <Folder Include="Data\Migrations\" />
     <Folder Include="wwwroot\answer\" />
+    <Folder Include="wwwroot\Images\" />
     <Folder Include="wwwroot\quize\" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <None Include="wwwroot\fonts\fa-brands-400.svg" />
+    <None Include="wwwroot\fonts\fa-brands-400.woff2" />
+    <None Include="wwwroot\fonts\fa-regular-400.svg" />
+    <None Include="wwwroot\fonts\fa-regular-400.woff2" />
+    <None Include="wwwroot\fonts\fa-solid-900.svg" />
+    <None Include="wwwroot\fonts\fa-solid-900.woff2" />
+    <None Include="wwwroot\fonts\Flaticon.svg" />
+    <None Include="wwwroot\fonts\Flaticon.woff2" />
+    <None Include="wwwroot\fonts\fontawesome-webfont.svg" />
+    <None Include="wwwroot\fonts\fontawesome-webfont.woff2" />
+    <None Include="wwwroot\fonts\gijgo-material.svg" />
+    <None Include="wwwroot\fonts\themify.svg" />
+    <None Include="wwwroot\js\vendor\jquery-1.12.4.min.js" />
+    <None Include="wwwroot\js\vendor\modernizr-3.5.0.min.js" />
+    <None Include="wwwroot\scss\style.scss" />
+    <None Include="wwwroot\scss\_about.scss" />
+    <None Include="wwwroot\scss\_blog.scss" />
+    <None Include="wwwroot\scss\_blog_part.scss" />
+    <None Include="wwwroot\scss\_bradcam.scss" />
+    <None Include="wwwroot\scss\_btn.scss" />
+    <None Include="wwwroot\scss\_contact.scss" />
+    <None Include="wwwroot\scss\_coures.scss" />
+    <None Include="wwwroot\scss\_course_details.scss" />
+    <None Include="wwwroot\scss\_elements.scss" />
+    <None Include="wwwroot\scss\_extend.scss" />
+    <None Include="wwwroot\scss\_faq.scss" />
+    <None Include="wwwroot\scss\_footer.scss" />
+    <None Include="wwwroot\scss\_gallery.scss" />
+    <None Include="wwwroot\scss\_header.scss" />
+    <None Include="wwwroot\scss\_latest_blog.scss" />
+    <None Include="wwwroot\scss\_mixins.scss" />
+    <None Include="wwwroot\scss\_nesletter.scss" />
+    <None Include="wwwroot\scss\_popular_courses.scss" />
+    <None Include="wwwroot\scss\_reset.scss" />
+    <None Include="wwwroot\scss\_responsive.scss" />
+    <None Include="wwwroot\scss\_section_title.scss" />
+    <None Include="wwwroot\scss\_slick-nav.scss" />
+    <None Include="wwwroot\scss\_slider.scss" />
+    <None Include="wwwroot\scss\_team.scss" />
+    <None Include="wwwroot\scss\_testmonial.scss" />
+    <None Include="wwwroot\scss\_varriable.scss" />
   </ItemGroup>
 
 </Project>

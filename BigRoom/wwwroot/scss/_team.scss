@@ -1,0 +1,172 @@
+.our_team_member{
+    padding-top: 134px;
+    padding-bottom: 130px;
+    @media #{$mobile_device}{
+        padding-top: 60px;
+        padding-bottom: 60px;
+    }
+    @media #{$tablet_device}{
+        padding-top: 80px;
+        padding-bottom: 80px;
+    }
+    .single_team{
+        margin-bottom: 20px;
+        .thumb{
+            position: relative;
+            z-index: 2;
+            overflow: hidden;
+            img{
+                width: 100%;
+                @include transform(scale(1));
+                @include transition(.5s);
+            }
+            &::before{
+                position: absolute;
+                left: 0;
+                bottom: 0;
+                width: 100%;
+                height: 100%;
+                content: "";
+                background-image: url(../img/team/overlay.png);
+                background-size: cover;
+                background-position: bottom;
+                background-repeat: no-repeat;
+                opacity: 0;
+                @include transition(.5s);
+                @include transform(translateY(100%));
+                z-index: 3;
+            }
+            img{
+                width: 100%;
+            }
+            .social_link{
+                position: absolute;
+                left: 0;
+                right: 0;
+                text-align: center;
+                bottom: 0;
+                padding: 30px 0;
+                @include transform(translateY(-40px));
+                @include transition(.5s) ;
+                opacity: 0;
+                z-index: 11;
+                a{
+                    margin: 0 10px;
+                    font-size: 20px;
+                    color: #ddd;
+                    &:hover{
+                        color: #fff;
+                    }
+                }
+            }
+        }
+        .master_name{
+            position: relative;
+            z-index: 10;
+            h3{
+                font-size: 24px;
+                font-family: $font1;
+                color: #1F1F1F;
+                font-weight: 400;
+                margin-top: 25px;
+                margin-bottom: 0;
+            }
+            p{
+                font-size: 14px;
+                margin-bottom: 0;
+                color: #919191;
+                font-weight: 400;
+            }
+        }
+        &:hover{
+            .social_link{
+                @include transform(translateY(0px));
+                opacity: 1;
+            }
+            .thumb::before{
+                opacity: 1;
+                @include transform(translateY(0%));
+            }
+            img{
+                @include transform(scale(1.1));
+            }
+        }
+    }
+}
+
+.find_bg_1{
+    background-image: url(../img/team/img.png);
+}
+.find_us_area{
+    .single_find{
+       padding-bottom: 10px;
+    }
+    .find_info{
+        background: #BC9321;
+        padding: 70px 0 60px 80px;
+        @media #{$mobile_device}{
+            padding: 20px;
+        }
+        .find_info_title{
+            font-size: 42px;
+            font-weight: 400;
+            position: relative;
+            color: #fff;
+            padding-bottom: 20px;
+            margin-bottom: 55px;
+            @media #{$mobile_device}{
+                font-size: 25px;
+
+            }
+            &::before{
+                position: absolute;
+                content: "";
+                background: #fff;
+                width: 100px;
+                height: 2px;
+                left: 0;
+                bottom: 0;
+            }
+        }
+        background: #BC9321;
+        .single_find{
+            i{
+                font-size: 30px;
+                color: #fff;
+            }
+            .find_text{
+                padding-left: 20px;
+                h3{
+                    font-size: 16px;
+                    color: #000;
+                    font-weight: 400;
+                }
+                p{
+                    color: #fff;
+                    font-size: 18px;
+                    font-weight: 400;
+                    @media #{$mobile_device}{
+                        font-size: 15px;
+                    }
+                }
+            }
+        }
+    }
+    .book_btn{
+        margin-top: 34px;
+        a{
+         background: transparent;
+         font-size: 16px;
+         font-weight: 400;
+         border: 1px solid #fff;
+         color: #fff;
+         padding: 14px 20px;
+         display: inline-block;
+         &:hover{
+             background: #fff;
+             color: #000 !important;
+             border: 1px solid #fff;
+         }
+        }
+    }
+}

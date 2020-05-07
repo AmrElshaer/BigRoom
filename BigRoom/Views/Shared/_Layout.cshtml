@@ -1,86 +1,202 @@
-﻿<!DOCTYPEhtml>
-    
-<html>
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - BigRoom</title>
+﻿@inject UserManager<User> _userManager
+@inject SignInManager<User> SignInManager
+@{
+    var role = "Home";
+    if (SignInManager.IsSignedIn(User))
+    {
+        var user = await _userManager.FindByNameAsync(User.Identity.Name);
+        var  roles= await _userManager.GetRolesAsync(user);
+        role = roles.FirstOrDefault();
+    }
 
-    <environment include="Development">
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-        <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    </environment>
-    <environment exclude="Development">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
-              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"
-              crossorigin="anonymous"
-              integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"/>
-    </environment>
-    <link rel="stylesheet" href="~/css/site.css" />
-</head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">BigRoom</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <partial name="_LoginPartial" />
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Groups" asp-action="Create">Add Group</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Groups" asp-action="Index">AllGroups</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="UserGroups" asp-action="Create">JoinToGroup</a>
-                        </li>
-                    </ul>
+
+}
+<!DOCTYPEhtml>
+
+    <html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>@ViewData["Title"] - BigRoom</title>
+        <!-- CSS here -->
+        <environment include="Development">
+            <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+
+        </environment>
+        <environment exclude="Development">
+            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+                  asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+                  asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"
+                  crossorigin="anonymous"
+                  integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" />
+        </environment>
+
+        <link rel="stylesheet" href="~/css/owl.carousel.min.css">
+        <link rel="stylesheet" href="~/css/magnific-popup.css">
+        <link rel="stylesheet" href="~/css/font-awesome.min.css">
+        <link rel="stylesheet" href="~/css/themify-icons.css">
+        <link rel="stylesheet" href="~/css/nice-select.css">
+        <link rel="stylesheet" href="~/css/flaticon.css">
+        <link rel="stylesheet" href="~/css/gijgo.css">
+        <link rel="stylesheet" href="~/css/animate.css">
+        <link rel="stylesheet" href="~/css/slicknav.css">
+        <link rel="stylesheet" href="~/css/style.css">
+
+
+    </head>
+    <body>
+        <header>
+            <div class="header-area ">
+                <div id="sticky-header" class="main-header-area">
+                    <div class="container-fluid p-0">
+                        <div class="row align-items-center no-gutters">
+                            <div class="col-xl-2 col-lg-2">
+                                <div class="logo-img">
+                                    <a href="/@role">
+                                        <h1 class="boxed_btn_orange">BigRoom</h1>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-xl-7 col-lg-7">
+                                <div class="main-menu  d-none d-lg-block">
+                                    <nav>
+
+
+                                        <ul id="navigation">
+                                            <li>
+                                                <a asp-area="" asp-controller="Groups" asp-action="Create">Add Group</a>
+                                            </li>
+                                            <li>
+                                                <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                                            </li>
+
+                                            <li>
+                                                <a asp-area="" asp-controller="UserGroups" asp-action="Create">JoinToGroup</a>
+                                            </li>
+                                        </ul>
+
+
+                                    </nav>
+                                </div>
+                            </div>
+                            <partial name="_LoginPartial" />
+                            <div class="col-12">
+                                <div class="mobile_menu d-block d-lg-none">
+                                    <div class="slicknav_menu">
+                                        <a href="#" aria-haspopup="true" role="button" tabindex="0" class="slicknav_btn slicknav_collapsed" style="">
+                                        <span class="slicknav_menutxt">MENU</span>
+                                     
+                                         </a> 
+                                       
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <partial name="_CookieConsentPartial" />
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+        </header>
+        @RenderSection("MainStyle", required: false)
+      
+    
 
-    <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2019 - BigRoom - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+
+            <partial name="_CookieConsentPartial" />
+            <main role="main" style="margin-top:20%;margin-bottom:20%" >
+                @RenderBody()
+            </main>
         </div>
-    </footer>
 
-    <environment include="Development">
-        <script src="~/lib/jquery/dist/jquery.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
-    </environment>
-    <environment exclude="Development">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"
-                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
-                asp-fallback-test="window.jQuery"
-                crossorigin="anonymous"
-                integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=">
-        </script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"
-                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"
-                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
-                crossorigin="anonymous"
-                integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o">
-        </script>
-    </environment>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+        <!-- footer -->
+        <footer class="footer footer_bg_1">
+            <div class="footer_top">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xl-4 col-md-6 col-lg-4">
+                            <div class="footer_widget">
+                                <div class="footer_logo">
+                                    <a href="#">
+                                        <img src="img/logo.png" alt="">
+                                    </a>
+                                </div>
+                                <p>
+                                    Firmament morning sixth subdue darkness creeping gathered divide our let god moving.
+                                    Moving in fourth air night bring upon it beast let you dominion likeness open place day
+                                    great.
+                                </p>
+                           
 
-    @RenderSection("Scripts", required: false)
-</body>
+                            </div>
+                        </div>
+                       
+                    </div>
+                </div>
+            </div>
+            <div class="copy-right_text">
+                <div class="container">
+                    <div class="footer_border"></div>
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <p class="copy_right text-center">
+                                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                                Copyright &copy;
+                                <script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- footer -->
+
+
+
+        <script src="~/js/vendor/modernizr-3.5.0.min.js"></script>
+        <environment include="Development">
+            <script src="~/lib/jquery/dist/jquery.js"></script>
+            <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
+        </environment>
+        <environment exclude="Development">
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"
+                    asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                    asp-fallback-test="window.jQuery"
+                    crossorigin="anonymous"
+                    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=">
+            </script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"
+                    asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"
+                    asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+                    crossorigin="anonymous"
+                    integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o">
+            </script>
+        </environment>
+        <script src="~/js/popper.min.js"></script>
+        <script src="~/js/bootstrap.min.js"></script>
+        <script src="~/js/owl.carousel.min.js"></script>
+        <script src="~/js/isotope.pkgd.min.js"></script>
+        <script src="~/js/ajax-form.js"></script>
+        <script src="~/js/waypoints.min.js"></script>
+        <script src="~/js/jquery.counterup.min.js"></script>
+        <script src="~/js/imagesloaded.pkgd.min.js"></script>
+        <script src="~/js/scrollIt.js"></script>
+        <script src="~/js/jquery.scrollUp.min.js"></script>
+        <script src="~/js/wow.min.js"></script>
+        <script src="~/js/nice-select.min.js"></script>
+        <script src="~/js/jquery.slicknav.min.js"></script>
+        <script src="~/js/jquery.magnific-popup.min.js"></script>
+        <script src="~/js/plugins.js"></script>
+        <script src="~/js/gijgo.min.js"></script>
+
+        <!--contact js-->
+        <script src="~/js/contact.js"></script>
+        <script src="~/js/jquery.ajaxchimp.min.js"></script>
+        <script src="~/js/jquery.form.js"></script>
+        <script src="~/js/jquery.validate.min.js"></script>
+        <script src="~/js/mail-script.js"></script>
+
+        <script src="~/js/main.js"></script>
+        @RenderSection("Scripts", required: false)
+    </body>
 </html>

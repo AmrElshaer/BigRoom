@@ -1,38 +1,50 @@
 ﻿@model BigRoom.Models.UserGroups
 
-@{
-    ViewData["Title"] = "Create";
+@section MainStyle{
+
+
+    <!-- bradcam_area_start -->
+    <div class="bradcam_area breadcam_bg overlay2">
+        <h3>Join To Group</h3>
+    </div>
+    <!-- bradcam_area_end -->
+
 }
-
-<h1>Create</h1>
-
-<h4>UserGroups</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group" style="display:none">
-                <label asp-for="UserName" class="control-label"></label>
-                <input asp-for="UserName" value="@User.Identity.Name" class="form-control" />
-                <span asp-validation-for="UserName" class="text-danger"></span>
+<div class="subscribe_newsletter">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-6 col-lg-6">
+                <div class="newsletter_text">
+                    <h3>Subscribe  With Us</h3>
+                    <p>Your domain control panel is designed for ease-of-use and allows for all aspects of your</p>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="CodeJoin" class="control-label"></label>
-                <input asp-for="CodeJoin" class="form-control" />
-                <span asp-validation-for="CodeJoin" class="text-danger"></span>
+            <div class="col-xl-5 offset-xl-1 col-lg-6">
+                <div class="newsletter_form">
+                    <h4>Your CodeJoin  is</h4>
 
+                    <form asp-action="Create" class="newsletter_form">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group" style="display:none">
+                            <label asp-for="UserName" class="control-label"></label>
+                            <input asp-for="UserName" value="@User.Identity.Name" class="form-control" />
+                            <span asp-validation-for="UserName" class="text-danger"></span>
+                        </div>
+
+
+                        <input asp-for="CodeJoin" placeholder="Code To Join" />
+
+                        <button type="submit">Join To Group</button>
+                        <span asp-validation-for="CodeJoin" class="text-danger"></span>
+                    </form>
+                </div>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
