@@ -52,7 +52,7 @@
                         <div class="row align-items-center no-gutters">
                             <div class="col-xl-2 col-lg-2">
                                 <div class="logo-img">
-                                    <a href="/@role">
+                                    <a asp-area="" asp-controller="Home" asp-action="Index">
                                         <h1 class="boxed_btn_orange">BigRoom</h1>
                                     </a>
                                 </div>
@@ -64,12 +64,11 @@
 
                                         <ul id="navigation">
                                             <li>
-                                                <a asp-area="" asp-controller="Groups" asp-action="Create">Add Group</a>
+                                                <a asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                                             </li>
                                             <li>
-                                                <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                                                <a asp-area="" asp-controller="Groups" asp-action="Create">Add Group</a>
                                             </li>
-
                                             <li>
                                                 <a asp-area="" asp-controller="UserGroups" asp-action="Create">JoinToGroup</a>
                                             </li>

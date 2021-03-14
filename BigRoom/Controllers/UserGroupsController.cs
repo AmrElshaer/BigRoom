@@ -1,5 +1,6 @@
 ﻿using BigRoom.Models;
 using Classroom.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace BigRoom.Controllers
 {
+    [Authorize]
     public class UserGroupsController : Controller
     {
         private readonly ApplicationDbContext _context;
