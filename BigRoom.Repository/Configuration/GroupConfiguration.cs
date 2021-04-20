@@ -11,6 +11,8 @@ namespace BigRoom.Repository.Configuration
     {
         public void Configure(EntityTypeBuilder<Group> builder)
         {
+            builder.HasMany(a=>a.Quizes).WithOne(a=>a.Group).HasForeignKey(a=>a.GroupId);
+            builder.HasMany(a => a.Groups).WithOne(a => a.Group).HasForeignKey(a => a.GroupId);
             builder.HasOne(a => a.Admin).WithMany(a => a.GroupsThatAdmin).HasForeignKey(a=>a.AdminId);
             
         }

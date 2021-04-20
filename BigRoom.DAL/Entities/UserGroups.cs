@@ -9,7 +9,7 @@ namespace BigRoom.Model.Entities
     {
         public UserProfile UserProfile { get; set; }
         public int? UserProfileId { get; set; }
-        public int? GroupId { get; set; }
+        public int GroupId { get; set; }
         public Group Group { get; set; }
     }
 }

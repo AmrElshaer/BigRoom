@@ -35,7 +35,12 @@ namespace BigRoom.Controllers
             var quizeModel = await quzieService.GetQuizeDetailsAsync(id);
             return View(quizeModel);
         }
-
+        // GET: Quizes/Create
+        public IActionResult Create(string groupid)
+        {
+            ViewData["groupid"] = groupid;
+            return View();
+        }
         // POST: Quizes/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.

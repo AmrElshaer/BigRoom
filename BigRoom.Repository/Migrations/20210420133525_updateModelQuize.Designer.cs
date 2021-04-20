@@ -4,14 +4,16 @@ using BigRoom.Repository.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BigRoom.Repository.Migrations
 {
     [DbContext(typeof(BigRoomDbContext))]
-    partial class BigRoomDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210420133525_updateModelQuize")]
+    partial class updateModelQuize
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -116,7 +118,7 @@ namespace BigRoom.Repository.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("GroupId");
+                    b.Property<int?>("GroupId");
 
                     b.Property<int?>("UserProfileId");
 
@@ -222,14 +224,14 @@ namespace BigRoom.Repository.Migrations
                         new
                         {
                             Id = "1",
-                            ConcurrencyStamp = "2a9f3f3c-7049-48f0-ab2d-1a4be9fe00d3",
+                            ConcurrencyStamp = "5a8336d7-3d6c-4815-9de0-16272a684aa3",
                             Name = "Teacher",
                             NormalizedName = "TEACHER"
                         },
                         new
                         {
                             Id = "2",
-                            ConcurrencyStamp = "ae97c880-0367-4c2f-b232-4920080b47cb",
+                            ConcurrencyStamp = "81be7249-d490-4fb7-8198-16cb2404e2e6",
                             Name = "Student",
                             NormalizedName = "STUDENT"
                         });
@@ -357,8 +359,7 @@ namespace BigRoom.Repository.Migrations
                 {
                     b.HasOne("BigRoom.Model.Entities.Group", "Group")
                         .WithMany("Groups")
-                        .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("GroupId");
 
                     b.HasOne("BigRoom.Model.Entities.UserProfile", "UserProfile")
                         .WithMany("Groups")

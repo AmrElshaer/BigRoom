@@ -15,6 +15,10 @@
     <Compile Remove="Migrations\20210415133519_InitContext.Designer.cs" />
     <Compile Remove="Migrations\20210415225238_SeedRoles.cs" />
     <Compile Remove="Migrations\20210415225238_SeedRoles.Designer.cs" />
+    <Compile Remove="Migrations\20210420123859_updateModel.cs" />
+    <Compile Remove="Migrations\20210420123859_updateModel.Designer.cs" />
+    <Compile Remove="Migrations\20210420133047_updateModelQuize.cs" />
+    <Compile Remove="Migrations\20210420133047_updateModelQuize.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

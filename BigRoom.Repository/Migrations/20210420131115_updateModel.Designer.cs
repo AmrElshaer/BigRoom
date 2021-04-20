@@ -4,14 +4,16 @@ using BigRoom.Repository.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BigRoom.Repository.Migrations
 {
     [DbContext(typeof(BigRoomDbContext))]
-    partial class BigRoomDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210420131115_updateModel")]
+    partial class updateModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -27,7 +29,7 @@ namespace BigRoom.Repository.Migrations
 
                     b.Property<int>("ExamDegree");
 
-                    b.Property<int>("QuizeId");
+                    b.Property<int?>("QuizeId");
 
                     b.Property<int>("TotalDegree");
 
@@ -116,7 +118,7 @@ namespace BigRoom.Repository.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("GroupId");
+                    b.Property<int?>("GroupId");
 
                     b.Property<int?>("UserProfileId");
 
@@ -222,14 +224,14 @@ namespace BigRoom.Repository.Migrations
                         new
                         {
                             Id = "1",
-                            ConcurrencyStamp = "2a9f3f3c-7049-48f0-ab2d-1a4be9fe00d3",
+                            ConcurrencyStamp = "8b5cf79a-bf37-4ad9-b0ed-e5c01848f51a",
                             Name = "Teacher",
                             NormalizedName = "TEACHER"
                         },
                         new
                         {
                             Id = "2",
-                            ConcurrencyStamp = "ae97c880-0367-4c2f-b232-4920080b47cb",
+                            ConcurrencyStamp = "5abd6b95-1c90-44c3-9a2f-6ab09c50e135",
                             Name = "Student",
                             NormalizedName = "STUDENT"
                         });
@@ -325,8 +327,7 @@ namespace BigRoom.Repository.Migrations
                 {
                     b.HasOne("BigRoom.Model.Entities.Quize", "Quize")
                         .WithMany("Degrees")
-                        .HasForeignKey("QuizeId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("QuizeId");
 
                     b.HasOne("BigRoom.Model.Entities.UserProfile", "UserProfile")
                         .WithMany("Degrees")
@@ -357,8 +358,7 @@ namespace BigRoom.Repository.Migrations
                 {
                     b.HasOne("BigRoom.Model.Entities.Group", "Group")
                         .WithMany("Groups")
-                        .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("GroupId");
 
                     b.HasOne("BigRoom.Model.Entities.UserProfile", "UserProfile")
                         .WithMany("Groups")

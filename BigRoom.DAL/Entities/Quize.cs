@@ -8,7 +8,6 @@ namespace BigRoom.Model.Entities
         public Quize()
         {
             Degrees = new HashSet<Degree>();
-            UsersDoExam = new HashSet<UserProfile>();
         }
 
         public ICollection<Degree> Degrees { get; set; }
@@ -23,6 +22,5 @@ namespace BigRoom.Model.Entities
         public DateTime TimeStart { get; set; }
         public int? UserProfileId { get; set; }
         public UserProfile UserProfile { get; set; }
-        public ICollection<UserProfile> UsersDoExam { get; set; }
     }
 }
