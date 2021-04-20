@@ -1,5 +1,5 @@
 ﻿
-@model BigRoom.ViewModel.quizeview
+@model QuizeDto
 
 @section MainStyle{
 
@@ -30,54 +30,62 @@
                         <img src="img/form-logo.png" alt="">
                     </a>
                 </div>
-                <h3 style="text-align:center">Create Group</h3>
+                <h3 style="text-align:center">Create Quize</h3>
 
                 <div class="row">
-                    <div asp-validation-summary="All" class="text-danger"></div>
-
                     <div class="col-xl-12 col-md-12 mb-5">
                         <div class="input-group">
 
                             <div class="custom-file">
-                                <input asp-for="file" type="file" class="custom-file-input" id="inputGroupFile01"
+                                <input asp-for="FileQuestion" type="file" class="custom-file-input" id="inputGroupFile01"
                                        aria-describedby="inputGroupFileAddon01">
                                 <label class="custom-file-label" for="inputGroupFile01">Question file</label>
                             </div>
                         </div>
                     </div>
-                    <span asp-validation-for="file" class="text-danger"></span>
+                    <span asp-validation-for="FileQuestion" ></span>
                     <div class="col-xl-12 col-md-12 mb-5">
                         <div class="input-group">
 
                             <div class="custom-file">
-                                <input asp-for="fileanswer" type="file" class="custom-file-input" id="inputGroupFile02"
+                                <input asp-for="FileAnswerForm" type="file" class="custom-file-input" id="inputGroupFile02"
                                        aria-describedby="inputGroupFileAddon01">
                                 <label class="custom-file-label" for="inputGroupFile02">Answer file</label>
                             </div>
                         </div>
                     </div>
-                    <span asp-validation-for="fileanswer" class="text-danger"></span>
-
+                    <span asp-validation-for="FileAnswerForm" ></span>
                     <div class="col-xl-12 col-md-12">
                         <label style="color:white;font-size:20px" asp-for="TimeStart"></label>
-                        <input asp-for="TimeStart" onchange="checkdate()" id="TimeStart" />
-                        <span asp-validation-for="TimeStart" class="text-danger"></span>
+                        <input asp-for="TimeStart" id="TimeStart" />
+                        <span asp-validation-for="TimeStart" ></span>
                     </div>
                     <div class="col-xl-12 col-md-12">
                         <label style="color:white;font-size:20px" asp-for="TimeEnd"></label>
-                        <input asp-for="TimeEnd" id="TimeEnd" onchange="checkdate()" />
-                        <span asp-validation-for="TimeEnd" class="text-danger"></span>
+                        <input asp-for="TimeEnd" id="TimeEnd" />
+                        <span asp-validation-for="TimeEnd" ></span>
                     </div>
-
+                    <div class="col-xl-12 col-md-12">
+                        <label style="color:white;font-size:20px" >Duration</label>
+                        <div class="row">
+                            <div class="col-6">
+                                <label style="color:white;font-size:20px">Hour</label>
+                                <input asp-for="Hour" min="0" placeholder="00"/>
+                            </div>
+                            <div class="col-6">
+                                <label style="color:white;font-size:20px">Minute</label>
+                                <input asp-for="Minute" min="0" placeholder="00"/>
+                            </div>
+                        </div>
+                        <span asp-validation-for="Hour" ></span>
+                    </div>
                     <div class="col-xl-12 col-md-12">
                         <label style="color:white;font-size:20px" asp-for="Description"></label>
-                        <input asp-for="Description" id="TimeEnd" onchange="checkdate()" />
-                        <span asp-validation-for="Description" class="text-danger"></span>
+                        <input asp-for="Description" />
+                        <span asp-validation-for="Description" ></span>
                     </div>
                     <div class="form-group" style="display:none">
-                        <label style="color:white;font-size:20px" asp-for="Groupid" class="control-label"></label>
-                        <input asp-for="Groupid" value="@ViewData["groupid"]" class="form-control" />
-                        <span asp-validation-for="Groupid" class="text-danger"></span>
+                        <input asp-for="GroupId" value="@ViewData["groupid"]" class="form-control" />
                     </div>
                     <div class="col-xl-12">
 
@@ -87,7 +95,7 @@
 
 
             </div>
-        </div><button title="Close (Esc)" type="button" class="mfp-close">×</button>
+        </div>
     </form>
 </div>
 
@@ -104,24 +112,6 @@
             //replace the "Choose a file" label
             $(this).next('.custom-file-label').html(fileName);
         })
-        function checkdate() {
-            var valueofstart = document.getElementById("TimeStart").value;
-            var valueofend = document.getElementById("TimeEnd").value;
-
-            if (valueofstart >= valueofend) {
-
-                document.getElementById("customvalidation").innerText = "Start Time Must Lower Than End Time";
-
-                document.getElementById("submit").setAttribute("disabled", true);
-
-            }
-            else {
-                document.getElementById("customvalidation").innerText = "";
-
-                document.getElementById("submit").removeAttribute("disabled");
-            }
-        }
-
     </script>
 }
 

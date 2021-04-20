@@ -1,31 +1,34 @@
-﻿using BigRoom.Models;
-using Classroom.Data;
+﻿using BigRoom.Service.IService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 
 namespace BigRoom.Controllers
 {
-    public class DegreeController : Controller
+    [Authorize]
+    public class DegreeController : BaseController
     {
-        public readonly ApplicationDbContext context;
-        public DegreeController(ApplicationDbContext Context)
+        private readonly IDegreeService degreeService;
+        private readonly IUserProfileService userProfileService;
+
+        public DegreeController(IUserManager userManager, IDegreeService degreeService, IUserProfileService userProfileService) : base(userManager)
         {
-            context = Context;
+            this.degreeService = degreeService;
+            this.userProfileService = userProfileService;
         }
 
-        public IActionResult Index(int? Id)
+        public async Task<IActionResult> CalculateDegree(IList<string> answers, int quizeId)
         {
-            IEnumerable<Degree> degrees;
-            if (Id == null)
-            {
-                degrees = context.Degree.ToArray();
-            }
-            else
-            {
-                degrees = context.Degree.Where(a => a.quize == Id.ToString());
-            }
-            return View(degrees);
+            var userId = (await userProfileService.GetUserProfileAsync(await GetCurrentUserId())).Id;
+            await degreeService.CalCulateDegreeAsync(answers, quizeId, userId);
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            var userId = (await userProfileService.GetUserProfileAsync(await GetCurrentUserId())).Id;
+            return View(await degreeService.GetDegreesAsync(userId));
         }
     }
 }

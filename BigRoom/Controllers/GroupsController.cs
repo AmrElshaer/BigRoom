@@ -1,202 +1,100 @@
-﻿using BigRoom.Models;
-using Classroom.Data;
+﻿using BigRoom.Service.DTO;
+using BigRoom.Service.IService;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace BigRoom.Controllers
 {
     [Authorize]
-    public class GroupsController : Controller
+    public class GroupsController : BaseController
     {
-        private readonly UserManager<User> _userManager;
-        private readonly ApplicationDbContext _context;
+        private readonly IGroupService groupService;
 
-        public GroupsController(ApplicationDbContext context, UserManager<User> userManager)
+        public GroupsController(IUserManager userManager, IGroupService groupService) : base(userManager)
         {
-            _userManager = userManager;
-            _context = context;
-        }
-        public async Task<IActionResult> GoToGroup(string Codejoin)
-        {
-            var Group = await this._context.Group.FirstOrDefaultAsync(a => a.CodeJion == Codejoin);
-            if (Group != null)
-            {
-                return RedirectToAction(nameof(Details), new { id = Group.Id });
-            }
-            return RedirectToAction(nameof(Create), "UserGroups");
-        }
-        // GET: Groups
-        public async Task<IActionResult> Index()
-        {
-            return View(await _context.Group.ToListAsync());
+            this.groupService = groupService;
         }
 
-        // GET: Groups/Details/5
+        public async Task<IActionResult> GoToGroup(string codeJoin)
+        {
+            var group = await groupService.GetGroupByCodeAsync(codeJoin);
+            return RedirectToAction(nameof(Details), new { id = group.Id });
+        }
+
         //Group You Join
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var @group = await _context.Group
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (@group == null)
-            {
-                return NotFound();
-            }
-
-            return View(@group);
+            if (id == null) return NotFound();
+            var group = await groupService.GetByIdAsync(id.Value);
+            if (group == null) return NotFound();
+            return View(group);
         }
+
         // GET: Groups/GroupYouAdmin/5
         //Group You Join
         public async Task<IActionResult> GroupYouAdmin(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var @group = await _context.Group
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (@group == null)
-            {
-                return NotFound();
-            }
-
-            return View(@group);
+            if (id == null) return NotFound();
+            var group = await groupService.GetByIdAsync(id.Value);
+            if (group == null) return NotFound();
+            return View(group);
         }
+
         // GET: Groups/Create
         public IActionResult Create()
         {
-
             ViewData["Guid"] = Guid.NewGuid().ToString();
             return View();
         }
-        [AcceptVerbs("Get", "Post")]
-        public async Task<JsonResult> GroupNameUNiqe(string Name)
-        {
-            var GroupName = await _context.Group.FirstOrDefaultAsync(a => a.Name == Name);
-            if (GroupName is null)
-            {
-                return Json(data: true);
-            }
-            return Json(data: false);
-        }
+
         // POST: Groups/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,CodeJion,Name")] Group @group)
+        public async Task<IActionResult> Create(GroupDto group)
         {
             if (ModelState.IsValid)
             {
-                var user = await _userManager.FindByNameAsync(this.User.Identity.Name);
-                @group.AdminId = user.Id;
-                _context.Add(@group);
-                await _context.SaveChangesAsync();
-
-                var role = await _userManager.GetRolesAsync(user);
-
-                return RedirectToAction(nameof(Index), controllerName: role.FirstOrDefault()); ;
+                await groupService.CreateGroup(group, (await GetCurrentUserId()));
+                return RedirectToAction("Index", controllerName: (await GetRoleAsync())); ;
             }
-            return View(@group);
+            ViewData["Guid"] = Guid.NewGuid().ToString();
+            return View(group);
         }
 
         // GET: Groups/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var @group = await _context.Group.FindAsync(id);
-            if (@group == null)
-            {
-                return NotFound();
-            }
-            return View(@group);
+            if (id == null) return NotFound();
+            var group = await groupService.GetByIdAsync(id.Value);
+            if (group == null) return NotFound();
+            return View(group);
         }
 
         // POST: Groups/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,CodeJion,Name")] Group @group)
+        public async Task<IActionResult> Edit(GroupDto group)
         {
-            var user = await _userManager.FindByNameAsync(this.User.Identity.Name);
-            if (id != @group.Id)
-            {
-                return NotFound();
-            }
-
             if (ModelState.IsValid)
             {
-                try
-                {
-                    @group.AdminId = user.Id;
-                    _context.Update(@group);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!GroupExists(@group.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                var role = await _userManager.GetRolesAsync(user);
-
-                return RedirectToAction(nameof(Index), controllerName: role.FirstOrDefault()); ;
+                await groupService.UpdateGroup(group);
+                return RedirectToAction("Index", controllerName: (await GetRoleAsync()));
             }
-            return View(@group);
+            return View(group);
         }
 
         // GET: Groups/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var @group = await _context.Group
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (@group == null)
-            {
-                return NotFound();
-            }
-
-            return View(@group);
-        }
-
-        // POST: Groups/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var @group = await _context.Group.FindAsync(id);
-            _context.Group.Remove(@group);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool GroupExists(int id)
-        {
-            return _context.Group.Any(e => e.Id == id);
+            if (id == null) return NotFound();
+            await groupService.DeleteGroup(id.Value);
+            return RedirectToAction("Index", controllerName: (await GetRoleAsync()));
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿@model BigRoom.Models.Group
+﻿@model GroupDto
 
 @section MainStyle{
 
@@ -33,8 +33,9 @@
             <a class="boxed_btn_orange" asp-action="Create" asp-controller="Quizes" asp-route-groupid="@Model.Id">Create Quize</a>
         </dt>
         <dd class="col-sm-6" style="margin-top: 6%;">
-            <a class="boxed_btn_orange" asp-action="Index" asp-controller="Quizes" asp-route-Groupid="@Model.Id" asp-route-role="Teacher">All Quizes</a>
+            <a class="boxed_btn_orange" asp-action="Index" asp-controller="Quizes" asp-route-Groupid="@Model.Id">All Quizes</a>
             <a class="boxed_btn_orange" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+            <a class="btn btn-danger" asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
         </dd>
     </dl>
 </div>

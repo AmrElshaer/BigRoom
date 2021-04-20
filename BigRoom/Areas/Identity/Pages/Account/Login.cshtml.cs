@@ -1,14 +1,11 @@
-﻿using BigRoom.Models;
-using Classroom.Data;
+﻿using BigRoom.Service.IService;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace BigRoom.Areas.Identity.Pages.Account
@@ -16,19 +13,11 @@ namespace BigRoom.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class LoginModel : PageModel
     {
-        private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly SignInManager<User> _signInManager;
-        private readonly UserManager<User> _userManager;
-        private readonly ILogger<LoginModel> _logger;
-        private readonly ApplicationDbContext _dbContext;
+        private readonly IUserManager _userManager;
 
-        public LoginModel(ApplicationDbContext dbContext, SignInManager<User> signInManager, ILogger<LoginModel> logger, UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
+        public LoginModel(IUserManager userManager)
         {
-            _dbContext = dbContext;
-            _roleManager = roleManager;
-            _signInManager = signInManager;
-            _userManager = userManager;
-            _logger = logger;
+            this._userManager = userManager;
         }
 
         [BindProperty]
@@ -67,7 +56,7 @@ namespace BigRoom.Areas.Identity.Pages.Account
             // Clear the existing external cookie to ensure a clean login process
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
-            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            ExternalLogins = await _userManager.GetExternalAuthenticationSchemesAsync();
 
             ReturnUrl = returnUrl;
         }
@@ -78,45 +67,22 @@ namespace BigRoom.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
-                // This doesn't count login failures towards account lockout
-                // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: true);
+                var signUser = await _userManager.SignInAsync(Input.Email, Input.Password, Input.RememberMe);
 
-                if (result.Succeeded)
+                if (signUser.result.Succeeded)
                 {
-                    _logger.LogInformation("User logged in.");
-                    var user = await _userManager.FindByEmailAsync(Input.Email);
-                    var role = await _userManager.GetRolesAsync(user);
-                    switch (role.FirstOrDefault())
+                    switch (signUser.role)
                     {
                         case "Student":
                             return RedirectToAction(controllerName: "Student", actionName: "Index");
+
                         case "Teacher":
                             return RedirectToAction(controllerName: "Teacher", actionName: "Index");
                     }
-
                     return LocalRedirect(returnUrl);
                 }
-                if (result.RequiresTwoFactor)
-                {
-                    return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
-                }
-                if (result.IsLockedOut)
-                {
-                    _logger.LogWarning("User account locked out.");
-                    return RedirectToPage("./Lockout");
-                }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                    return Page();
-                }
+                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
             }
-            bool IsInRole(string userRole)
-            {
-                return this.User.IsInRole(userRole);
-            }
-            // If we got this far, something failed, redisplay form
             return Page();
         }
     }

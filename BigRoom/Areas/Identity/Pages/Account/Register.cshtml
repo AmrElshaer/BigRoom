@@ -49,9 +49,19 @@
                         </select>
                     </div>
                     <span asp-validation-for="Input.RoleId" class="text-danger"></span>
+                    <div class="col-xl-12 col-md-12 mb-3">
+                        <div class="custom-file">
+                            <input asp-for="Input.Image" id="image" style="display:none"/>
+                            <input id="customFile" type="file" accept="image/*" onchange="handleInputChange(event)"  class="form-control custom-file-input" />
+                            <label class="custom-file-label">Choose Image..</label>
+                        </div>
+                    </div>
+                    <div style="display:none" id="ImageContainer">
+                        <div class="col-xl-12 col-md-12 mb-3">
+                            <img style="max-width: 250px;"  class="img img-responsive" id="imageViewer" />
+                        </div>
+                    </div>
 
-
-                    
                     <div class="col-xl-12">
                         <button type="submit" class="boxed_btn_orange">Sign Up</button>
                     </div>
@@ -68,4 +78,19 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/UploadImage.js"></script>
+    <script>
+        function handleInputChange(imageInput) {
+            const file = imageInput.dataTransfer ? imageInput.dataTransfer.files[0] : imageInput.target.files[0];
+            const reader = new FileReader();
+            reader.onload = this._handleReaderLoaded.bind(this);
+            reader.readAsDataURL(file);
+        }
+        function _handleReaderLoaded(e) {
+            const reader = e.target;
+            $("#ImageContainer").css("display", "block");
+            $("#image").val(reader.result);
+            $("#imageViewer").attr("src", reader.result);
+        }
+    </script>
 }

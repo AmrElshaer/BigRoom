@@ -1,4 +1,4 @@
-﻿@model BigRoom.Models.UserGroups
+﻿@model UserGroupsDto
 
 @section MainStyle{
 
@@ -26,14 +26,10 @@
                     <form asp-action="Create" class="newsletter_form">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <div class="form-group" style="display:none">
-                            <label asp-for="UserName" class="control-label"></label>
-                            <input asp-for="UserName" value="@User.Identity.Name" class="form-control" />
-                            <span asp-validation-for="UserName" class="text-danger"></span>
+                            <input asp-for="UserProfileId" value="@ViewBag.userProfileId" />
                         </div>
-
-
+                        
                         <input asp-for="CodeJoin" placeholder="Code To Join" />
-
                         <button type="submit">Join To Group</button>
                         <span asp-validation-for="CodeJoin" class="text-danger"></span>
                     </form>

@@ -1,5 +1,5 @@
 ﻿
-@model BigRoom.Models.Quize
+@model QuizeDto
 
 @section MainStyle{
 
@@ -30,52 +30,69 @@
                         <img src="img/form-logo.png" alt="">
                     </a>
                 </div>
-                <h3 style="text-align:center">Create Group</h3>
+                <h3 style="text-align:center">Edit Quize</h3>
 
                 <div class="row">
-                    <div asp-validation-summary="All" class="text-danger"></div>
-
-                    <div class="col-xl-12 col-md-12 mb-5" style="display:none">
+                    <div class="col-xl-12 col-md-12 mb-5">
                         <div class="input-group">
-
+                            <input asp-for="File" style="display:none" />
                             <div class="custom-file">
-                                <input asp-for="file" type="text">
-                               
+                                <input asp-for="FileQuestion" type="file" class="custom-file-input" id="inputGroupFile01"
+                                      >
+                                <label class="custom-file-label" for="inputGroupFile01">@Model.File</label>
                             </div>
                         </div>
                     </div>
-                    <span asp-validation-for="file" class="text-danger"></span>
-                    <div class="col-xl-12 col-md-12 mb-5" style="display:none">
+                    <span asp-validation-for="FileQuestion" class="text-danger"></span>
+                    <div class="col-xl-12 col-md-12 mb-5">
                         <div class="input-group">
-
+                            <input asp-for="Fileanswer" style="display:none" />
                             <div class="custom-file">
-                                <input asp-for="fileanswer" type="text" >
-                                
+                                <input asp-for="FileAnswerForm" type="file" class="custom-file-input" id="inputGroupFile02"
+                                       >
+                                <label class="custom-file-label" for="inputGroupFile02">@Model.Fileanswer</label>
                             </div>
                         </div>
                     </div>
-                    <span asp-validation-for="fileanswer" class="text-danger"></span>
+                    <span asp-validation-for="FileAnswerForm" class="text-danger"></span>
 
                     <div class="col-xl-12 col-md-12">
                         <label style="color:white;font-size:20px" asp-for="TimeStart"></label>
-                        <input asp-for="TimeStart" onchange="checkdate()" id="TimeStart" />
+                        <input asp-for="TimeStart" id="TimeStart" />
                         <span asp-validation-for="TimeStart" class="text-danger"></span>
                     </div>
                     <div class="col-xl-12 col-md-12">
                         <label style="color:white;font-size:20px" asp-for="TimeEnd"></label>
-                        <input asp-for="TimeEnd" id="TimeEnd" onchange="checkdate()" />
+                        <input asp-for="TimeEnd" id="TimeEnd" />
                         <span asp-validation-for="TimeEnd" class="text-danger"></span>
                     </div>
-
+                    <div class="col-xl-12 col-md-12">
+                        <label style="color:white;font-size:20px">Duration</label>
+                        <div class="row">
+                            <div class="col-6">
+                                <label style="color:white;font-size:20px">Hour</label>
+                                <input asp-for="Hour" min="0" placeholder="00" />
+                            </div>
+                            <div class="col-6">
+                                <label style="color:white;font-size:20px">Minute</label>
+                                <input asp-for="Minute" min="0" placeholder="00" />
+                            </div>
+                        </div>
+                        <span asp-validation-for="Hour"></span>
+                    </div>
                     <div class="col-xl-12 col-md-12">
                         <label style="color:white;font-size:20px" asp-for="Description"></label>
-                        <input asp-for="Description" id="TimeEnd" onchange="checkdate()" />
+                        <input asp-for="Description" id="TimeEnd" />
                         <span asp-validation-for="Description" class="text-danger"></span>
                     </div>
                     <div class="form-group" style="display:none">
-                        <label style="color:white;font-size:20px" asp-for="GroupId" class="control-label"></label>
                         <input asp-for="GroupId" class="form-control" />
-                        <span asp-validation-for="GroupId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group" style="display:none">
+                        <input asp-for="Id" class="form-control" />
+                    </div>
+                    <div class="form-group" style="display:none">
+                        <input asp-for="Id" class="form-control" />
                     </div>
                     <div class="col-xl-12">
 
@@ -94,32 +111,22 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script>
-        $('#inputGroupFile01,#inputGroupFile02').on('change', function () {
-            //get the file name
-            console.log(this);
-            var fileName = $(this).val();
-            //replace the "Choose a file" label
-            $(this).next('.custom-file-label').html(fileName);
-        })
-        function checkdate() {
-            var valueofstart = document.getElementById("TimeStart").value;
-            var valueofend = document.getElementById("TimeEnd").value;
+<script>
+    $('#inputGroupFile01,#inputGroupFile02').on('change', function () {
+        //get the file name
+        console.log(this);
+        var fileName = $(this).val();
+        //replace the "Choose a file" label
+        $(this).next('.custom-file-label').html(fileName);
+    })
+    $(document).ready(() => {
 
-            if (valueofstart >= valueofend) {
+        $("#inputGroupFile01").rules("remove", "required");
+        $("#inputGroupFile02").rules("remove", "required");
 
-                document.getElementById("customvalidation").innerText = "Start Time Must Lower Than End Time";
+    });
 
-                document.getElementById("submit").setAttribute("disabled", true);
 
-            }
-            else {
-                document.getElementById("customvalidation").innerText = "";
-
-                document.getElementById("submit").removeAttribute("disabled");
-            }
-        }
-
-    </script>
+</script>
 }
 

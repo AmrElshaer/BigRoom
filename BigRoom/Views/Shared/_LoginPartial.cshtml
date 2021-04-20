@@ -1,26 +1,24 @@
-@using Microsoft.AspNetCore.Identity
-@inject SignInManager<User> SignInManager
-@inject UserManager<User> UserManager
+@inject IUserManager userManager
 
-
-@if (SignInManager.IsSignedIn(User))
+@if (userManager.UserIsSignIn(User))
 {
-
+     
+        var user =await userManager.GetApplicationUserAsync(User);
+    
     <div class="col-xl-3 col-lg-3 d-none d-lg-block">
         <div class="log_chat_area d-flex align-items-center">
-            <a href="#test-form" class="login popup-with-form">
-                <i class="flaticon-user"></i>
-                <span>Hello @User.Identity.Name!</span>
+            <a href="#test-form" style="display:inline-flex" class="login popup-with-form">
+                <img style="max-width: 50px;margin-right: 5px" class="rounded float-left" src="@user.Image"/>
+                <span>@(User.Identity.Name.GetNameFromEmail())</span>
             </a>
             <div class="live_chat_btn">
-                <a >
-                   
+                <a>
+
                     <span>
-                        <form  asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                        <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
                             <button class="boxed_btn_orange" type="submit">Logout</button>
                         </form>
                     </span>
-                   
                 </a>
             </div>
         </div>
@@ -30,17 +28,16 @@ else
 {
     <div class="col-xl-3 col-lg-3 d-none d-lg-block">
         <div class="log_chat_area d-flex align-items-center">
-            <a  asp-area="Identity" asp-page="/Account/Login" class="login">
+            <a asp-area="Identity" asp-page="/Account/Login" class="login">
                 <i class="flaticon-user"></i>
                 <span>log in</span>
             </a>
             <div class="live_chat_btn">
                 <a class="boxed_btn_orange" asp-area="Identity" asp-page="/Account/Register">
-                   
+
                     <span>Register</span>
                 </a>
             </div>
         </div>
     </div>
 }
-

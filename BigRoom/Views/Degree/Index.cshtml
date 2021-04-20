@@ -1,8 +1,9 @@
-﻿@model IEnumerable<BigRoom.Models.Degree>
-
+﻿@model IEnumerable<DegreeDto>
+@{
+    var groupByGroup = Model.GroupBy(a => a.Quize.Group.Name);
+}
 
 @section MainStyle{
-
 
     <!-- bradcam_area_start -->
     <div class="bradcam_area breadcam_bg overlay2">
@@ -11,27 +12,29 @@
     <!-- bradcam_area_end -->
 
 }
-<table class="table table-hover">
-    <thead class="thead-dark">
-        <tr>
-            <th>@Html.DisplayNameFor(model => model.user)</th>
-            <th>
-                @Html.DisplayNameFor(model => model.degree)
-            </th>
-
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+@foreach (var degree in groupByGroup)
+{
+    <table class="table table-hover">
+        <caption style="text-align:center">@degree.Key</caption>
+        <thead class="thead-dark">
             <tr>
-                <td>@item.user</td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.degree)
-                </td>
-
-
+                <th>Quize</th>
+                <th>
+                    Degree
+                </th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in degree)
+            {
+                <tr>
+                    <td>@item.Quize.Description</td>
+                    @{ var color = item.ExamDegree >= item.TotalDegree / 2 ? "green" : "red";}
+                    <td style="background-color:@color;font-size:20px;color:white">
+                        @($"{item.ExamDegree}/{item.TotalDegree}")
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

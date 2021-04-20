@@ -1,5 +1,10 @@
-﻿@model IEnumerable<BigRoom.ViewModel.questiongets>
+﻿@using BigRoom.Service.Common.Models;
+@model QuizeModel
 
+@{
+    var hour = Model.QuizeDto.Hour?.ToString() ?? "00";
+    var minute = Model.QuizeDto.Minute?.ToString() ?? "00";
+}
 
 
 
@@ -15,37 +20,32 @@
 }
 <div class="row">
     <div class="col-md-4">
-        <button class="btn btn-primary mb-3" value="@ViewData["Timerspan"]" id="TimeSpan">@ViewData["Timerspan"]</button>
-        <div id="Timerspancontainer" class="mb-3"><span id="hour" class="btn btn-danger">00</span>:<span id="minutes" class="btn btn-danger">00</span>:<span id="second" class="btn btn-danger">00</span></div>
-        <input style="display:none" type="text" value="@ViewData["filequizename"]" id="filequizename" />
-        <input style="display:none" type="datetime" value="@ViewData["TimeEnd"]" id="TimeEnd" />
-        <input style="display:none" type="text" value="@User.Identity.Name" id="username" />
-        <form method="post" id="questionform">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-            @for (int i = 0; i < Model.Count(); i++)
+        <button class="btn btn-primary mb-3">@($"{hour}:{minute}")</button>
+        <div id="Timerspancontainer" class="mb-3 btn btn-success"></div>
+        <input style="display:none" type="text" value="@Model.QuizeDto.Fileanswer" id="filequizename" />
+        <input style="display:none" type="datetime" value="@Model.QuizeDto.TimeEnd" id="TimeEnd" />
+        <form method="post" action="/Degree/CalculateDegree" id="questionform">
+            <input name="quizeId" value="@Model.QuizeDto.Id" style="display:none"/>
+            @for (int i = 0; i < Model.QuestionModels.Count(); i++)
             {
                 <div class="@i mb-5">
                     <div class="form-group mb-3">
 
-                        <input asp-for="ElementAt(i).question" class="form-control" />
-                        <span asp-validation-for="ElementAt(i).question" class="text-danger"></span>
+                        <input asp-for="QuestionModels.ElementAt(i).Question" class="form-control" />
+
                     </div>
-
-                    @if (Model.ElementAt(i).choice.Count() == 2)
-                    {
-                        <div class="form-check"><input class="form-check-input" type="radio" name="@i" value="@Model.ElementAt(i).choice.ElementAt(0)" /><label class="form-check-label">@Model.ElementAt(i).choice.ElementAt(0)</label></div>
-                        <div class="form-check"><input class="form-check-input" type="radio" name="@i" value="@Model.ElementAt(i).choice.ElementAt(1)" /><label class="form-check-label">@Model.ElementAt(i).choice.ElementAt(1)</label></div>
-
+                    @{
+                        var choices = Model.QuestionModels.ElementAt(i).Choice;
                     }
-                    else
+                    @for (int j = 0; j < choices.Count(); j++)
                     {
-                        <div class="form-check"><input class="form-check-input" type="radio" name="@i" value="@Model.ElementAt(i).choice.ElementAt(0)" /><label class="form-check-label">@Model.ElementAt(i).choice.ElementAt(0)</label></div>
-                        <div class="form-check"><input class="form-check-input" type="radio" name="@i" value="@Model.ElementAt(i).choice.ElementAt(1)" /><label class="form-check-label">@Model.ElementAt(i).choice.ElementAt(1)</label></div>
-                        <div class="form-check"><input class="form-check-input" type="radio" name="@i" value="@Model.ElementAt(i).choice.ElementAt(2)" /><label class="form-check-label">@Model.ElementAt(i).choice.ElementAt(2)</label></div>
-                        <div class="form-check"><input class="form-check-input" type="radio" name="@i" value="@Model.ElementAt(i).choice.ElementAt(3)" /><label class="form-check-label">@Model.ElementAt(i).choice.ElementAt(3)</label></div>
+                        if (!string.IsNullOrEmpty(choices[j]))
+                        {
+                            <div class="form-check"><input class="form-check-input" name="answers[@i]" value="@choices[j]" type="radio" /><label class="form-check-label">@choices[j]</label></div>
 
+                        }
                     }
+
 
 
 
@@ -65,184 +65,64 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script>
+<script>
 
-
-
-
-
-        $(document).ready(function () {
-
-            var filename = document.getElementById("filequizename").value;
-            var listofurl = location.pathname.split('/');
-            var quizeid = listofurl[listofurl.length - 1];
-
-            var Timerspan = document.getElementById("TimeSpan").value.split(':');
-            var Timespan = new Date();
-            Timespan.setHours(Timerspan[0]);
-            Timespan.setMinutes(Timerspan[1]);
-            Timespan.setSeconds(Timerspan[2]);
-
-
-            $("#sumbitquestion").on("click", function () {
-                if (confirm("You sure You wante To Submit")) {
-                    $("#Timerspancontainer").css({ "display": "none" });
-                    var objdata = {};
-
-                    var pairs = $("#questionform").serializeArray();
-                    var degree = 0;
-
-
-
-
-                    var username = document.getElementById("username").value;
-
-                    if (filename != "") {
-
-
-                        $.ajax({
-                            method: "GET",
-                            url: "/Quizes/GetAnswerfile?filename=" + filename,
-                            success: function (valuesofanswer) {
-                                $.each(pairs, function (i, input) {
-
-
-                                    objdata[input.name] = input.value;
-
-                                });
-
-
-                                $.each(valuesofanswer, function (i, values) {
-
-
-                                    if (objdata[i] != "undefined" && values == objdata[i]) {
-                                        degree = degree + 1;
-
-
-                                    }
-
-
-                                });
-
-
-
-                                var objtopostdegree = { "degree": degree, "user": username, "quize": quizeid };
-
-
-                                $.ajax({
-                                    method: "POST", url: "/Quizes/Adddegree", data: objtopostdegree,
-                                    success: function (data) {
-                                        alert("degree" + degree);
-                                    },
-                                    error: function (x, statux, h) {
-                                        alert("You Done Excerise");
-                                    }
-                                });
-
-
-                            },
-                            error: function (x, status, f) {
-
-                                alert("error");
-                            },
-
-
-                        });
-
-                    }
-                }
-
-
-
-
-
-
-
-            });
-
-            var insecond = setInterval(increamentsecond, 1000);
-            var inminute = setInterval(increamentminute, 59000);
-            var endexam = setInterval(endexaim, 1000);
-            var EndTimer = new Date();
-            EndTimer.setHours(00);
-            EndTimer.setMinutes(00);
-            EndTimer.setSeconds(00);
-            var second = document.getElementById("second");
-            var minute = document.getElementById("minutes");
-            var hour = document.getElementById("hour");
-
-            function increamentsecond() {
-
-                var seconds = EndTimer.getSeconds();
-                if (seconds != 59) {
-                    EndTimer.setSeconds(seconds + 1);
-                }
-                else {
-                    EndTimer.setSeconds(00);
-
-
-                }
-
-
-                second.innerText = EndTimer.getSeconds();
-
-
+    $(document).ready(() => {
+        countdownTimeStart();
+        function addHours(h) {
+            return new Date(new Date().getTime() + (h * 60 * 60 * 1000));
+        }
+        function addMinute (minutes) {
+            return new Date(new Date().getTime() + minutes * 60000);
+        }
+        $("#sumbitquestion").on("click", function () {
+            if (confirm("You sure You wante To Submit")) {
+                $("#questionform").submit();
             }
-            function increamentminute() {
-
-                var minutes = EndTimer.getMinutes();
-                if (minutes != 59) {
-                    EndTimer.setMinutes(minutes + 1);
-                }
-                else {
-                    EndTimer.setMinutes(00);
-                    var hours = EndTimer.getHours() + 1;
-                    EndTimer.setHours(hours);
-                    hour.innerText = hours;
-                }
-
-
-                minute.innerText = minutes;
-
-            }
-            function endexaim() {
-
-                if (EndTimer.getHours() == Timespan.getHours() && EndTimer.getMinutes() == Timespan.getMinutes() && EndTimer.getSeconds() == Timespan.getSeconds()) {
-                    alert("finish");
-                    $("#Timerspancontainer").css({ "display": "none" });
-                    setTimeout(insecond);
-                    setTimeout(inminute);
-                    endquizefun();
-                }
-                setTimeout(endexam);
-            }
-            function endquizefun() {
-
-
-
-
-                alert("trigger");
-
-                $("#sumbitquestion").trigger("click");
-
-
-
-
-
-            }
-
-
-
-
-
         });
+        function countdownTimeStart() {
+            let timer = new Date();
+            if (@(Model.QuizeDto.Hour??0)!=0) {
+               timer=addHours(@(Model.QuizeDto.Hour));
+            }
+            if (@(Model.QuizeDto.Minute??0)!=0) {
+                timer = addMinute(@(Model.QuizeDto.Minute));
+            }
+            var countDownDate = timer.getTime();
+            // Update the count down every 1 second
+            var x = setInterval(function () {
+
+                // Get todays date and time
+                var now = new Date().getTime();
+
+                // Find the distance between now an the count down date
+                var distance = countDownDate - now;
+
+                // Time calculations for days, hours, minutes and seconds
+                var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                // Output the result in an element with id="demo"
+                document.getElementById("Timerspancontainer").innerHTML = hours + "h "
+                    + minutes + "m " + seconds + "s ";
+
+                // If the count down is over, write some text
+                if (distance < 0) {
+                    clearInterval(x);
+                    document.getElementById("Timerspancontainer").innerHTML = "EXPIRED";
+                    $("#questionform").submit();
+                }
+            }, 1000);
+        }
+
+
+
+    });
 
 
 
 
 
-
-
-
-    </script>
+</script>
 }

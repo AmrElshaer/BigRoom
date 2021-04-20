@@ -1,15 +1,7 @@
-﻿@inject UserManager<User> _userManager
-@inject SignInManager<User> SignInManager
+﻿
+@inject IUserManager userManager 
 @{
-    var role = "Home";
-    if (SignInManager.IsSignedIn(User))
-    {
-        var user = await _userManager.FindByNameAsync(User.Identity.Name);
-        var  roles= await _userManager.GetRolesAsync(user);
-        role = roles.FirstOrDefault();
-    }
-
-
+    var role = userManager.UserIsSignIn(User) ? (await userManager.GetRole(User)) : "Home";
 }
 <!DOCTYPEhtml>
 
@@ -52,7 +44,7 @@
                         <div class="row align-items-center no-gutters">
                             <div class="col-xl-2 col-lg-2">
                                 <div class="logo-img">
-                                    <a asp-area="" asp-controller="Home" asp-action="Index">
+                                    <a asp-area="" asp-controller="@role" asp-action="Index">
                                         <h1 class="boxed_btn_orange">BigRoom</h1>
                                     </a>
                                 </div>
@@ -60,21 +52,20 @@
                             <div class="col-xl-7 col-lg-7">
                                 <div class="main-menu  d-none d-lg-block">
                                     <nav>
-
-
                                         <ul id="navigation">
                                             <li>
-                                                <a asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                                                <a asp-area="" asp-controller="@role" asp-action="Index">Home</a>
                                             </li>
                                             <li>
-                                                <a asp-area="" asp-controller="Groups" asp-action="Create">Add Group</a>
+                                                <a asp-area="" asp-controller="Degree" asp-action="Index">Degrees</a>
                                             </li>
                                             <li>
-                                                <a asp-area="" asp-controller="UserGroups" asp-action="Create">JoinToGroup</a>
+                                                <a asp-area="" asp-controller="Groups" asp-action="Create">Groups</a>
+                                            </li>
+                                            <li>
+                                                <a asp-area="" asp-controller="UserGroups" asp-action="Create">Join Group</a>
                                             </li>
                                         </ul>
-
-
                                     </nav>
                                 </div>
                             </div>
@@ -83,10 +74,8 @@
                                 <div class="mobile_menu d-block d-lg-none">
                                     <div class="slicknav_menu">
                                         <a href="#" aria-haspopup="true" role="button" tabindex="0" class="slicknav_btn slicknav_collapsed" style="">
-                                        <span class="slicknav_menutxt">MENU</span>
-                                     
-                                         </a> 
-                                       
+                                            <span class="slicknav_menutxt">MENU</span>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -96,13 +85,13 @@
             </div>
         </header>
         @RenderSection("MainStyle", required: false)
-      
-    
+
+
 
         <div class="container">
 
             <partial name="_CookieConsentPartial" />
-            <main role="main" style="margin-top:20%;margin-bottom:20%" >
+            <main role="main" style="margin-top:20%;margin-bottom:20%">
                 @RenderBody()
             </main>
         </div>
@@ -124,11 +113,11 @@
                                     Moving in fourth air night bring upon it beast let you dominion likeness open place day
                                     great.
                                 </p>
-                           
+
 
                             </div>
                         </div>
-                       
+
                     </div>
                 </div>
             </div>

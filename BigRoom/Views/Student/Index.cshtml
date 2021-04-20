@@ -1,4 +1,4 @@
-﻿@model BigRoom.Models.User
+﻿@model UserProfileDto
 
 
 @section MainStyle{
@@ -24,28 +24,48 @@
 
 <div style="text-align:center">
     <p class="mb-5 mt-5">
-        <a asp-action="Create" asp-controller="Groups" class="boxed_btn">Create New</a>
+        <a asp-action="Create" asp-controller="Groups" class="boxed_btn">Create Group</a>
     </p>
 
     <table class="table">
         <caption style="text-align:center">Group You Join</caption>
         <thead class="thead-dark">
             <tr>
-                <th>GroupName</th>
-                <th>VisitGroup</th>
+                <th>Group</th>
+                <th>CodeJoin</th>
+                <th>Create At</th>
+                <th>Create By</th>
+                <th>Last Modified</th>
+                <th>Modified By</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model.Groups)
             {
-                <tr>
-                    <td style="padding: 22px;">
-                        @item.group.Name
-                    </td>
-                    <td style="float:right; padding: 20px;" >
-                        <a href="/Groups/Details/@item.groupId" class="btn btn-outline-warning">Visit Group</a>
-                    </td>
-                </tr>
+            <tr>
+                <td>
+                    @item.Group.Name
+                </td>
+                <td>
+                    @item.Group.CodeJion
+                </td>
+                <td>
+                    @item.Group.CreatedOn
+                </td>
+                <td>
+                    @item.Group.CreatedBy.GetNameFromEmail()
+                </td>
+                <td>
+                    @item.Group.LastModifiedOn
+                </td>
+                <td>
+                    @item.Group.LastModifiedBy.GetNameFromEmail()
+                </td>
+                <td style="float:right;">
+                    <a href="/Groups/Details/@item.GroupId" class="btn btn-outline-warning">Visit Group</a>
+                </td>
+            </tr>
             }
         </tbody>
     </table>
@@ -55,21 +75,40 @@
 
         <thead class="thead-light">
             <tr>
-                <th>GroupName</th>
-                <th>VisitGroup</th>
+                <th>Group</th>
+                <th>CodeJoin</th>
+                <th>Create At</th>
+                <th>Create By</th>
+                <th>Last Modified</th>
+                <th>Modified By</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model.GroupsThatAdmin)
             {
-                <tr>
-                    <td style="padding: 22px;">
-                        @item.Name
-                    </td>
-                    <td style="float:right; padding: 20px;" >
-                        <a href="/Groups/GroupYouAdmin/@item.Id" class="btn btn-outline-warning">Visit Group</a>
-                    </td>
-                </tr>
+            <tr>
+                <td>
+                    @item.Name
+                </td>
+                <td>@item.CodeJion</td>
+                <td>
+                    @item.CreatedOn
+                </td>
+                <td>
+                    @item.CreatedBy.GetNameFromEmail()
+                </td>
+                <td>
+                    @item.LastModifiedOn
+                </td>
+
+                <td>
+                    @item.LastModifiedBy.GetNameFromEmail()
+                </td>
+                <td style="float:right;">
+                    <a href="/Groups/GroupYouAdmin/@item.Id" class="btn btn-outline-warning">Visit Group</a>
+                </td>
+            </tr>
             }
         </tbody>
     </table>

@@ -1,4 +1,4 @@
-﻿@model BigRoom.Models.Group
+﻿@model GroupDto
 
 @section MainStyle{
 
@@ -22,7 +22,7 @@
                 <h3>Create Group</h3>
 
                 <div class="row">
-                    <div asp-validation-summary="All" class="text-danger"></div>
+
                     <div class="col-xl-12 col-md-12">
                         <input asp-for="CodeJion" value="@ViewData["Guid"]">
                     </div>
@@ -39,7 +39,7 @@
 
                
             </div>
-        </div><button title="Close (Esc)" type="button" class="mfp-close">×</button>
+        </div>
     </form>
 </div>
 

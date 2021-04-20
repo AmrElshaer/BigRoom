@@ -1,7 +1,6 @@
-﻿@model IEnumerable<BigRoom.Models.Quize>
+﻿@model IEnumerable<QuizeDto>
 
 @section MainStyle{
-
 
     <!-- bradcam_area_start -->
     <div class="bradcam_area breadcam_bg overlay2">
@@ -25,7 +24,7 @@
                 <th>
                     @Html.DisplayNameFor(model => model.TimeEnd)
                 </th>
-
+                <th>Duration</th>
                 <th></th>
             </tr>
         </thead>
@@ -42,36 +41,28 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.TimeEnd)
                     </td>
-
+                    <td>
+                        @{
+                            var hour = item.Hour?.ToString() ?? "00";
+                            var minute = item.Minute?.ToString() ?? "00";
+                        }
+                        @($"{hour}:{minute}")
+                    </td>
                     <td>
 
                         @if (item.TimeStart <= DateTime.Now && DateTime.Now <= item.TimeEnd)
                         {
-                            <a class="btn btn-outline-warning mb-2" asp-action="Details" asp-route-id="@item.id">Register</a>
-                        }
-                        @if (ViewBag.role == "Teacher")
-                        {
-                            <a  class="btn btn-outline-warning mb-2" asp-action="Edit" asp-route-id="@item.id">Edit</a>
-                              
-                            <a class= "btn btn-outline-warning mb-2" asp-action="Delete" asp-route-id="@item.id">Delete</a>
-                              
-                            <a class= "btn btn-outline-warning mb-2" asp-action="Index" asp-controller="Degree" asp-route-id="@item.id">All Student Exercise</a>
+                            <a class="btn btn-outline-warning mb-2" asp-action="Details" asp-route-id="@item.Id">Register</a>
                         }
 
+                        <a class="btn btn-outline-warning mb-2" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
 
+                        <a class="btn btn-outline-warning mb-2" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
 
+                        <a class="btn btn-outline-warning mb-2" asp-action="Index" asp-controller="Degree" asp-route-id="@item.Id">All Student Exercise</a>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
 </div>
-
-<script>
-    function() {
-        var Timenow = new Date();
-
-
-    }
-
-</script>

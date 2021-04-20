@@ -1,4 +1,4 @@
-﻿@model BigRoom.Models.Group
+﻿@model GroupDto
 
 @section MainStyle{
 
@@ -32,7 +32,7 @@
             <a class="boxed_btn_orange" asp-action="Index" asp-controller="UserGroups" asp-route-CodeJoin="@Model.CodeJion">AllJoiners</a>
         </dt>
         <dd class="col-sm-6" style="margin-top: 6%;">
-            <a class="boxed_btn_orange" asp-action="Index" asp-controller="Quizes" asp-route-Groupid="@Model.Id" asp-route-role="Student">All Quizes</a>
+            <a class="boxed_btn_orange" asp-action="Index" asp-controller="Quizes" asp-route-Groupid="@Model.Id">All Quizes</a>
         </dd>
     </dl>
 </div>
