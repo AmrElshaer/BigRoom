@@ -7,7 +7,7 @@
 
     <!-- bradcam_area_start -->
     <div class="bradcam_area breadcam_bg overlay2">
-        <h3>Degree Of Students</h3>
+        <h3>Degrees</h3>
     </div>
     <!-- bradcam_area_end -->
 
@@ -29,7 +29,7 @@
             {
                 <tr>
                     <td>@item.Quize.Description</td>
-                    @{ var color = item.ExamDegree >= item.TotalDegree / 2 ? "green" : "red";}
+                    @{ var color = item.ExamDegree >= item.TotalDegree / 2 ? "#00800087" : "dc3545b8";}
                     <td style="background-color:@color;font-size:20px;color:white">
                         @($"{item.ExamDegree}/{item.TotalDegree}")
                     </td>

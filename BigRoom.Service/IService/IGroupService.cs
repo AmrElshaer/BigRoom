@@ -14,5 +14,6 @@ namespace BigRoom.Service.IService
         Task UpdateGroup(GroupDto groupDto);
         Task DeleteGroup(int groupId);
         Task<GroupDto> GetGroupByCodeAsync(string codeJoin);
+        Task<GroupDto> GroupDetailsByIdAsync(int id);
     }
 }

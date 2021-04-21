@@ -59,7 +59,7 @@
                 </td>
                 <td style="float:right;">
                     <button class="btn btn-primary text-white" data-clipboard-text="@item.Group.CodeJion" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Copy CodeJoin"><i class="far fa-copy"></i></button>
-                    <a asp-controller="Groups" asp-action="GroupYouAdmin" asp-route-id="@item.Id" class="btn btn-warning text-white"><i class="fas fa-info-circle"></i></a>
+                    <a asp-controller="Groups" asp-action="GroupYouAdmin" asp-route-id="@item.Group.Id" class="btn btn-warning text-white"><i class="fas fa-info-circle"></i></a>
                 </td>
             </tr>
             }

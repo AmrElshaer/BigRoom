@@ -1,5 +1,5 @@
 ﻿@model GroupDto
-
+@inject IUserAppService userAppService
 @section MainStyle{
 
 
@@ -10,35 +10,47 @@
     <!-- bradcam_area_end -->
 
 }
-
-<div style="text-align:center">
-    <button class=" w-100 btn btn-outline-primary">Group</button>
-
-    <dl class="row">
-        <dt class="col-sm-6 btn btn-primary" style="margin-top: 6%;">
-            @Html.DisplayNameFor(model => model.CodeJion)
-        </dt>
-        <dd class="col-sm-6" style="margin-top: 6%;">
-            @Html.DisplayFor(model => model.CodeJion)
-        </dd>
-
-        <dt class="col-sm-6 btn btn-primary" style="margin-top: 6%;">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class="col-sm-6" style="margin-top: 6%;">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class="col-sm-6" style="margin-top: 6%;">
-            <a class="boxed_btn_orange" asp-action="Index" asp-controller="UserGroups" asp-route-CodeJoin="@Model.CodeJion">AllJoiners</a>
-            <a class="boxed_btn_orange" asp-action="Create" asp-controller="Quizes" asp-route-groupid="@Model.Id">Create Quize</a>
-        </dt>
-        <dd class="col-sm-6" style="margin-top: 6%;">
-            <a class="boxed_btn_orange" asp-action="Index" asp-controller="Quizes" asp-route-Groupid="@Model.Id">All Quizes</a>
-            <a class="boxed_btn_orange" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
-            <a class="btn btn-danger" asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
-        </dd>
-    </dl>
+<div class="card">
+    <h5 class="card-header">Group</h5>
+    <div class="card-body">
+        <h5 class="card-title">@Html.DisplayFor(model => model.Name)</h5>
+        <div class="input-group mb-3">
+            <button id="basic-addon1" class="input-group-text" data-clipboard-text="@Model.CodeJion" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Copy CodeJoin"><i class="far fa-copy"></i></button>
+            <input type="text" class="form-control" readonly value="@Model.CodeJion" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+        </div>
+        <ol class="list-group list-group-numbered mt-2 mb-2">
+            @foreach (var item in Model.Groups)
+            {
+                var user = await userAppService.GetUserById(item.UserProfile.UserId);
+                <li class="list-group-item"><img style="max-width: 50px;margin-right: 5px" class="rounded float-left" src="@user.Image" /> @(user.Email.GetNameFromEmail())</li>
+            }
+        </ol>
+        <a class="boxed_btn_orange" asp-action="Create" asp-controller="Quizes" asp-route-groupid="@Model.Id"><i class="fas fa-plus"></i> Quize</a>
+        <a class="boxed_btn_orange" asp-action="Index" asp-controller="Quizes" asp-route-Groupid="@Model.Id">Quizes</a>
+    </div>
 </div>
+@section Scripts{
+    <script src="~/js/clipboard.min.js"></script>
+    <script>
+        var clipboard = new ClipboardJS('.input-group-text');
+
+        clipboard.on('success', function (e) {
+            console.info('Action:', e.action);
+            console.info('Text:', e.text);
+            console.info('Trigger:', e.trigger);
+
+            e.clearSelection();
+            console.log("Success");
+        });
+
+        clipboard.on('error', function (e) {
+            console.error('Action:', e.action);
+            console.error('Trigger:', e.trigger);
+            console.log("Failed");
+        });
+    </script>
+
+}
 
 
 

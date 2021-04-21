@@ -11,7 +11,6 @@ namespace BigRoom.Repository.Configuration
     {
         public void Configure(EntityTypeBuilder<UserProfile> builder)
         {
-            
         }
     }
 }

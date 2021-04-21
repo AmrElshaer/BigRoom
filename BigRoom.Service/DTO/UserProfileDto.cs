@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BigRoom.Model.Entities;
+using BigRoom.Repository.Contexts;
 using BigRoom.Service.Common.Mappings;
 using BigRoom.Service.Common.Models;
 using System.Collections.Generic;
@@ -16,6 +17,7 @@ namespace BigRoom.Service.DTO
             QuizesCreate = new HashSet<QuizeDto>();
         }
         public string UserId { get; set; }
+        public ApplicationUser User { get; set; }
         public ICollection<DegreeDto> Degrees { get; set; }
         public ICollection<UserGroupsDto> Groups { get; set; }
         public ICollection<GroupDto> GroupsThatAdmin { get; set; }

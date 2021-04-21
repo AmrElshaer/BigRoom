@@ -31,6 +31,7 @@
         <tbody>
             @foreach (var item in Model)
             {
+
                 <tr>
                     <td>
                         @Html.DisplayFor(modelItem => item.Description)
@@ -46,23 +47,20 @@
                             var hour = item.Hour?.ToString() ?? "00";
                             var minute = item.Minute?.ToString() ?? "00";
                         }
-                        @($"{hour}:{minute}")
+                        <span style="font-size:16px" class="badge rounded-pill bg-success text-white">@($"{hour}:{minute}")</span>
                     </td>
                     <td>
-
                         @if (item.TimeStart <= DateTime.Now && DateTime.Now <= item.TimeEnd)
                         {
-                            <a class="btn btn-outline-warning mb-2" asp-action="Details" asp-route-id="@item.Id">Register</a>
+                            <a class="btn btn-info text-white" asp-action="Details" asp-route-id="@item.Id" title="Do Exam"><i class="fas fa-sign-in-alt"></i></a>
                         }
-
-                        <a class="btn btn-outline-warning mb-2" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-
-                        <a class="btn btn-outline-warning mb-2" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-
-                        <a class="btn btn-outline-warning mb-2" asp-action="Index" asp-controller="Degree" asp-route-id="@item.Id">All Student Exercise</a>
+                        <a asp-action="GetStudentsDegrees" asp-controller="Degree" asp-route-quizeId="@item.Id" title="Details" class="btn btn-warning text-white"><i class="fas fa-info-circle"></i></a>
+                        <a class="btn btn-info text-white" asp-action="Edit" asp-route-id="@item.Id"><i class="far fa-edit"></i></a>
+                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id"><i class="fas fa-trash-alt"></i></a>
                     </td>
                 </tr>
             }
         </tbody>
+       
     </table>
 </div>

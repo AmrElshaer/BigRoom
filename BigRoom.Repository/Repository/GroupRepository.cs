@@ -24,7 +24,12 @@ namespace BigRoom.Repository.Repository
         }
         public async Task<Group> GetGroupByCodeAsync(string codeJoin)
         {
-            var group = await Entities.FirstOrDefaultAsync(a => a.CodeJion == codeJoin);
+            var group = await Entities.Include(a=>a.Groups).FirstOrDefaultAsync(a => a.CodeJion == codeJoin);
+            return group;
+        }
+        public async Task<Group> GroupDetailsByIdAsync(int id)
+        {
+            var group = await Entities.Include(a => a.Groups).ThenInclude(a=>a.UserProfile).FirstOrDefaultAsync(a => a.Id==id);
             return group;
         }
         public async Task<bool> UniquesNameAsync(string name)

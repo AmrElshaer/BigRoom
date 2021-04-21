@@ -1,0 +1,42 @@
+﻿@model IEnumerable<DegreeDto>
+@inject IUserAppService userAppSerivce
+
+
+@section MainStyle{
+
+    <!-- bradcam_area_start -->
+    <div class="bradcam_area breadcam_bg overlay2">
+        <h3>Degrees</h3>
+    </div>
+    <!-- bradcam_area_end -->
+
+}
+@foreach (var degree in Model)
+{
+<table class="table table-hover">
+    <thead class="thead-dark">
+        <tr>
+            <th>User</th>
+            <th>
+                Degree
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            var user = await userAppSerivce.GetUserById(item.UserProfile.UserId);
+            <tr>
+                <td><img style="max-width: 50px;margin-right: 5px" class="rounded float-left" src="@user.Image" /> @(user.Email.GetNameFromEmail())</td>
+                @{ var color = item.ExamDegree >= item.TotalDegree / 2 ? "#00800087" : "dc3545b8";}
+                <td style="background-color:@color;font-size:20px;color:white">
+                    @($"{item.ExamDegree}/{item.TotalDegree}")
+                </td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr class="text-white"><td><span class="btn bg-warning">Total Students</span>:<span class="badge bg-primary">@Model.Count()</span></td><td><span class="btn bg-warning ">Success</span> <span class="badge bg-success mr-3">@Model.Count(a => a.ExamDegree >= (a.TotalDegree / 2))</span><span class="btn bg-warning">Fail</span> <span class="badge bg-danger">@Model.Count(a => a.ExamDegree < (a.TotalDegree / 2))</span> </td></tr>
+    </tfoot>
+</table>
+}

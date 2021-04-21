@@ -1,4 +1,4 @@
-﻿using BigRoom.Model.Entities;
+﻿using BigRoom.Repository.Contexts;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace BigRoom.Repository.IRepository
 {
-    public interface IDegreeRepository:IRepositoryAsync<Degree>
+    public interface IUserAppRepository
     {
-        Task<bool> IsDoExamAsync(int id, int userId);
+        Task<ApplicationUser> GetUserById(string id);
     }
 }

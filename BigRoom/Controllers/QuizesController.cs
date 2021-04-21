@@ -11,12 +11,14 @@ namespace BigRoom.Controllers
     public class QuizesController : BaseController
     {
         private readonly IHostingEnvironment _IhostEnv;
+        private readonly IDegreeService degreeService;
         private readonly IQuzieService quzieService;
         private readonly IUserProfileService userProfileService;
 
-        public QuizesController(IHostingEnvironment hostingEnvironment, IQuzieService quzieService, IUserManager userManager, IUserProfileService userProfileService) : base(userManager)
+        public QuizesController(IHostingEnvironment hostingEnvironment,IDegreeService degreeService,IQuzieService quzieService, IUserManager userManager, IUserProfileService userProfileService) : base(userManager)
         {
             _IhostEnv = hostingEnvironment;
+            this.degreeService = degreeService;
             this.quzieService = quzieService;
             this.userProfileService = userProfileService;
         }
@@ -32,6 +34,12 @@ namespace BigRoom.Controllers
         // GET: Quizes/Details/5
         public async Task<IActionResult> Details(int id)
         {
+            var userId = (await userProfileService.GetUserProfileAsync(await GetCurrentUserId())).Id;
+            var isDoExam =await degreeService.IsDoExamAsync(id,userId);
+            if (isDoExam)
+            {
+                return RedirectToAction("Index",controllerName:"Degree");
+            }
             var quizeModel = await quzieService.GetQuizeDetailsAsync(id);
             return View(quizeModel);
         }

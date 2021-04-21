@@ -11,5 +11,6 @@ namespace BigRoom.Repository.IRepository
         Task<bool> UniquesNameAsync(string name);
         Task<bool> IsExistAsync(string codeJoin);
         Task<Group> GetGroupByCodeAsync(string codeJoin);
+        Task<Group> GroupDetailsByIdAsync(int id);
     }
 }

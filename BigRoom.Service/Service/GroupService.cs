@@ -58,5 +58,10 @@ namespace BigRoom.Service.Service
         {
             return mapper.Map<GroupDto>(await groupRepository.GetGroupByCodeAsync(codeJoin));
         }
+
+        public async Task<GroupDto> GroupDetailsByIdAsync(int id)
+        {
+            return mapper.Map<GroupDto>(await groupRepository.GroupDetailsByIdAsync(id));
+        }
     }
 }

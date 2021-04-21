@@ -30,5 +30,10 @@ namespace BigRoom.Controllers
             var userId = (await userProfileService.GetUserProfileAsync(await GetCurrentUserId())).Id;
             return View(await degreeService.GetDegreesAsync(userId));
         }
+        public async Task<IActionResult> GetStudentsDegrees(int quizeId)
+        {
+            var degrees= await degreeService.GetQuizeDegreesAsync(quizeId);
+            return View(degrees);
+        }
     }
 }

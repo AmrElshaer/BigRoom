@@ -37,7 +37,7 @@ namespace BigRoom.Controllers
         public async Task<IActionResult> GroupYouAdmin(int? id)
         {
             if (id == null) return NotFound();
-            var group = await groupService.GetByIdAsync(id.Value);
+            var group = await groupService.GroupDetailsByIdAsync(id.Value);
             if (group == null) return NotFound();
             return View(group);
         }

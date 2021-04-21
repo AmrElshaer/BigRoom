@@ -43,7 +43,11 @@ namespace BigRoom.Service.Service
             await  degreeRepository.AddAsync(new Degree() {ExamDegree=degree,QuizeId=quizeId,UserProfileId=userId,TotalDegree=answerData.Count });
             await uniteOfWork.SaveChangesAsync();
         }
-     
+        public async Task<IEnumerable<DegreeDto>> GetQuizeDegreesAsync(int quizeId)
+        {
+            return await degreeRepository.GetAllAsync(a=>a.QuizeId==quizeId).Include(u=>u.UserProfile).ProjectTo<DegreeDto>(mapper.ConfigurationProvider).ToListAsync();
+        }
+        #region Read AnswerFile
         public IList<string> ReadAnswerfile(string filename)
         {
             var fullpath = Path.Combine(Path.Combine(ihostEnv.WebRootPath, "answer"), filename);
@@ -62,6 +66,13 @@ namespace BigRoom.Service.Service
 
             }
             return answers;
+        }
+
+
+        #endregion
+        public async Task<bool> IsDoExamAsync(int id, int userId)
+        {
+            return await degreeRepository.IsDoExamAsync(id,userId);
         }
     }
 }

@@ -21,7 +21,6 @@
     </div>
     <!-- bradcam_area_end -->
 }
-
 <div style="text-align:center">
     <p class="mb-5 mt-5">
         <a asp-action="Create" asp-controller="Groups" class="boxed_btn">Create Group</a>
@@ -32,11 +31,10 @@
         <thead class="thead-dark">
             <tr>
                 <th>Group</th>
-                <th>CodeJoin</th>
                 <th>Create At</th>
                 <th>Create By</th>
-                <th>Last Modified</th>
                 <th>Modified By</th>
+                <th>Last Modified</th>
                 <th></th>
             </tr>
         </thead>
@@ -46,9 +44,6 @@
                 <tr>
                     <td>
                         @item.Group.Name
-                    </td>
-                    <td>
-                        @item.Group.CodeJion
                     </td>
                     <td>
                         @item.Group.CreatedOn
@@ -63,7 +58,8 @@
                         @item.Group.LastModifiedBy.GetNameFromEmail()
                     </td>
                     <td style="float:right;">
-                        <a href="/Groups/Details/@item.GroupId" class="btn btn-outline-warning">Visit Group</a>
+                        <button class="btn btn-primary text-white" data-clipboard-text="@item.Group.CodeJion" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Copy CodeJoin"><i class="far fa-copy"></i></button>
+                        <a asp-controller="Groups" asp-action="GroupYouAdmin" asp-route-id="@item.Group.Id" class="btn btn-warning text-white"><i class="fas fa-info-circle"></i></a>
                     </td>
                 </tr>
             }
@@ -76,11 +72,10 @@
         <thead class="thead-light">
             <tr>
                 <th>Group</th>
-                <th>CodeJoin</th>
                 <th>Create At</th>
                 <th>Create By</th>
-                <th>Last Modified</th>
                 <th>Modified By</th>
+                <th>Last Modified</th>
                 <th></th>
             </tr>
         </thead>
@@ -91,7 +86,6 @@
                     <td>
                         @item.Name
                     </td>
-                    <td>@item.CodeJion</td>
                     <td>
                         @item.CreatedOn
                     </td>
@@ -101,12 +95,14 @@
                     <td>
                         @item.LastModifiedOn
                     </td>
-
                     <td>
                         @item.LastModifiedBy.GetNameFromEmail()
                     </td>
                     <td style="float:right;">
-                        <a href="/Groups/GroupYouAdmin/@item.Id" class="btn btn-outline-warning">Visit Group</a>
+                        <button class="btn btn-primary text-white" data-clipboard-text="@item.CodeJion" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Copy CodeJoin"><i class="far fa-copy"></i></button>
+                        <a asp-controller="Groups" asp-action="GroupYouAdmin" asp-route-id="@item.Id" class="btn btn-warning text-white"><i class="fas fa-info-circle"></i></a>
+                        <a class="btn btn-info text-white" asp-controller="Groups" asp-action="Edit" asp-route-id="@item.Id"><i class="far fa-edit"></i></a>
+                        <a class="btn btn-danger" asp-controller="Groups" asp-action="Delete" asp-route-id="@item.Id"><i class="fas fa-trash-alt"></i></a>
                     </td>
                 </tr>
             }
@@ -114,3 +110,25 @@
     </table>
 
 </div>
+@section Scripts{
+    <script src="~/js/clipboard.min.js"></script>
+    <script>
+    var clipboard = new ClipboardJS('.btn');
+
+    clipboard.on('success', function (e) {
+        console.info('Action:', e.action);
+        console.info('Text:', e.text);
+        console.info('Trigger:', e.trigger);
+
+        e.clearSelection();
+        console.log("Success");
+    });
+
+    clipboard.on('error', function (e) {
+        console.error('Action:', e.action);
+        console.error('Trigger:', e.trigger);
+        console.log("Failed");
+    });
+    </script>
+
+}
