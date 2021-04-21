@@ -2,6 +2,8 @@
 using BigRoom.Service.IService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using NToastNotify;
+using NToastNotify.Libraries;
 using System;
 using System.Threading.Tasks;
 
@@ -11,10 +13,12 @@ namespace BigRoom.Controllers
     public class GroupsController : BaseController
     {
         private readonly IGroupService groupService;
+        private readonly IToastNotification toastNotification;
 
-        public GroupsController(IUserManager userManager, IGroupService groupService) : base(userManager)
+        public GroupsController(IUserManager userManager, IGroupService groupService,IToastNotification toastNotification) : base(userManager)
         {
             this.groupService = groupService;
+            this.toastNotification = toastNotification;
         }
 
         public async Task<IActionResult> GoToGroup(string codeJoin)
@@ -39,6 +43,7 @@ namespace BigRoom.Controllers
             if (id == null) return NotFound();
             var group = await groupService.GroupDetailsByIdAsync(id.Value);
             if (group == null) return NotFound();
+            ViewData["UserId"] = await GetCurrentUserId();
             return View(group);
         }
 
@@ -59,7 +64,8 @@ namespace BigRoom.Controllers
             if (ModelState.IsValid)
             {
                 await groupService.CreateGroup(group, (await GetCurrentUserId()));
-                return RedirectToAction("Index", controllerName: (await GetRoleAsync())); ;
+                this.toastNotification.AddSuccessToastMessage($"Group {group.Name} is created success",new ToastrOptions() { ToastClass= "btn-success" });
+                return RedirectToAction("Index", controllerName: (await GetRoleAsync())); 
             }
             ViewData["Guid"] = Guid.NewGuid().ToString();
             return View(group);
@@ -84,6 +90,7 @@ namespace BigRoom.Controllers
             if (ModelState.IsValid)
             {
                 await groupService.UpdateGroup(group);
+                this.toastNotification.AddSuccessToastMessage($"Group {group.Name} is edit success", new ToastrOptions() { ToastClass = "btn-success" });
                 return RedirectToAction("Index", controllerName: (await GetRoleAsync()));
             }
             return View(group);
@@ -94,6 +101,7 @@ namespace BigRoom.Controllers
         {
             if (id == null) return NotFound();
             await groupService.DeleteGroup(id.Value);
+            this.toastNotification.AddSuccessToastMessage($"Group deleted success", new ToastrOptions() { ToastClass = "btn-success" });
             return RedirectToAction("Index", controllerName: (await GetRoleAsync()));
         }
     }

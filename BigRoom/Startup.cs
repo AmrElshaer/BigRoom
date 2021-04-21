@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using NToastNotify;
+using NToastNotify.Libraries;
 
 namespace Classroom
 {
@@ -28,7 +30,10 @@ namespace Classroom
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
             services.AddService(Configuration);
-            services.AddMvc().AddFluentValidation()
+            services.AddMvc().AddFluentValidation().AddNToastNotifyToastr(new ToastrOptions() { 
+                ProgressBar=false,
+                PositionClass=ToastPositions.BottomRight
+            })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.ConfigureApplicationCookie(options =>
             {
@@ -50,13 +55,11 @@ namespace Classroom
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
-
             app.UseAuthentication();
-
+            app.UseNToastNotify();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

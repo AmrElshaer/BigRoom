@@ -15,7 +15,7 @@
 @foreach (var degree in groupByGroup)
 {
     <table class="table table-hover">
-        <caption style="text-align:center">@degree.Key</caption>
+        <caption style="text-align:center"><span class="btn btn-info">@degree.Key Group</span></caption>
         <thead class="thead-dark">
             <tr>
                 <th>Quize</th>
@@ -29,7 +29,7 @@
             {
                 <tr>
                     <td>@item.Quize.Description</td>
-                    @{ var color = item.ExamDegree >= item.TotalDegree / 2 ? "#00800087" : "dc3545b8";}
+                    @{ var color = item.ExamDegree >= item.TotalDegree / 2 ? "#00800087" : "#ff00008a";}
                     <td style="background-color:@color;font-size:20px;color:white">
                         @($"{item.ExamDegree}/{item.TotalDegree}")
                     </td>

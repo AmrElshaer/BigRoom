@@ -23,7 +23,8 @@ namespace BigRoom.Service.Service
         private readonly IMapper mapper;
         private readonly IUniteOfWork uniteOfWork;
 
-        public QuzieService(IQuizeRepository quizeRepository, IHostingEnvironment hostingEnvironment, IMapper mapper,IUniteOfWork uniteOfWork)
+        public QuzieService(IQuizeRepository quizeRepository, IHostingEnvironment hostingEnvironment, IMapper mapper,
+            IUniteOfWork uniteOfWork)
         {
             this.quizeRepository = quizeRepository;
             this.hostingEnvironment = hostingEnvironment;
@@ -33,7 +34,8 @@ namespace BigRoom.Service.Service
 
         public async Task<IEnumerable<QuizeDto>> GetQuziesByGroupAsync(int groupId)
         {
-            return await quizeRepository.GetAllAsync(a => a.GroupId == groupId).ProjectTo<QuizeDto>(mapper.ConfigurationProvider).ToListAsync();
+            return await quizeRepository.GetAllAsync(a => a.GroupId == groupId).Include(a=>a.UserProfile)
+                .ProjectTo<QuizeDto>(mapper.ConfigurationProvider).ToListAsync();
         }
         public async Task CreateQuizeAsync(QuizeDto quizeDto)
         {

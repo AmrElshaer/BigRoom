@@ -3,6 +3,8 @@ using BigRoom.Service.IService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using NToastNotify;
+using NToastNotify.Libraries;
 using System.Threading.Tasks;
 
 namespace BigRoom.Controllers
@@ -11,13 +13,15 @@ namespace BigRoom.Controllers
     public class QuizesController : BaseController
     {
         private readonly IHostingEnvironment _IhostEnv;
+        private readonly IToastNotification toastNotification;
         private readonly IDegreeService degreeService;
         private readonly IQuzieService quzieService;
         private readonly IUserProfileService userProfileService;
 
-        public QuizesController(IHostingEnvironment hostingEnvironment,IDegreeService degreeService,IQuzieService quzieService, IUserManager userManager, IUserProfileService userProfileService) : base(userManager)
+        public QuizesController(IHostingEnvironment hostingEnvironment,IToastNotification toastNotification,IDegreeService degreeService,IQuzieService quzieService, IUserManager userManager, IUserProfileService userProfileService) : base(userManager)
         {
             _IhostEnv = hostingEnvironment;
+            this.toastNotification = toastNotification;
             this.degreeService = degreeService;
             this.quzieService = quzieService;
             this.userProfileService = userProfileService;
@@ -27,6 +31,7 @@ namespace BigRoom.Controllers
 
         public async Task<IActionResult> Index(int groupId)
         {
+            ViewData["UserId"] = await GetCurrentUserId();
             var result = await quzieService.GetQuziesByGroupAsync(groupId);
             return View(result);
         }
@@ -38,6 +43,7 @@ namespace BigRoom.Controllers
             var isDoExam =await degreeService.IsDoExamAsync(id,userId);
             if (isDoExam)
             {
+                this.toastNotification.AddWarningToastMessage($"You Do this exam before", new ToastrOptions() { ToastClass = "btn-warning" });
                 return RedirectToAction("Index",controllerName:"Degree");
             }
             var quizeModel = await quzieService.GetQuizeDetailsAsync(id);
@@ -60,6 +66,7 @@ namespace BigRoom.Controllers
             {
                 quize.UserProfileId = (await userProfileService.GetUserProfileAsync(await GetCurrentUserId())).Id;
                 await quzieService.CreateQuizeAsync(quize);
+                this.toastNotification.AddSuccessToastMessage($"Quize {quize.Description} Created Success", new ToastrOptions() { ToastClass = "btn-success" });
                 return RedirectToAction(nameof(Index), new { Groupid = quize.GroupId });
             }
             return View(quize);
@@ -84,6 +91,7 @@ namespace BigRoom.Controllers
             if (ModelState.IsValid)
             {
                 await quzieService.UpdateQuizeAsync(quize);
+                this.toastNotification.AddSuccessToastMessage($"Quize {quize.Description} edit Success", new ToastrOptions() { ToastClass = "btn-success" });
                 return RedirectToAction(nameof(Index), new { Groupid = quize.GroupId });
             }
             return View(quize);
@@ -95,6 +103,7 @@ namespace BigRoom.Controllers
             var quize = await quzieService.GetQuizeByIdAsync(id);
             if (quize == null) return NotFound();
             await quzieService.DeleteAsync(id);
+            this.toastNotification.AddSuccessToastMessage($"Quize {quize.Description} deleted Success", new ToastrOptions() { ToastClass = "btn-success" });
             return RedirectToAction(nameof(Index), new { Groupid = quize.GroupId });
         }
     }

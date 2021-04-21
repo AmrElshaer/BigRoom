@@ -17,7 +17,6 @@ namespace BigRoom.Service.DTO
             QuizesCreate = new HashSet<QuizeDto>();
         }
         public string UserId { get; set; }
-        public ApplicationUser User { get; set; }
         public ICollection<DegreeDto> Degrees { get; set; }
         public ICollection<UserGroupsDto> Groups { get; set; }
         public ICollection<GroupDto> GroupsThatAdmin { get; set; }

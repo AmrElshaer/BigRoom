@@ -2,6 +2,8 @@
 using BigRoom.Service.IService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using NToastNotify;
+using NToastNotify.Libraries;
 using System.Threading.Tasks;
 
 namespace BigRoom.Controllers
@@ -10,19 +12,17 @@ namespace BigRoom.Controllers
     public class UserGroupsController : BaseController
     {
         private readonly IUserGroupService userGroupService;
+        private readonly IToastNotification toastNotification;
         private readonly IUserProfileService userProfileService;
 
-        public UserGroupsController(IUserGroupService userGroupService, IUserProfileService userProfileService, IUserManager manager) : base(manager)
+        public UserGroupsController(IUserGroupService userGroupService, IToastNotification toastNotification, IUserProfileService userProfileService, IUserManager manager) : base(manager)
         {
             this.userGroupService = userGroupService;
+            this.toastNotification = toastNotification;
             this.userProfileService = userProfileService;
         }
 
-        // GET: UserGroups
-        //public async Task<IActionResult> Index(string CodeJoin)
-        //{
-        //    return View(await _context.UserGroups.Where(a => a.CodeJoin == CodeJoin).ToListAsync());
-        //}
+      
         // GET: UserGroups/Create
         public async Task<IActionResult> Create()
         {
@@ -40,6 +40,7 @@ namespace BigRoom.Controllers
             if (ModelState.IsValid)
             {
                 await userGroupService.CreateUserGroup(userGroups);
+                this.toastNotification.AddSuccessToastMessage($"Join to group is success", new ToastrOptions() { ToastClass = "btn-success" });
                 return RedirectToAction("GoToGroup", "Groups", new { codeJoin = userGroups.CodeJoin });
             }
             return View(userGroups);

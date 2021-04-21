@@ -25,8 +25,12 @@
                 <li class="list-group-item"><img style="max-width: 50px;margin-right: 5px" class="rounded float-left" src="@user.Image" /> @(user.Email.GetNameFromEmail())</li>
             }
         </ol>
-        <a class="boxed_btn_orange" asp-action="Create" asp-controller="Quizes" asp-route-groupid="@Model.Id"><i class="fas fa-plus"></i> Quize</a>
-        <a class="boxed_btn_orange" asp-action="Index" asp-controller="Quizes" asp-route-Groupid="@Model.Id">Quizes</a>
+        @if ((string)ViewData["UserId"] == Model.Admin.UserId)
+        {
+            <a class="boxed_btn_orange" asp-action="Create" asp-controller="Quizes" asp-route-groupid="@Model.Id"><i class="fas fa-plus"></i> Quize</a>
+            
+        }
+    <a class="boxed_btn_orange" asp-action="Index" asp-controller="Quizes" asp-route-Groupid="@Model.Id">Quizes</a>
     </div>
 </div>
 @section Scripts{
@@ -38,15 +42,12 @@
             console.info('Action:', e.action);
             console.info('Text:', e.text);
             console.info('Trigger:', e.trigger);
-
             e.clearSelection();
-            console.log("Success");
         });
 
         clipboard.on('error', function (e) {
             console.error('Action:', e.action);
             console.error('Trigger:', e.trigger);
-            console.log("Failed");
         });
     </script>
 
