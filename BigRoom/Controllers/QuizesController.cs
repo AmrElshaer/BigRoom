@@ -18,7 +18,7 @@ namespace BigRoom.Controllers
         private readonly IQuzieService quzieService;
         private readonly IUserProfileService userProfileService;
 
-        public QuizesController(IHostingEnvironment hostingEnvironment,IToastNotification toastNotification,IDegreeService degreeService,IQuzieService quzieService, IUserManager userManager, IUserProfileService userProfileService) : base(userManager)
+        public QuizesController(IHostingEnvironment hostingEnvironment,IToastNotification toastNotification,IDegreeService degreeService,IQuzieService quzieService, IUserProfileService userProfileService)
         {
             _IhostEnv = hostingEnvironment;
             this.toastNotification = toastNotification;

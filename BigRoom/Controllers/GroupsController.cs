@@ -15,7 +15,7 @@ namespace BigRoom.Controllers
         private readonly IGroupService groupService;
         private readonly IToastNotification toastNotification;
 
-        public GroupsController(IUserManager userManager, IGroupService groupService,IToastNotification toastNotification) : base(userManager)
+        public GroupsController(IGroupService groupService,IToastNotification toastNotification)
         {
             this.groupService = groupService;
             this.toastNotification = toastNotification;

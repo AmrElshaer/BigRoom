@@ -15,7 +15,7 @@ namespace BigRoom.Controllers
         private readonly IDegreeService degreeService;
         private readonly IUserProfileService userProfileService;
 
-        public DegreeController(IUserManager userManager, IToastNotification toastNotification, IDegreeService degreeService, IUserProfileService userProfileService) : base(userManager)
+        public DegreeController(IToastNotification toastNotification, IDegreeService degreeService, IUserProfileService userProfileService)
         {
             this.toastNotification = toastNotification;
             this.degreeService = degreeService;

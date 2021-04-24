@@ -10,7 +10,7 @@ namespace BigRoom.Controllers
     {
         private readonly IUserProfileService profileService;
 
-        public StudentController(IUserProfileService profileService, IUserManager userManager) : base(userManager)
+        public StudentController(IUserProfileService profileService)
         {
             this.profileService = profileService;
         }
