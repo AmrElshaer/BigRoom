@@ -28,9 +28,9 @@
         @if ((string)ViewData["UserId"] == Model.Admin.UserId)
         {
             <a class="boxed_btn_orange" asp-action="Create" asp-controller="Quizes" asp-route-groupid="@Model.Id"><i class="fas fa-plus"></i> Quize</a>
-            
+
         }
-    <a class="boxed_btn_orange" asp-action="Index" asp-controller="Quizes" asp-route-Groupid="@Model.Id">Quizes</a>
+        <a class="boxed_btn_orange" asp-action="Index" asp-controller="Quizes" asp-route-Groupid="@Model.Id">Quizes</a>
     </div>
 </div>
 @section Scripts{

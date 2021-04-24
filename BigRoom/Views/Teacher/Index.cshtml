@@ -60,6 +60,10 @@
                     <td style="float:right;">
                         <button class="btn btn-primary text-white" data-clipboard-text="@item.Group.CodeJion" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Copy CodeJoin"><i class="far fa-copy"></i></button>
                         <a asp-controller="Groups" asp-action="GroupYouAdmin" asp-route-id="@item.Group.Id" class="btn btn-warning text-white"><i class="fas fa-info-circle"></i></a>
+                        <form action="UserGroups/LeaveFromGroup" onsubmit="return jQueryAjaxDelete(this,'Are you sure you want to Leave group');" style="display: inline-block">
+                            <input name="id" value="@item.Id" style="display: none" />
+                            <button class="btn btn-light" title="Leave Group"><i class="fas fa-sign-out-alt"></i></button>
+                        </form>
                     </td>
                 </tr>
             }

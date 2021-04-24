@@ -1,4 +1,24 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿jQueryAjaxDelete = (form, message) => {
+    if (confirm(message)) {
+        try {
+            $.ajax({
+                type: 'POST',
+                url: form.action,
+                data: new FormData(form),
+                contentType: false,
+                processData: false,
+                success: function (res) {
+                    location.reload();
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            })
+        } catch (ex) {
+            console.log(ex)
+        }
+    }
 
-// Write your JavaScript code.
+    //prevent default form submit event
+    return false;
+}

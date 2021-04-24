@@ -39,5 +39,13 @@ namespace BigRoom.Service.Service
         {
            return userGroupRepository.UserIsJoinGroup(groupId,userId).GetAwaiter().GetResult();
         }
+       
+
+        public async Task LeaveGroupAsync(int id)
+        {
+            var userGroup = await userGroupRepository.GetByIdAsync(id)??throw  new Exception();
+            await userGroupRepository.DeleteAsync(userGroup);
+            await this.uniteOfWork.SaveChangesAsync();
+        }
     }
 }

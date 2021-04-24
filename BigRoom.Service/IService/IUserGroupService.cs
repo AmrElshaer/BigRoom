@@ -11,5 +11,6 @@ namespace BigRoom.Service.IService
         bool IsExist(string codeJoin);
         bool UserIsJoinGroup(int groupId, int userId);
         Task CreateUserGroup(UserGroupsDto userGroupsDto);
+        Task LeaveGroupAsync(int id);
     }
 }

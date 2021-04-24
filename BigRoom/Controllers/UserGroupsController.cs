@@ -45,5 +45,19 @@ namespace BigRoom.Controllers
             }
             return View(userGroups);
         }
+        [HttpPost]
+        public async Task LeaveFromGroup(int id)
+        {
+            try
+            {
+                await userGroupService.LeaveGroupAsync(id);
+            }
+            catch (System.Exception)
+            {
+
+                throw;
+            }
+           
+        }
     }
 }
