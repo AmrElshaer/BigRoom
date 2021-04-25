@@ -13,20 +13,15 @@ namespace BigRoom.Controllers
     {
         private readonly IUserGroupService userGroupService;
         private readonly IToastNotification toastNotification;
-        private readonly IUserProfileService userProfileService;
 
-        public UserGroupsController(IUserGroupService userGroupService, IToastNotification toastNotification, IUserProfileService userProfileService)
+        public UserGroupsController(IUserGroupService userGroupService, IToastNotification toastNotification)
         {
             this.userGroupService = userGroupService;
             this.toastNotification = toastNotification;
-            this.userProfileService = userProfileService;
         }
 
-      
-        // GET: UserGroups/Create
         public async Task<IActionResult> Create()
         {
-            ViewBag.userProfileId = (await userProfileService.GetUserProfileAsync(await GetCurrentUserId()))?.Id;
             return View();
         }
 
@@ -37,6 +32,7 @@ namespace BigRoom.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(UserGroupsDto userGroups)
         {
+            userGroups.UserProfileId =await GetUserProfileId();
             if (ModelState.IsValid)
             {
                 await userGroupService.CreateUserGroup(userGroups);

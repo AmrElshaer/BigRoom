@@ -30,6 +30,7 @@ namespace BigRoom.Repository.Contexts
         public DbSet<Quize> Quizes { get; set; }
 
         public DbSet<Degree> Degrees { get; set; }
+        public DbSet<GroupPermission> GroupPermissions { get; set; }
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             foreach (var entry in ChangeTracker.Entries<AuditableEntity>().ToList())

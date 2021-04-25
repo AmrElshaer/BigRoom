@@ -24,11 +24,6 @@
                     <h4>Your CodeJoin  is</h4>
 
                     <form asp-action="Create" class="newsletter_form">
-                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                        <div class="form-group" style="display:none">
-                            <input asp-for="UserProfileId" value="@ViewBag.userProfileId" />
-                        </div>
-                        
                         <input asp-for="CodeJoin" placeholder="Code To Join" />
                         <button type="submit">Join To Group</button>
                         <span asp-validation-for="CodeJoin" class="text-danger"></span>

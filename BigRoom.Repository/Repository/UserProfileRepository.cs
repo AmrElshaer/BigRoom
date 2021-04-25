@@ -21,10 +21,10 @@ namespace BigRoom.Repository.Repository
             return (await this.Entities.FirstOrDefaultAsync(a=>a.UserId==identityId)).Id;
         }
 
-        public async Task<UserProfile> GetUserProfileAsync(string identityId)
+        public async Task<UserProfile> GetUserProfileAsync(int id)
         {
            return await  this.Entities.Include(a => a.GroupsThatAdmin).Include(a => a.Groups).ThenInclude(a => a.Group)
-                .FirstOrDefaultAsync(a => a.UserId == identityId);
+                .FirstOrDefaultAsync(a => a.Id == id);
         }
     }
 }

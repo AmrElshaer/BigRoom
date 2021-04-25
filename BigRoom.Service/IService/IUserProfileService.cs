@@ -9,6 +9,7 @@ namespace BigRoom.Service.IService
     public interface IUserProfileService
     {
         Task AddUserProfileAsync(string userId);
-        Task<UserProfileDto> GetUserProfileAsync(string identityId);
+        Task<int> GetUserProfileIdAsync(string identityId);
+        Task<UserProfileDto> GetUserProfileAsync(int id);
     }
 }

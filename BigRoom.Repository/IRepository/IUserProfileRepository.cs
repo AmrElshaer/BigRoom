@@ -8,7 +8,7 @@ namespace BigRoom.Repository.IRepository
 {
     public interface IUserProfileRepository:IRepositoryAsync<UserProfile>
     {
-      Task<UserProfile>  GetUserProfileAsync(string identityId);
+      Task<UserProfile>  GetUserProfileAsync(int id);
         Task<int> GetUserIdAsync(string identityId);
     }
 }

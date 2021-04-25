@@ -1,0 +1,41 @@
+﻿@model BigRoom.Service.DTO.GroupPermissionDto
+@{ 
+    Layout = null;
+}
+<form asp-action="CreateEdit">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="GroupId" class="control-label"></label>
+        <input asp-for="GroupId" class="form-control" />
+        <span asp-validation-for="GroupId" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="UserProfileId" class="control-label"></label>
+        <input asp-for="UserProfileId" class="form-control" />
+        <span asp-validation-for="UserProfileId" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="QuizeId" class="control-label"></label>
+        <input asp-for="QuizeId" class="form-control" />
+        <span asp-validation-for="QuizeId" class="text-danger"></span>
+    </div>
+    <div class="form-group form-check">
+        <label class="form-check-label">
+            <input class="form-check-input" asp-for="Edit" /> @Html.DisplayNameFor(model => model.Edit)
+        </label>
+    </div>
+    <div class="form-group form-check">
+        <label class="form-check-label">
+            <input class="form-check-input" asp-for="Create" /> @Html.DisplayNameFor(model => model.Create)
+        </label>
+    </div>
+    <div class="form-group form-check">
+        <label class="form-check-label">
+            <input class="form-check-input" asp-for="Delete" /> @Html.DisplayNameFor(model => model.Delete)
+        </label>
+    </div>
+        <input asp-for="Id" class="form-control" type="hidden"/>
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-primary" />
+    </div>
+</form>

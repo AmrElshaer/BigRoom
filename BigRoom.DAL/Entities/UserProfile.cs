@@ -19,5 +19,6 @@ namespace BigRoom.Model.Entities
         public ICollection<UserGroups> Groups { get; set; }
         public ICollection<Group> GroupsThatAdmin { get; set; }
         public ICollection<Quize> QuizesCreate { get; set; }
+        public ICollection<GroupPermission> GroupPermissions { get; set; }
     }
 }

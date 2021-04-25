@@ -26,10 +26,14 @@ namespace BigRoom.Service.Service
         {
            await  this.userProfileRepository.AddAsync(new UserProfile() { UserId=userId});
            await  uniteOfWork.SaveChangesAsync();
-        } 
-        public async Task<UserProfileDto> GetUserProfileAsync(string identityId)
+        }
+        public async Task<int> GetUserProfileIdAsync(string identityId)
         {
-            var userProfile=  await this.userProfileRepository.GetUserProfileAsync(identityId);
+            return await this.userProfileRepository.GetUserIdAsync(identityId);
+        }
+        public async Task<UserProfileDto> GetUserProfileAsync(int id)
+        {
+            var userProfile=  await this.userProfileRepository.GetUserProfileAsync(id);
             return mapper.Map<UserProfileDto>(userProfile);
         }
     }

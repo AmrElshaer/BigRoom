@@ -1,9 +1,4 @@
-﻿
-@inject IUserManager userManager 
-@{
-    var role = userManager.UserIsSignIn(User) ? (await userManager.GetRole(User)) : "Home";
-}
-<!DOCTYPEhtml>
+﻿<!DOCTYPEhtml>
 
     <html>
     <head>
@@ -42,7 +37,7 @@
                         <div class="row align-items-center no-gutters">
                             <div class="col-xl-2 col-lg-2">
                                 <div class="logo-img">
-                                    <a asp-area="" asp-controller="@role" asp-action="Index">
+                                    <a asp-area="" asp-controller="Home" asp-action="Index">
                                         <h1 class="boxed_btn_orange">BigRoom</h1>
                                     </a>
                                 </div>
@@ -52,7 +47,7 @@
                                     <nav>
                                         <ul id="navigation">
                                             <li>
-                                                <a asp-area="" asp-controller="@role" asp-action="Index">Home</a>
+                                                <a asp-area="" asp-controller="Exam" asp-action="Index">Home</a>
                                             </li>
                                             <li>
                                                 <a asp-area="" asp-controller="Degree" asp-action="Index">Degrees</a>
@@ -83,11 +78,7 @@
             </div>
         </header>
         @RenderSection("MainStyle", required: false)
-
-
-
         <div class="container">
-
             <partial name="_CookieConsentPartial" />
             <main role="main" style="margin-top:20%;margin-bottom:20%">
                 @RenderBody()

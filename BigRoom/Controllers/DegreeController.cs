@@ -13,27 +13,24 @@ namespace BigRoom.Controllers
     {
         private readonly IToastNotification toastNotification;
         private readonly IDegreeService degreeService;
-        private readonly IUserProfileService userProfileService;
 
-        public DegreeController(IToastNotification toastNotification, IDegreeService degreeService, IUserProfileService userProfileService)
+        public DegreeController(IToastNotification toastNotification, IDegreeService degreeService)
         {
             this.toastNotification = toastNotification;
             this.degreeService = degreeService;
-            this.userProfileService = userProfileService;
         }
 
         public async Task<IActionResult> CalculateDegree(IList<string> answers, int quizeId)
         {
-            var userId = (await userProfileService.GetUserProfileAsync(await GetCurrentUserId())).Id;
-            await degreeService.CalCulateDegreeAsync(answers, quizeId, userId);
+            await degreeService.CalCulateDegreeAsync(answers, quizeId, await GetUserProfileId());
             this.toastNotification.AddSuccessToastMessage($"Quize Send Success", new ToastrOptions() { ToastClass = "btn-success" });
             return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> Index()
         {
-            var userId = (await userProfileService.GetUserProfileAsync(await GetCurrentUserId())).Id;
-            return View(await degreeService.GetDegreesAsync(userId));
+           
+            return View(await degreeService.GetDegreesAsync(await GetUserProfileId()));
         }
         public async Task<IActionResult> GetStudentsDegrees(int quizeId)
         {

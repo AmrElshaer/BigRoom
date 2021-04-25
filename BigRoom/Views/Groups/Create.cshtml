@@ -24,7 +24,7 @@
                 <div class="row">
 
                     <div class="col-xl-12 col-md-12">
-                        <input asp-for="CodeJion" value="@ViewData["Guid"]">
+                        <input asp-for="CodeJion" value="@(Guid.NewGuid().ToString())">
                     </div>
                     <span asp-validation-for="CodeJion" class="text-danger"></span>
                     <div class="col-xl-12 col-md-12">

@@ -34,7 +34,7 @@ namespace BigRoom.Service.Service
 
         public async Task<IEnumerable<QuizeDto>> GetQuziesByGroupAsync(int groupId)
         {
-            return await quizeRepository.GetAllAsync(a => a.GroupId == groupId).Include(a=>a.UserProfile)
+            return await quizeRepository.GetAllAsync(a => a.GroupId == groupId)
                 .ProjectTo<QuizeDto>(mapper.ConfigurationProvider).ToListAsync();
         }
         public async Task CreateQuizeAsync(QuizeDto quizeDto)

@@ -11,6 +11,7 @@ namespace BigRoom.Model.Entities
         }
 
         public ICollection<Degree> Degrees { get; set; }
+        public ICollection<GroupPermission> GroupPermissions { get; set; }
         public string Description { get; set; }
         public string File { get; set; }
         public string Fileanswer { get; set; }

@@ -43,14 +43,13 @@ namespace BigRoom.Controllers
             if (id == null) return NotFound();
             var group = await groupService.GroupDetailsByIdAsync(id.Value);
             if (group == null) return NotFound();
-            ViewData["UserId"] = await GetCurrentUserId();
+            ViewData["UserId"] = await GetUserProfileId();
             return View(group);
         }
 
         // GET: Groups/Create
         public IActionResult Create()
         {
-            ViewData["Guid"] = Guid.NewGuid().ToString();
             return View();
         }
 
@@ -63,11 +62,11 @@ namespace BigRoom.Controllers
         {
             if (ModelState.IsValid)
             {
-                await groupService.CreateGroup(group, (await GetCurrentUserId()));
+                group.AdminId = await GetUserProfileId();
+                await groupService.CreateGroup(group);
                 this.toastNotification.AddSuccessToastMessage($"Group {group.Name} is created success",new ToastrOptions() { ToastClass= "btn-success" });
-                return RedirectToAction("Index", controllerName: (await GetRoleAsync())); 
+                return RedirectToAction("Index", controllerName: "Exam"); 
             }
-            ViewData["Guid"] = Guid.NewGuid().ToString();
             return View(group);
         }
 
@@ -91,7 +90,7 @@ namespace BigRoom.Controllers
             {
                 await groupService.UpdateGroup(group);
                 this.toastNotification.AddSuccessToastMessage($"Group {group.Name} is edit success", new ToastrOptions() { ToastClass = "btn-success" });
-                return RedirectToAction("Index", controllerName: (await GetRoleAsync()));
+                return RedirectToAction("Index", controllerName: "Exam");
             }
             return View(group);
         }
@@ -102,7 +101,7 @@ namespace BigRoom.Controllers
             if (id == null) return NotFound();
             await groupService.DeleteGroup(id.Value);
             this.toastNotification.AddSuccessToastMessage($"Group deleted success", new ToastrOptions() { ToastClass = "btn-success" });
-            return RedirectToAction("Index", controllerName: (await GetRoleAsync()));
+            return RedirectToAction("Index", controllerName: "Exam");
         }
     }
 }

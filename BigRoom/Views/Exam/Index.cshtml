@@ -1,6 +1,4 @@
 ﻿@model UserProfileDto
-
-
 @section MainStyle{
     <!-- bradcam_area_start -->
     <div class="courses_details_banner">
@@ -41,35 +39,35 @@
         <tbody>
             @foreach (var item in Model.Groups)
             {
-                <tr>
-                    <td>
-                        @item.Group.Name
-                    </td>
-                    <td>
-                        @item.Group.CreatedOn
-                    </td>
-                    <td>
-                        @item.Group.CreatedBy.GetNameFromEmail()
-                    </td>
-                    <td>
-                        @item.Group.LastModifiedOn
-                    </td>
-                    <td>
-                        @item.Group.LastModifiedBy.GetNameFromEmail()
-                    </td>
-                    <td style="float:right;">
-                        <button class="btn btn-primary text-white" data-clipboard-text="@item.Group.CodeJion" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Copy CodeJoin"><i class="far fa-copy"></i></button>
-                        <a asp-controller="Groups" asp-action="GroupYouAdmin" asp-route-id="@item.Group.Id" class="btn btn-warning text-white"><i class="fas fa-info-circle"></i></a>
-                        <form action="UserGroups/LeaveFromGroup" onsubmit="return jQueryAjaxDelete(this,'Are you sure you want to Leave group');" style="display: inline-block">
-                            <input name="id" value="@item.Id" style="display: none" />
-                            <button class="btn btn-light" title="Leave Group"><i class="fas fa-sign-out-alt"></i></button>
-                        </form>
-                    </td>
-                </tr>
+            <tr>
+                <td>
+                    @item.Group.Name
+                </td>
+                <td>
+                    @item.Group.CreatedOn
+                </td>
+                <td>
+                    @item.Group.CreatedBy.GetNameFromEmail()
+                </td>
+                <td>
+                    @item.Group.LastModifiedOn
+                </td>
+                <td>
+                    @item.Group.LastModifiedBy.GetNameFromEmail()
+                </td>
+                <td style="float:right;">
+                    <button class="btn btn-primary text-white" data-clipboard-text="@item.Group.CodeJion" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Copy CodeJoin"><i class="far fa-copy"></i></button>
+                    <a asp-controller="Groups" asp-action="GroupYouAdmin" asp-route-id="@item.Group.Id" class="btn btn-warning text-white"><i class="fas fa-info-circle"></i></a>
+                    <form  action="UserGroups/LeaveFromGroup" onsubmit="return jQueryAjaxDelete(this,'Are you sure you want to Leave group');"  style="display: inline-block">
+                        <input name="id" value="@item.Id" style="display: none" />
+                        <button class="btn btn-light"  title="Leave Group"><i class="fas fa-sign-out-alt"></i></button>
+                    </form>
+                </td>
+            </tr>
             }
         </tbody>
     </table>
-
+    <br />
     <table class="table">
         <caption style="text-align:center">Groups you Admin</caption>
 
@@ -115,8 +113,9 @@
 
 </div>
 @section Scripts{
+<script src="~/js/site.js"></script>
     <script src="~/js/clipboard.min.js"></script>
-    <script>
+<script>
     var clipboard = new ClipboardJS('.btn');
 
     clipboard.on('success', function (e) {
@@ -133,6 +132,6 @@
         console.error('Trigger:', e.trigger);
         console.log("Failed");
     });
-    </script>
-
+</script>
+  
 }

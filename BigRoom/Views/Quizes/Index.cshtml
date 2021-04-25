@@ -54,7 +54,7 @@
                         {
                             <a class="btn btn-info text-white" asp-action="Details" asp-route-id="@item.Id" title="Do Exam"><i class="fas fa-sign-in-alt"></i></a>
                         }
-                        @if (item.UserProfile.UserId == (string)ViewData["UserId"])
+                        @if (item.UserProfileId == (int)ViewData["UserId"])
                         {
                             <a asp-action="GetStudentsDegrees" asp-controller="Degree" asp-route-quizeId="@item.Id" title="Details" class="btn btn-warning text-white"><i class="fas fa-info-circle"></i></a>
                             <a class="btn btn-info text-white" asp-action="Edit" asp-route-id="@item.Id"><i class="far fa-edit"></i></a>

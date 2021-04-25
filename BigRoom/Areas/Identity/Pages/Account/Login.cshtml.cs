@@ -68,18 +68,9 @@ namespace BigRoom.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var signUser = await _userManager.SignInAsync(Input.Email, Input.Password, Input.RememberMe);
-
                 if (signUser.result.Succeeded)
                 {
-                    switch (signUser.role)
-                    {
-                        case "Student":
-                            return RedirectToAction(controllerName: "Student", actionName: "Index");
-
-                        case "Teacher":
-                            return RedirectToAction(controllerName: "Teacher", actionName: "Index");
-                    }
-                    return LocalRedirect(returnUrl);
+                   return  RedirectToAction(controllerName: "Exam", actionName: "Index");
                 }
                 ModelState.AddModelError(string.Empty, "Invalid login attempt.");
             }

@@ -31,7 +31,7 @@ namespace BigRoom.Controllers
 
         public async Task<IActionResult> Index(int groupId)
         {
-            ViewData["UserId"] = await GetCurrentUserId();
+            ViewData["UserId"] = await GetUserProfileId();
             var result = await quzieService.GetQuziesByGroupAsync(groupId);
             return View(result);
         }
@@ -39,8 +39,7 @@ namespace BigRoom.Controllers
         // GET: Quizes/Details/5
         public async Task<IActionResult> Details(int id)
         {
-            var userId = (await userProfileService.GetUserProfileAsync(await GetCurrentUserId())).Id;
-            var isDoExam =await degreeService.IsDoExamAsync(id,userId);
+            var isDoExam =await degreeService.IsDoExamAsync(id, await GetUserProfileId());
             if (isDoExam)
             {
                 this.toastNotification.AddWarningToastMessage($"You Do this exam before", new ToastrOptions() { ToastClass = "btn-warning" });
@@ -64,7 +63,7 @@ namespace BigRoom.Controllers
         {
             if (ModelState.IsValid)
             {
-                quize.UserProfileId = (await userProfileService.GetUserProfileAsync(await GetCurrentUserId())).Id;
+                quize.UserProfileId =await GetUserProfileId();
                 await quzieService.CreateQuizeAsync(quize);
                 this.toastNotification.AddSuccessToastMessage($"Quize {quize.Description} Created Success", new ToastrOptions() { ToastClass = "btn-success" });
                 return RedirectToAction(nameof(Index), new { Groupid = quize.GroupId });

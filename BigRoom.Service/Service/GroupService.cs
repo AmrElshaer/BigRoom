@@ -14,20 +14,18 @@ namespace BigRoom.Service.Service
     {
         private readonly IUniteOfWork uniteOfWork;
         private readonly IGroupRepository groupRepository;
-        private readonly IUserProfileRepository profileRepository;
         private readonly IMapper mapper;
 
-        public GroupService(IUniteOfWork uniteOfWork,IGroupRepository groupRepository,IUserProfileRepository profileRepository,IMapper mapper)
+        public GroupService(IUniteOfWork uniteOfWork,IGroupRepository groupRepository,IMapper mapper)
         {
             this.uniteOfWork = uniteOfWork;
             this.groupRepository = groupRepository;
-            this.profileRepository = profileRepository;
             this.mapper = mapper;
         }
 
-        public async Task CreateGroup(GroupDto group, string identityId)
+        public async Task CreateGroup(GroupDto group)
         {
-            group.AdminId=await  profileRepository.GetUserIdAsync(identityId);
+            
             var entity = mapper.Map<Group>(group);
             await groupRepository.AddAsync(entity);
             await uniteOfWork.SaveChangesAsync();

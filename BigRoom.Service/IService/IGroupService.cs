@@ -9,7 +9,7 @@ namespace BigRoom.Service.IService
     public interface IGroupService
     {
        bool IsUniqueName(string name);
-       Task CreateGroup(GroupDto group,string identityId);
+       Task CreateGroup(GroupDto group);
         Task<GroupDto> GetByIdAsync(int id);
         Task UpdateGroup(GroupDto groupDto);
         Task DeleteGroup(int groupId);

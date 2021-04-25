@@ -1,0 +1,47 @@
+﻿@model IEnumerable<BigRoom.Service.DTO.GroupPermissionDto>
+
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.GroupId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserProfileId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.QuizeId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Edit)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Create)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Delete)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedBy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedOn)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastModifiedBy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastModifiedOn)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                <button class="btn btn-outline-light" onclick="showInPopup('@Url.Action("CreateEdit","GroupPermission",new {id=item.Id},Context.Request.Scheme)','Edit GroupPermission')"><i class="far fa-edit"></i></button>
+                <form asp-action="Delete" onsubmit="return jQueryAjaxDelete(this);" style="display: inline-block">
+                    <input name="id" value="@item.Id" style="display: none" />
+                    <button class="btn btn-outline-light"><i class="fas fa-trash-alt"></i></button>
+                </form>
+            </td>
+        </tr>
+}
+

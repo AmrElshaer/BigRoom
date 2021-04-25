@@ -38,18 +38,7 @@ namespace Classroom.Areas.Identity.Pages.Account
                 var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email,Image=Input.Image };
 
                 var userAdd = await _userManager.CreateAsync(user, Input.Password, Input.RoleId);
-                if (userAdd.result.Succeeded)
-                {
-                    switch (userAdd.role)
-                    {
-                        case "Student":
-                            return RedirectToAction(controllerName: "Student", actionName: "Index");
-
-                        case "Teacher":
-                            return RedirectToAction(controllerName: "Teacher", actionName: "Index");
-                    }
-                    return LocalRedirect(returnUrl);
-                }
+                if (userAdd.result.Succeeded) return RedirectToAction(controllerName: "Exam", actionName: "Index");
                 userAdd.result.Errors.ToList().ForEach(error => ModelState.AddModelError(string.Empty, error.Description));
             }
 

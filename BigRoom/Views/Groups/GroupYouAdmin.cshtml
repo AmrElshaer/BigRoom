@@ -25,12 +25,13 @@
                 <li class="list-group-item"><img style="max-width: 50px;margin-right: 5px" class="rounded float-left" src="@user.Image" /> @(user.Email.GetNameFromEmail())</li>
             }
         </ol>
-        @if ((string)ViewData["UserId"] == Model.Admin.UserId)
+        @if ((int)ViewData["UserId"] == Model.AdminId)
         {
-            <a class="boxed_btn_orange" asp-action="Create" asp-controller="Quizes" asp-route-groupid="@Model.Id"><i class="fas fa-plus"></i> Quize</a>
+            <a class="boxed_btn_orange" asp-action="Create" asp-controller="Quizes" asp-route-groupid="@Model.Id"><i class="fas fa-plus"></i> Add Quize</a>
 
         }
         <a class="boxed_btn_orange" asp-action="Index" asp-controller="Quizes" asp-route-Groupid="@Model.Id">Quizes</a>
+        <a class="btn btn-primary" asp-action="Index" asp-controller="GroupPermission">Manage permission</a>
     </div>
 </div>
 @section Scripts{
