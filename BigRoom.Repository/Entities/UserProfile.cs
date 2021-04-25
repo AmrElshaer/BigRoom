@@ -1,4 +1,5 @@
 ﻿using BigRoom.Repository.Common;
+using BigRoom.Repository.Contexts;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -15,6 +16,7 @@ namespace BigRoom.Repository.Entities
             QuizesCreate = new HashSet<Quize>();
         }
         public string UserId { get; set; }
+        public ApplicationUser ApplicationUser { get; set; }
         public ICollection<Degree> Degrees { get; set; }
         public ICollection<UserGroups> Groups { get; set; }
         public ICollection<Group> GroupsThatAdmin { get; set; }

@@ -1,4 +1,4 @@
-﻿using BigRoom.Model.Entities;
+﻿using BigRoom.Repository.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;

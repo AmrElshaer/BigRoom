@@ -19,6 +19,7 @@
                   crossorigin="anonymous"
                   integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" />
         </environment>
+
         <link rel="stylesheet" href="~/css/magnific-popup.css">
         <link rel="stylesheet" href="~/css/font-awesome.min.css">
         <link rel="stylesheet" href="~/css/themify-icons.css">
@@ -28,6 +29,11 @@
         <link rel="stylesheet" href="~/css/animate.css">
         <link rel="stylesheet" href="~/css/slicknav.css">
         <link rel="stylesheet" href="~/css/style.css">
+        <style>
+            .hide{
+                display:none;
+            }
+        </style>
     </head>
     <body>
         <header>
@@ -84,7 +90,12 @@
                 @RenderBody()
             </main>
         </div>
-
+        <div class="text-center hide" id="loaderbody" style="width: 100%; height: 100%; left: 0px; top: 0px; position: absolute;z-index: 2147483647;">
+            <div class="spinner-border text-primary" style="width: 3rem;height: 3rem;position: fixed;top: 45%;left: 45%;" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+      
         <!-- footer -->
         <footer class="footer footer_bg_1">
             <div class="footer_top">
@@ -151,6 +162,7 @@
             </script>
         </environment>
         <script src="~/js/jquery.slicknav.min.js"></script>
+        <script src="~/js/site.js"></script>
         @RenderSection("Scripts", required: false)
         @await Component.InvokeAsync("NToastNotify")
     </body>

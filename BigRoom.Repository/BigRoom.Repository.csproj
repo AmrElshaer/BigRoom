@@ -29,8 +29,4 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\BigRoom.DAL\BigRoom.Model.csproj" />
-  </ItemGroup>
-
 </Project>

@@ -1,5 +1,5 @@
-﻿using BigRoom.Model.Common;
-using BigRoom.Model.Entities;
+﻿using BigRoom.Repository.Common;
+using BigRoom.Repository.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;

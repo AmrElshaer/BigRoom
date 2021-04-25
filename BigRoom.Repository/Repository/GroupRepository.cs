@@ -1,4 +1,4 @@
-﻿using BigRoom.Model.Entities;
+﻿using BigRoom.Repository.Entities;
 using BigRoom.Repository.Contexts;
 using BigRoom.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
@@ -29,7 +29,8 @@ namespace BigRoom.Repository.Repository
         }
         public async Task<Group> GroupDetailsByIdAsync(int id)
         {
-            var group = await Entities.Include(a => a.Groups).ThenInclude(a=>a.UserProfile).Include(a=>a.Admin).FirstOrDefaultAsync(a => a.Id==id);
+            var group = await Entities.Include(a => a.Groups).ThenInclude(a=>a.UserProfile).ThenInclude(a=>a.ApplicationUser)
+                .Include(a=>a.Admin).FirstOrDefaultAsync(a => a.Id==id);
             return group;
         }
         public async Task<bool> UniquesNameAsync(string name)

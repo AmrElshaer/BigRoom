@@ -12,5 +12,6 @@ namespace BigRoom.Service.IService
         bool UserIsJoinGroup(int groupId, int userId);
         Task CreateUserGroup(UserGroupsDto userGroupsDto);
         Task LeaveGroupAsync(int id);
+        Task<IEnumerable<object>> GetUserInGroupAsync(int groupId);
     }
 }

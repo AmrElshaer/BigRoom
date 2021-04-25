@@ -1,4 +1,4 @@
-﻿using BigRoom.Model.Common;
+﻿using BigRoom.Repository.Common;
 using BigRoom.Repository.Contexts;
 using BigRoom.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;

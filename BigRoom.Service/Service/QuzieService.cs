@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using BigRoom.Model.Entities;
+using BigRoom.Repository.Entities;
 using BigRoom.Repository.IRepository;
 using BigRoom.Service.Common.Models;
 using BigRoom.Service.DTO;

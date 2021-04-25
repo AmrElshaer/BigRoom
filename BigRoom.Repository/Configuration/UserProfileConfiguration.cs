@@ -1,4 +1,4 @@
-﻿using BigRoom.Model.Entities;
+﻿using BigRoom.Repository.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -11,6 +11,7 @@ namespace BigRoom.Repository.Configuration
     {
         public void Configure(EntityTypeBuilder<UserProfile> builder)
         {
+            builder.HasOne(a => a.ApplicationUser).WithMany(a => a.UserProfiles).HasForeignKey(a => a.UserId);
         }
     }
 }

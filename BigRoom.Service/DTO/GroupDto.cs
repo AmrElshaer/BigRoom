@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using BigRoom.Model.Common;
-using BigRoom.Model.Entities;
+using BigRoom.Repository.Common;
+using BigRoom.Repository.Entities;
 using BigRoom.Service.Common.Mappings;
 using BigRoom.Service.Common.Models;
 using System;

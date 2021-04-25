@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using BigRoom.Model.Entities;
+using BigRoom.Repository.Entities;
 using BigRoom.Repository.IRepository;
 using BigRoom.Service.DTO;
 using BigRoom.Service.IService;
@@ -26,8 +26,8 @@ namespace BigRoom.Service.Service
         }
         public async Task<IEnumerable<GroupPermissionDto>> GetGroupPermissions(int groupId)
         {
-            return await groupPermissionRepository.GetAllAsync(a => a.GroupId == groupId)
-                .ProjectTo<GroupPermissionDto>(mapper.ConfigurationProvider).ToListAsync();
+            return await groupPermissionRepository.GetAllAsync(a => a.GroupId == groupId).Include(a=>a.Group).Include(a=>a.UserProfile.ApplicationUser)
+                .Include(a=>a.Quize).ProjectTo<GroupPermissionDto>(mapper.ConfigurationProvider).ToListAsync();
         }
         public async Task CreateEditAsync(GroupPermissionDto groupPermissionDto)
         {
@@ -42,7 +42,12 @@ namespace BigRoom.Service.Service
             }
             await uniteOfWork.SaveChangesAsync();
         }
-
+        public async Task DeleteAsync(int id)
+        {
+            var permission =await groupPermissionRepository.GetByIdAsync(id) ?? throw new Exception();
+            await groupPermissionRepository.DeleteAsync(permission);
+            await uniteOfWork.SaveChangesAsync();
+        }
         public async Task<GroupPermissionDto> GetGroupPermissionById(int id)
         {
             return  mapper.Map<GroupPermissionDto>(await groupPermissionRepository.GetByIdAsync(id));

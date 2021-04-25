@@ -19,166 +19,6 @@ namespace BigRoom.Repository.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("BigRoom.Model.Entities.Degree", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("ExamDegree");
-
-                    b.Property<int>("QuizeId");
-
-                    b.Property<int>("TotalDegree");
-
-                    b.Property<int?>("UserProfileId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("QuizeId");
-
-                    b.HasIndex("UserProfileId");
-
-                    b.ToTable("Degrees");
-                });
-
-            modelBuilder.Entity("BigRoom.Model.Entities.Group", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("AdminId");
-
-                    b.Property<string>("CodeJion");
-
-                    b.Property<string>("CreatedBy");
-
-                    b.Property<DateTime>("CreatedOn");
-
-                    b.Property<string>("LastModifiedBy");
-
-                    b.Property<DateTime?>("LastModifiedOn");
-
-                    b.Property<string>("Name");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AdminId");
-
-                    b.ToTable("Groups");
-                });
-
-            modelBuilder.Entity("BigRoom.Model.Entities.GroupPermission", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("Create");
-
-                    b.Property<string>("CreatedBy");
-
-                    b.Property<DateTime>("CreatedOn");
-
-                    b.Property<bool>("Delete");
-
-                    b.Property<bool>("Edit");
-
-                    b.Property<int>("GroupId");
-
-                    b.Property<string>("LastModifiedBy");
-
-                    b.Property<DateTime?>("LastModifiedOn");
-
-                    b.Property<int?>("QuizeId");
-
-                    b.Property<int?>("UserProfileId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GroupId");
-
-                    b.HasIndex("QuizeId");
-
-                    b.HasIndex("UserProfileId");
-
-                    b.ToTable("GroupPermissions");
-                });
-
-            modelBuilder.Entity("BigRoom.Model.Entities.Quize", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("CreatedBy");
-
-                    b.Property<DateTime>("CreatedOn");
-
-                    b.Property<string>("Description");
-
-                    b.Property<string>("File");
-
-                    b.Property<string>("Fileanswer");
-
-                    b.Property<int>("GroupId");
-
-                    b.Property<int?>("Hour");
-
-                    b.Property<string>("LastModifiedBy");
-
-                    b.Property<DateTime?>("LastModifiedOn");
-
-                    b.Property<int?>("Minute");
-
-                    b.Property<DateTime>("TimeEnd");
-
-                    b.Property<DateTime>("TimeStart");
-
-                    b.Property<int?>("UserProfileId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GroupId");
-
-                    b.HasIndex("UserProfileId");
-
-                    b.ToTable("Quizes");
-                });
-
-            modelBuilder.Entity("BigRoom.Model.Entities.UserGroups", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("GroupId");
-
-                    b.Property<int?>("UserProfileId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GroupId");
-
-                    b.HasIndex("UserProfileId");
-
-                    b.ToTable("UserGroups");
-                });
-
-            modelBuilder.Entity("BigRoom.Model.Entities.UserProfile", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("UserId");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("UserProfiles");
-                });
-
             modelBuilder.Entity("BigRoom.Repository.Contexts.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
@@ -232,6 +72,168 @@ namespace BigRoom.Repository.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("BigRoom.Repository.Entities.Degree", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ExamDegree");
+
+                    b.Property<int>("QuizeId");
+
+                    b.Property<int>("TotalDegree");
+
+                    b.Property<int?>("UserProfileId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("QuizeId");
+
+                    b.HasIndex("UserProfileId");
+
+                    b.ToTable("Degrees");
+                });
+
+            modelBuilder.Entity("BigRoom.Repository.Entities.Group", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AdminId");
+
+                    b.Property<string>("CodeJion");
+
+                    b.Property<string>("CreatedBy");
+
+                    b.Property<DateTime>("CreatedOn");
+
+                    b.Property<string>("LastModifiedBy");
+
+                    b.Property<DateTime?>("LastModifiedOn");
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AdminId");
+
+                    b.ToTable("Groups");
+                });
+
+            modelBuilder.Entity("BigRoom.Repository.Entities.GroupPermission", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Create");
+
+                    b.Property<string>("CreatedBy");
+
+                    b.Property<DateTime>("CreatedOn");
+
+                    b.Property<bool>("Delete");
+
+                    b.Property<bool>("Edit");
+
+                    b.Property<int>("GroupId");
+
+                    b.Property<string>("LastModifiedBy");
+
+                    b.Property<DateTime?>("LastModifiedOn");
+
+                    b.Property<int?>("QuizeId");
+
+                    b.Property<int?>("UserProfileId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GroupId");
+
+                    b.HasIndex("QuizeId");
+
+                    b.HasIndex("UserProfileId");
+
+                    b.ToTable("GroupPermissions");
+                });
+
+            modelBuilder.Entity("BigRoom.Repository.Entities.Quize", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CreatedBy");
+
+                    b.Property<DateTime>("CreatedOn");
+
+                    b.Property<string>("Description");
+
+                    b.Property<string>("File");
+
+                    b.Property<string>("Fileanswer");
+
+                    b.Property<int>("GroupId");
+
+                    b.Property<int?>("Hour");
+
+                    b.Property<string>("LastModifiedBy");
+
+                    b.Property<DateTime?>("LastModifiedOn");
+
+                    b.Property<int?>("Minute");
+
+                    b.Property<DateTime>("TimeEnd");
+
+                    b.Property<DateTime>("TimeStart");
+
+                    b.Property<int?>("UserProfileId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GroupId");
+
+                    b.HasIndex("UserProfileId");
+
+                    b.ToTable("Quizes");
+                });
+
+            modelBuilder.Entity("BigRoom.Repository.Entities.UserGroups", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("GroupId");
+
+                    b.Property<int?>("UserProfileId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GroupId");
+
+                    b.HasIndex("UserProfileId");
+
+                    b.ToTable("UserGroups");
+                });
+
+            modelBuilder.Entity("BigRoom.Repository.Entities.UserProfile", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserProfiles");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -259,14 +261,14 @@ namespace BigRoom.Repository.Migrations
                         new
                         {
                             Id = "1",
-                            ConcurrencyStamp = "366ebbb6-3b81-4d3c-8d45-83dff12a1c18",
+                            ConcurrencyStamp = "9c4f7998-9abe-4080-8f43-a75d56b92b38",
                             Name = "Teacher",
                             NormalizedName = "TEACHER"
                         },
                         new
                         {
                             Id = "2",
-                            ConcurrencyStamp = "dd659391-24ef-4776-ab5b-211df8f62039",
+                            ConcurrencyStamp = "ea3eec73-cf04-42d8-b756-6e7e224014a8",
                             Name = "Student",
                             NormalizedName = "STUDENT"
                         });
@@ -358,64 +360,71 @@ namespace BigRoom.Repository.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("BigRoom.Model.Entities.Degree", b =>
+            modelBuilder.Entity("BigRoom.Repository.Entities.Degree", b =>
                 {
-                    b.HasOne("BigRoom.Model.Entities.Quize", "Quize")
+                    b.HasOne("BigRoom.Repository.Entities.Quize", "Quize")
                         .WithMany("Degrees")
                         .HasForeignKey("QuizeId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("BigRoom.Model.Entities.UserProfile", "UserProfile")
+                    b.HasOne("BigRoom.Repository.Entities.UserProfile", "UserProfile")
                         .WithMany("Degrees")
                         .HasForeignKey("UserProfileId");
                 });
 
-            modelBuilder.Entity("BigRoom.Model.Entities.Group", b =>
+            modelBuilder.Entity("BigRoom.Repository.Entities.Group", b =>
                 {
-                    b.HasOne("BigRoom.Model.Entities.UserProfile", "Admin")
+                    b.HasOne("BigRoom.Repository.Entities.UserProfile", "Admin")
                         .WithMany("GroupsThatAdmin")
                         .HasForeignKey("AdminId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("BigRoom.Model.Entities.GroupPermission", b =>
+            modelBuilder.Entity("BigRoom.Repository.Entities.GroupPermission", b =>
                 {
-                    b.HasOne("BigRoom.Model.Entities.Group", "Group")
+                    b.HasOne("BigRoom.Repository.Entities.Group", "Group")
                         .WithMany("GroupPermissions")
                         .HasForeignKey("GroupId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("BigRoom.Model.Entities.Quize", "Quize")
+                    b.HasOne("BigRoom.Repository.Entities.Quize", "Quize")
                         .WithMany("GroupPermissions")
                         .HasForeignKey("QuizeId");
 
-                    b.HasOne("BigRoom.Model.Entities.UserProfile", "UserProfile")
+                    b.HasOne("BigRoom.Repository.Entities.UserProfile", "UserProfile")
                         .WithMany("GroupPermissions")
                         .HasForeignKey("UserProfileId");
                 });
 
-            modelBuilder.Entity("BigRoom.Model.Entities.Quize", b =>
+            modelBuilder.Entity("BigRoom.Repository.Entities.Quize", b =>
                 {
-                    b.HasOne("BigRoom.Model.Entities.Group", "Group")
+                    b.HasOne("BigRoom.Repository.Entities.Group", "Group")
                         .WithMany("Quizes")
                         .HasForeignKey("GroupId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("BigRoom.Model.Entities.UserProfile", "UserProfile")
+                    b.HasOne("BigRoom.Repository.Entities.UserProfile", "UserProfile")
                         .WithMany("QuizesCreate")
                         .HasForeignKey("UserProfileId");
                 });
 
-            modelBuilder.Entity("BigRoom.Model.Entities.UserGroups", b =>
+            modelBuilder.Entity("BigRoom.Repository.Entities.UserGroups", b =>
                 {
-                    b.HasOne("BigRoom.Model.Entities.Group", "Group")
+                    b.HasOne("BigRoom.Repository.Entities.Group", "Group")
                         .WithMany("Groups")
                         .HasForeignKey("GroupId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("BigRoom.Model.Entities.UserProfile", "UserProfile")
+                    b.HasOne("BigRoom.Repository.Entities.UserProfile", "UserProfile")
                         .WithMany("Groups")
                         .HasForeignKey("UserProfileId");
+                });
+
+            modelBuilder.Entity("BigRoom.Repository.Entities.UserProfile", b =>
+                {
+                    b.HasOne("BigRoom.Repository.Contexts.ApplicationUser", "ApplicationUser")
+                        .WithMany("UserProfiles")
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

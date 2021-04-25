@@ -1,47 +1,34 @@
 ﻿@model IEnumerable<BigRoom.Service.DTO.GroupPermissionDto>
 
 @foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.GroupId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserProfileId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.QuizeId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Edit)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Create)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Delete)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedBy)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedOn)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LastModifiedBy)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LastModifiedOn)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                <button class="btn btn-outline-light" onclick="showInPopup('@Url.Action("CreateEdit","GroupPermission",new {id=item.Id},Context.Request.Scheme)','Edit GroupPermission')"><i class="far fa-edit"></i></button>
-                <form asp-action="Delete" onsubmit="return jQueryAjaxDelete(this);" style="display: inline-block">
-                    <input name="id" value="@item.Id" style="display: none" />
-                    <button class="btn btn-outline-light"><i class="fas fa-trash-alt"></i></button>
-                </form>
-            </td>
-        </tr>
+<tr>
+    <td>
+        <img style="max-width: 50px;margin-right: 5px" class="rounded float-left" src="@item.UserProfile.ApplicationUser.Image" /><h4>@item.UserProfile.ApplicationUser.Email.GetNameFromEmail()</h4>
+    </td>
+    <td>
+        @item.Group.Name
+    </td>
+
+    <td>
+        @Html.DisplayFor(modelItem => item.Quize.Description)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Edit)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Create)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Delete)
+    </td>
+    <td>
+        <button  class="btn btn-info text-white" onclick="showInPopup('@Url.Action("CreateEdit","GroupPermission",new {id=item.Id,groupId=item.GroupId},Context.Request.Scheme)','Edit GroupPermission')"><i class="far fa-edit"></i></button>
+        <form asp-action="Delete" onsubmit="return jQueryAjaxDelete(this,'are you sure you want to remove this permission');" style="display: inline-block">
+            <input name="id" value="@item.Id" style="display: none" />
+            <input name="groupId" type="hidden" value="@item.GroupId" />
+            <button class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>
+        </form>
+    </td>
+</tr>
 }
 

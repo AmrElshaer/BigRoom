@@ -1,4 +1,11 @@
-﻿showInPopup = (url, title) => {
+﻿$(function () {
+    $(document).bind('ajaxStart', function () {
+        $("#loaderbody").removeClass('hide');
+    }).bind('ajaxStop', function () {
+        $("#loaderbody").addClass('hide');
+    });
+});
+showInPopup = (url, title) => {
     $.ajax({
         type: 'GET',
         url: url,
@@ -48,7 +55,7 @@ jQueryAjaxDelete = (form, message) => {
                 contentType: false,
                 processData: false,
                 success: function (res) {
-                    location.reload();
+                    $('#view-all').html(res.html)
                 },
                 error: function (err) {
                     console.log(err);

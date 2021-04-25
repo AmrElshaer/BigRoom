@@ -15,19 +15,23 @@
     </div>
     <!-- bradcam_area_end -->
 }
-<button type="button" class="btn" onclick="showInPopup('@Url.Action("CreateEdit","GroupPermission",null,Context.Request.Scheme)','Add Permission')">Add</button>
+<p class="mb-5 mt-5 text-center">
+    <button type="button" class="btn btn-primary" onclick="showInPopup('@Url.Action("CreateEdit","GroupPermission",new {groupId=(int)ViewBag.GroupId},Context.Request.Scheme)','Add Permission')">Create Permission</button>
+
+</p>
 
 <table class="table">
-    <thead>
+    <thead class="thead-dark">
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.GroupId)
+                UserProfile
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.UserProfileId)
+                Group
             </th>
+
             <th>
-                @Html.DisplayNameFor(model => model.QuizeId)
+                Quize
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Edit)
@@ -38,25 +42,10 @@
             <th>
                 @Html.DisplayNameFor(model => model.Delete)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedBy)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedOn)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LastModifiedBy)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LastModifiedOn)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
             <th></th>
         </tr>
     </thead>
-    <tbody id="viewAll">
+    <tbody id="view-all">
         @await Html.PartialAsync("_ViewAll", Model)
     </tbody>
 </table>

@@ -21,7 +21,7 @@ namespace BigRoom.Repository.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("BigRoom.Model.Entities.Degree", b =>
+            modelBuilder.Entity("BigRoom.Repository.Entities.Degree", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -44,7 +44,7 @@ namespace BigRoom.Repository.Migrations
                     b.ToTable("Degrees");
                 });
 
-            modelBuilder.Entity("BigRoom.Model.Entities.Group", b =>
+            modelBuilder.Entity("BigRoom.Repository.Entities.Group", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -71,7 +71,7 @@ namespace BigRoom.Repository.Migrations
                     b.ToTable("Groups");
                 });
 
-            modelBuilder.Entity("BigRoom.Model.Entities.GroupPermission", b =>
+            modelBuilder.Entity("BigRoom.Repository.Entities.GroupPermission", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -108,7 +108,7 @@ namespace BigRoom.Repository.Migrations
                     b.ToTable("GroupPermissions");
                 });
 
-            modelBuilder.Entity("BigRoom.Model.Entities.Quize", b =>
+            modelBuilder.Entity("BigRoom.Repository.Entities.Quize", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -149,7 +149,7 @@ namespace BigRoom.Repository.Migrations
                     b.ToTable("Quizes");
                 });
 
-            modelBuilder.Entity("BigRoom.Model.Entities.UserGroups", b =>
+            modelBuilder.Entity("BigRoom.Repository.Entities.UserGroups", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -168,7 +168,7 @@ namespace BigRoom.Repository.Migrations
                     b.ToTable("UserGroups");
                 });
 
-            modelBuilder.Entity("BigRoom.Model.Entities.UserProfile", b =>
+            modelBuilder.Entity("BigRoom.Repository.Entities.UserProfile", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -360,62 +360,62 @@ namespace BigRoom.Repository.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("BigRoom.Model.Entities.Degree", b =>
+            modelBuilder.Entity("BigRoom.Repository.Entities.Degree", b =>
                 {
-                    b.HasOne("BigRoom.Model.Entities.Quize", "Quize")
+                    b.HasOne("BigRoom.Repository.Entities.Quize", "Quize")
                         .WithMany("Degrees")
                         .HasForeignKey("QuizeId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("BigRoom.Model.Entities.UserProfile", "UserProfile")
+                    b.HasOne("BigRoom.Repository.Entities.UserProfile", "UserProfile")
                         .WithMany("Degrees")
                         .HasForeignKey("UserProfileId");
                 });
 
-            modelBuilder.Entity("BigRoom.Model.Entities.Group", b =>
+            modelBuilder.Entity("BigRoom.Repository.Entities.Group", b =>
                 {
-                    b.HasOne("BigRoom.Model.Entities.UserProfile", "Admin")
+                    b.HasOne("BigRoom.Repository.Entities.UserProfile", "Admin")
                         .WithMany("GroupsThatAdmin")
                         .HasForeignKey("AdminId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("BigRoom.Model.Entities.GroupPermission", b =>
+            modelBuilder.Entity("BigRoom.Repository.Entities.GroupPermission", b =>
                 {
-                    b.HasOne("BigRoom.Model.Entities.Group", "Group")
+                    b.HasOne("BigRoom.Repository.Entities.Group", "Group")
                         .WithMany("GroupPermissions")
                         .HasForeignKey("GroupId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("BigRoom.Model.Entities.Quize", "Quize")
+                    b.HasOne("BigRoom.Repository.Entities.Quize", "Quize")
                         .WithMany("GroupPermissions")
                         .HasForeignKey("QuizeId");
 
-                    b.HasOne("BigRoom.Model.Entities.UserProfile", "UserProfile")
+                    b.HasOne("BigRoom.Repository.Entities.UserProfile", "UserProfile")
                         .WithMany("GroupPermissions")
                         .HasForeignKey("UserProfileId");
                 });
 
-            modelBuilder.Entity("BigRoom.Model.Entities.Quize", b =>
+            modelBuilder.Entity("BigRoom.Repository.Entities.Quize", b =>
                 {
-                    b.HasOne("BigRoom.Model.Entities.Group", "Group")
+                    b.HasOne("BigRoom.Repository.Entities.Group", "Group")
                         .WithMany("Quizes")
                         .HasForeignKey("GroupId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("BigRoom.Model.Entities.UserProfile", "UserProfile")
+                    b.HasOne("BigRoom.Repository.Entities.UserProfile", "UserProfile")
                         .WithMany("QuizesCreate")
                         .HasForeignKey("UserProfileId");
                 });
 
-            modelBuilder.Entity("BigRoom.Model.Entities.UserGroups", b =>
+            modelBuilder.Entity("BigRoom.Repository.Entities.UserGroups", b =>
                 {
-                    b.HasOne("BigRoom.Model.Entities.Group", "Group")
+                    b.HasOne("BigRoom.Repository.Entities.Group", "Group")
                         .WithMany("Groups")
                         .HasForeignKey("GroupId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("BigRoom.Model.Entities.UserProfile", "UserProfile")
+                    b.HasOne("BigRoom.Repository.Entities.UserProfile", "UserProfile")
                         .WithMany("Groups")
                         .HasForeignKey("UserProfileId");
                 });

@@ -1,10 +1,14 @@
 ﻿using AutoMapper;
-using BigRoom.Model.Entities;
+using AutoMapper.QueryableExtensions;
+using BigRoom.Repository.Entities;
 using BigRoom.Repository.IRepository;
+using BigRoom.Service.Common.Behavoir;
 using BigRoom.Service.DTO;
 using BigRoom.Service.IService;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -39,7 +43,11 @@ namespace BigRoom.Service.Service
         {
            return userGroupRepository.UserIsJoinGroup(groupId,userId).GetAwaiter().GetResult();
         }
-       
+        public async Task<IEnumerable<object>> GetUserInGroupAsync(int groupId)
+        {
+          return await  userGroupRepository.GetAllAsync(a=>a.GroupId==groupId)
+                .Select(a=>new {Id=a.UserProfileId,Name=a.UserProfile.ApplicationUser.UserName.GetNameFromEmail() }).ToListAsync();
+        }
 
         public async Task LeaveGroupAsync(int id)
         {

@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using BigRoom.Model.Entities;
+using BigRoom.Repository.Entities;
 using BigRoom.Service.Common.Mappings;
 using BigRoom.Service.Common.Models;
 using System;
@@ -19,7 +19,8 @@ namespace BigRoom.Service.DTO
         public bool Edit { get; set; }
         public bool Create { get; set; }
         public bool Delete { get; set; }
-
+        public IEnumerable<QuizeDto> Quizes { get; set; }
+        public IEnumerable<object> UserProfiles { get; set; }
         public void Mapping(Profile profile)
         {
             profile.CreateMap<GroupPermission,GroupPermissionDto>().ReverseMap();

@@ -1,5 +1,4 @@
 ﻿@model GroupDto
-@inject IUserAppService userAppService
 @section MainStyle{
 
 
@@ -21,8 +20,8 @@
         <ol class="list-group list-group-numbered mt-2 mb-2">
             @foreach (var item in Model.Groups)
             {
-                var user = await userAppService.GetUserById(item.UserProfile.UserId);
-                <li class="list-group-item"><img style="max-width: 50px;margin-right: 5px" class="rounded float-left" src="@user.Image" /> @(user.Email.GetNameFromEmail())</li>
+                var user = item.UserProfile.ApplicationUser;
+                <li class="list-group-item"><img style="max-width: 50px;margin-right: 5px" class="rounded float-left" src="@user.Image" /><h4>@(user.Email.GetNameFromEmail())</h4> </li>
             }
         </ol>
         @if ((int)ViewData["UserId"] == Model.AdminId)
@@ -31,7 +30,7 @@
 
         }
         <a class="boxed_btn_orange" asp-action="Index" asp-controller="Quizes" asp-route-Groupid="@Model.Id">Quizes</a>
-        <a class="btn btn-primary" asp-action="Index" asp-controller="GroupPermission">Manage permission</a>
+        <a class="btn btn-primary" asp-action="Index" asp-route-groupId="@Model.Id" asp-controller="GroupPermission">Manage permission</a>
     </div>
 </div>
 @section Scripts{
