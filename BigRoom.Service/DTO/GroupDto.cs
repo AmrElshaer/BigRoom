@@ -15,6 +15,7 @@ namespace BigRoom.Service.DTO
         public GroupDto()
         {
             Groups = new HashSet<UserGroupsDto>();
+            GroupPermissions = new HashSet<GroupPermissionDto>();
         }
         [Display(Name = "CodeJoin")]
         public string CodeJion { get; set; }
@@ -23,7 +24,7 @@ namespace BigRoom.Service.DTO
         public ICollection<UserGroupsDto> Groups { get; set; }
         public int AdminId { get; set; }
         public UserProfileDto Admin { get; set; }
-
+        public ICollection<GroupPermissionDto> GroupPermissions { get; set; }
         public void Mapping(Profile profile)
         {
             profile.CreateMap<Group, GroupDto>().ReverseMap();

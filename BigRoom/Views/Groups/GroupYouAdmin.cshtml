@@ -26,11 +26,19 @@
         </ol>
         @if ((int)ViewData["UserId"] == Model.AdminId)
         {
+            <a class="boxed_btn_orange" asp-action="Index" asp-controller="Quizes" asp-route-Groupid="@Model.Id">Quizes</a>
             <a class="boxed_btn_orange" asp-action="Create" asp-controller="Quizes" asp-route-groupid="@Model.Id"><i class="fas fa-plus"></i> Add Quize</a>
-
+            <a class="btn btn-primary" asp-action="Index" asp-route-groupId="@Model.Id" asp-controller="GroupPermission">Manage permission</a>
         }
-        <a class="boxed_btn_orange" asp-action="Index" asp-controller="Quizes" asp-route-Groupid="@Model.Id">Quizes</a>
-        <a class="btn btn-primary" asp-action="Index" asp-route-groupId="@Model.Id" asp-controller="GroupPermission">Manage permission</a>
+        @if (Model.GroupPermissions.FirstOrDefault(a => a.UserProfileId == (int)ViewData["UserId"] && a.Create) != null)
+        {
+            <a class="boxed_btn_orange" asp-action="Create" asp-controller="Quizes" asp-route-groupid="@Model.Id"><i class="fas fa-plus"></i> Add Quize</a>
+        }
+        @if (Model.GroupPermissions.FirstOrDefault(a => a.UserProfileId == (int)ViewData["UserId"] && a.Edit||a.Delete) != null)
+        {
+            <a class="boxed_btn_orange" asp-action="Index" asp-controller="Quizes" asp-route-Groupid="@Model.Id">Quizes</a>
+        }
+
     </div>
 </div>
 @section Scripts{

@@ -1,5 +1,4 @@
 ﻿@model IEnumerable<QuizeDto>
-
 @section MainStyle{
 
     <!-- bradcam_area_start -->
@@ -54,17 +53,25 @@
                         {
                             <a class="btn btn-info text-white" asp-action="Details" asp-route-id="@item.Id" title="Do Exam"><i class="fas fa-sign-in-alt"></i></a>
                         }
+                        @{var permission = item.GroupPermissions.FirstOrDefault(a => a.UserProfileId == (int)ViewData["UserId"]); }
                         @if (item.UserProfileId == (int)ViewData["UserId"])
                         {
                             <a asp-action="GetStudentsDegrees" asp-controller="Degree" asp-route-quizeId="@item.Id" title="Details" class="btn btn-warning text-white"><i class="fas fa-info-circle"></i></a>
                             <a class="btn btn-info text-white" asp-action="Edit" asp-route-id="@item.Id"><i class="far fa-edit"></i></a>
                             <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id"><i class="fas fa-trash-alt"></i></a>
                         }
-
+                        @if (permission != null && permission.Edit)
+                        {
+                            <a class="btn btn-info text-white" asp-action="Edit" asp-route-id="@item.Id"><i class="far fa-edit"></i></a>
+                        }
+                        @if (permission != null && permission.Delete)
+                        {
+                            <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id"><i class="fas fa-trash-alt"></i></a>
+                        }
                     </td>
                 </tr>
             }
         </tbody>
-       
+
     </table>
 </div>

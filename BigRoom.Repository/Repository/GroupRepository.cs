@@ -29,7 +29,7 @@ namespace BigRoom.Repository.Repository
         }
         public async Task<Group> GroupDetailsByIdAsync(int id)
         {
-            var group = await Entities.Include(a => a.Groups).ThenInclude(a=>a.UserProfile).ThenInclude(a=>a.ApplicationUser)
+            var group = await Entities.Include(a => a.Groups).ThenInclude(a=>a.UserProfile.ApplicationUser).Include(a=>a.GroupPermissions)
                 .Include(a=>a.Admin).FirstOrDefaultAsync(a => a.Id==id);
             return group;
         }

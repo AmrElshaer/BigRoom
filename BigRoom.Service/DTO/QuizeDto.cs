@@ -33,7 +33,7 @@ namespace BigRoom.Service.DTO
         public int? UserProfileId { get; set; }
         public UserProfileDto UserProfile { get; set; }
         public ICollection<UserProfileDto> UsersDoExam { get; set; }
-
+        public ICollection<GroupPermissionDto> GroupPermissions { get; set; }
         public void Mapping(Profile profile)
         {
             profile.CreateMap<Quize, QuizeDto>().ReverseMap();
