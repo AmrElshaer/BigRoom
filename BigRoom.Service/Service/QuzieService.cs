@@ -32,10 +32,10 @@ namespace BigRoom.Service.Service
             this.uniteOfWork = uniteOfWork;
         }
 
-        public async Task<IEnumerable<QuizeDto>> GetQuziesByGroupAsync(int groupId)
+        public IEnumerable<QuizeDto> GetQuziesByGroup(int groupId)
         {
-            return await quizeRepository.GetAllAsync(a => a.GroupId == groupId).Include(a=>a.GroupPermissions)
-                .ProjectTo<QuizeDto>(mapper.ConfigurationProvider).ToListAsync();
+            return  quizeRepository.GetAllAsync(a => a.GroupId == groupId).Include(a=>a.GroupPermissions)
+                .Select(mapper.Map<QuizeDto>).ToList();
         }
         public async Task CreateQuizeAsync(QuizeDto quizeDto)
         {

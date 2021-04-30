@@ -8,9 +8,9 @@ namespace BigRoom.Service.IService
 {
     public  interface IDegreeService
     {
-        Task<IEnumerable<DegreeDto>> GetDegreesAsync(int userId);
+        IEnumerable<DegreeDto> GetDegrees(int userId);
         Task  CalCulateDegreeAsync(IList<string> answers, int quizeId, int userId);
-        Task<IEnumerable<DegreeDto>> GetQuizeDegreesAsync(int quizeId);
+        IEnumerable<DegreeDto> GetQuizeDegrees(int quizeId);
         Task<bool> IsDoExamAsync(int id, int userId);
     }
 }

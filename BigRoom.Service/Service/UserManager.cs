@@ -37,17 +37,17 @@ namespace BigRoom.Service.Service
             var appUser = await GetApplicationUserAsync(user);
             return (await this._userManager.GetRolesAsync(appUser))?.FirstOrDefault();
         }
-        public async Task<(IdentityResult result, string role)> CreateAsync(ApplicationUser user, string password,string roleId)
+        public async Task<(IdentityResult result, string emailToken)> CreateAsync(ApplicationUser user, string password,string roleId)
         {
            
             var result = await _userManager.CreateAsync(user, password);
             if (result.Succeeded)
             {
                 var role = await _roleManager.FindByIdAsync(roleId);
-                await _userManager.AddToRoleAsync(user, role.Name);
+                await _userManager.AddToRoleAsync(user, role?.Name);
                 await _profileService.AddUserProfileAsync(user.Id);
-                await _signInManager.SignInAsync(user, isPersistent: false);
-                return (result, role.Name);
+                var emailToken= await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                return (result, emailToken);
             }
             return (result, null);
         }
@@ -62,17 +62,27 @@ namespace BigRoom.Service.Service
             return (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
-        public async Task<(SignInResult result, string role)> SignInAsync(string email, string password, bool rememberMe, bool lockoutOnFailure = false)
+        public async Task<(SignInResult result, bool? emailConfirm)> SignInAsync(string email, string password, bool rememberMe, bool lockoutOnFailure = false)
         {
             var result = await _signInManager.PasswordSignInAsync(email, password, rememberMe, lockoutOnFailure);
 
             if (result.Succeeded)
             {
                 var user = await _userManager.FindByEmailAsync(email);
-                var role = await _userManager.GetRolesAsync(user);
-                return (result, role.FirstOrDefault());
+                bool emailStatus = await _userManager.IsEmailConfirmedAsync(user);
+                return (result, emailStatus);
             }
             return (result, null);
+        }
+
+        public async Task<ApplicationUser> FindByIdAsync(string userId)
+        {
+            return await _userManager.FindByIdAsync(userId);
+        }
+
+        public async Task<IdentityResult> ConfirmEmailAsync(ApplicationUser user, string code)
+        {
+            return await _userManager.ConfirmEmailAsync(user,code);
         }
     }
 }

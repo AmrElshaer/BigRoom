@@ -8,7 +8,7 @@ namespace BigRoom.Service.IService
 {
     public interface IGroupPermissionService
     {
-        Task<IEnumerable<GroupPermissionDto>> GetGroupPermissions(int groupId);
+        IEnumerable<GroupPermissionDto> GetGroupPermissions(int groupId);
         Task CreateEditAsync(GroupPermissionDto groupPermissionDto);
         Task<GroupPermissionDto> GetGroupPermissionById(int id);
         Task DeleteAsync(int id);

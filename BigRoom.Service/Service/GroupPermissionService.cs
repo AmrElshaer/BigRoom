@@ -7,6 +7,7 @@ using BigRoom.Service.IService;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -24,10 +25,10 @@ namespace BigRoom.Service.Service
             this.groupPermissionRepository = groupPermissionRepository;
             this.uniteOfWork = uniteOfWork;
         }
-        public async Task<IEnumerable<GroupPermissionDto>> GetGroupPermissions(int groupId)
+        public  IEnumerable<GroupPermissionDto> GetGroupPermissions(int groupId)
         {
-            return await groupPermissionRepository.GetAllAsync(a => a.GroupId == groupId).Include(a=>a.Group).Include(a=>a.UserProfile.ApplicationUser)
-                .Include(a=>a.Quize).ProjectTo<GroupPermissionDto>(mapper.ConfigurationProvider).ToListAsync();
+            return  groupPermissionRepository.GetAllAsync(a => a.GroupId == groupId).Include(a=>a.Group).Include(a=>a.UserProfile.ApplicationUser)
+                .Include(a=>a.Quize).Select(mapper.Map<GroupPermissionDto>).ToList();
         }
         public async Task CreateEditAsync(GroupPermissionDto groupPermissionDto)
         {

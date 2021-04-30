@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
 namespace Classroom.Areas.Identity.Pages.Account
@@ -14,10 +15,12 @@ namespace Classroom.Areas.Identity.Pages.Account
     public class RegisterModel : PageModel
     {
         private readonly IUserManager _userManager;
+        private readonly IEmailService _emailService;
 
-        public RegisterModel(IUserManager userManager)
+        public RegisterModel(IUserManager userManager, IEmailService emailService)
         {
             _userManager = userManager;
+            this._emailService = emailService;
         }
 
         [BindProperty]
@@ -36,9 +39,21 @@ namespace Classroom.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email,Image=Input.Image };
-
                 var userAdd = await _userManager.CreateAsync(user, Input.Password, Input.RoleId);
-                if (userAdd.result.Succeeded) return RedirectToAction(controllerName: "Exam", actionName: "Index");
+                if (userAdd.result.Succeeded)
+                {
+                    var callbackUrl = Url.Page(
+                        "/Account/ConfirmEmail",
+                        pageHandler: null,
+                        values: new { userId = user.Id, code = userAdd.emailToken },
+                        protocol: Request.Scheme);
+
+                    await _emailService.SendAsync(Input.Email, 
+                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>."
+                        , "Confirm your email");
+                    return RedirectToPage("/Account/Login");
+                }
+
                 userAdd.result.Errors.ToList().ForEach(error => ModelState.AddModelError(string.Empty, error.Description));
             }
 

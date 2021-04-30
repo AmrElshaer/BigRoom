@@ -24,14 +24,14 @@ namespace BigRoom.Controllers
             this.quzieService = quzieService;
             this.userGroupService = userGroupService;
         }
-        public async Task<IActionResult> Index(int groupId)
+        public  IActionResult Index(int groupId)
         {
             if (groupId==0)
             {
                 return NotFound();
             }
             ViewBag.GroupId = groupId;
-            return View(await groupPermissionService.GetGroupPermissions(groupId));
+            return View( groupPermissionService.GetGroupPermissions(groupId));
         }
         [NoDirectAccess]
         public async Task<IActionResult> CreateEdit(int groupId,int id = 0)
@@ -48,7 +48,7 @@ namespace BigRoom.Controllers
                 if (groupPermission == null) return NotFound();
                 groupPermissionDto = groupPermission;
             }
-            groupPermissionDto.Quizes =await quzieService.GetQuziesByGroupAsync(groupId);
+            groupPermissionDto.Quizes = quzieService.GetQuziesByGroup(groupId);
             groupPermissionDto.UserProfiles = await userGroupService.GetUserInGroupAsync(groupId);
             return View(groupPermissionDto);
         }
@@ -71,7 +71,7 @@ namespace BigRoom.Controllers
                 {
                     isValid = true,
                     html = RenderRazorService.RenderRazorViewToString(this, "_ViewAll",
-                    await groupPermissionService.GetGroupPermissions(groupPermission.GroupId)
+                     groupPermissionService.GetGroupPermissions(groupPermission.GroupId)
                     )
                 });
             }
@@ -94,7 +94,7 @@ namespace BigRoom.Controllers
             {
                 isValid = true,
                 html = RenderRazorService.RenderRazorViewToString(this, "_ViewAll",
-                   await groupPermissionService.GetGroupPermissions(groupId)
+                    groupPermissionService.GetGroupPermissions(groupId)
                    )
             });
         }

@@ -20,6 +20,11 @@ namespace BigRoom.Repository
                  configuration.GetConnectionString("DefaultConnection")));
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<BigRoomDbContext>().AddDefaultTokenProviders();
+            services.Configure<IdentityOptions>(opts=> {
+                opts.User.RequireUniqueEmail = true;
+                opts.Password.RequiredLength = 8;
+                opts.SignIn.RequireConfirmedEmail = true;
+            });
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddAllRepository();
             return services;

@@ -31,9 +31,10 @@ namespace BigRoom.Service.Service
             this.uniteOfWork = uniteOfWork;
             ihostEnv = _IhostEnv;
         }
-        public async Task<IEnumerable<DegreeDto>> GetDegreesAsync(int userId)
+        public IEnumerable<DegreeDto> GetDegrees(int userId)
         {
-           return await  degreeRepository.GetAllAsync(a=>a.UserProfileId==userId).Include(a=>a.Quize.Group).ProjectTo<DegreeDto>(mapper.ConfigurationProvider).ToListAsync();
+            return  degreeRepository.GetAllAsync(a => a.UserProfileId == userId)
+                .Include(a => a.Quize.Group).Select(mapper.Map<DegreeDto>);
         }
         public async Task CalCulateDegreeAsync(IList<string> answers,int quizeId,int userId)
         {
@@ -43,9 +44,10 @@ namespace BigRoom.Service.Service
             await  degreeRepository.AddAsync(new Degree() {ExamDegree=degree,QuizeId=quizeId,UserProfileId=userId,TotalDegree=answerData.Count });
             await uniteOfWork.SaveChangesAsync();
         }
-        public async Task<IEnumerable<DegreeDto>> GetQuizeDegreesAsync(int quizeId)
+        public IEnumerable<DegreeDto> GetQuizeDegrees(int quizeId)
         {
-            return await degreeRepository.GetAllAsync(a=>a.QuizeId==quizeId).Include(u=>u.UserProfile).ProjectTo<DegreeDto>(mapper.ConfigurationProvider).ToListAsync();
+            return  degreeRepository.GetAllAsync(a=>a.QuizeId==quizeId).Include(u=>u.UserProfile)
+                .Select(mapper.Map<DegreeDto>).ToList();
         }
         #region Read AnswerFile
         public IList<string> ReadAnswerfile(string filename)

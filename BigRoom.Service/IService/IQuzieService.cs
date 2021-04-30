@@ -10,7 +10,7 @@ namespace BigRoom.Service.IService
 {
     public  interface IQuzieService
     {
-        Task<IEnumerable<QuizeDto>> GetQuziesByGroupAsync(int groupId);
+        IEnumerable<QuizeDto> GetQuziesByGroup(int groupId);
         Task<QuizeModel> GetQuizeDetailsAsync(int id);
         Task CreateQuizeAsync(QuizeDto quizeDto);
         Task UpdateQuizeAsync(QuizeDto quizeDto);

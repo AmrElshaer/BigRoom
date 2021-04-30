@@ -32,7 +32,7 @@ namespace BigRoom.Controllers
         public async Task<IActionResult> Index(int groupId)
         {
             ViewData["UserId"] = await GetUserProfileId();
-            var result = await quzieService.GetQuziesByGroupAsync(groupId);
+            var result =  quzieService.GetQuziesByGroup(groupId);
             return View(result);
         }
 

@@ -63,14 +63,16 @@ namespace BigRoom.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            returnUrl = returnUrl ?? Url.Content("~/");
-
             if (ModelState.IsValid)
             {
                 var signUser = await _userManager.SignInAsync(Input.Email, Input.Password, Input.RememberMe);
-                if (signUser.result.Succeeded)
+                if (signUser.result.Succeeded&&signUser.emailConfirm.Value)
                 {
                    return  RedirectToAction(controllerName: "Exam", actionName: "Index");
+                }
+                if (signUser.result.Succeeded&& !signUser.emailConfirm.Value)
+                {
+                   ModelState.AddModelError(string.Empty,"Email not confirmation Please check your email");
                 }
                 ModelState.AddModelError(string.Empty, "Invalid login attempt.");
             }

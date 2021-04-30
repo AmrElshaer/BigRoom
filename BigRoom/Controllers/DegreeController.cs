@@ -30,11 +30,11 @@ namespace BigRoom.Controllers
         public async Task<IActionResult> Index()
         {
            
-            return View(await degreeService.GetDegreesAsync(await GetUserProfileId()));
+            return View( degreeService.GetDegrees(await GetUserProfileId()));
         }
-        public async Task<IActionResult> GetStudentsDegrees(int quizeId)
+        public  IActionResult GetStudentsDegrees(int quizeId)
         {
-            var degrees= await degreeService.GetQuizeDegreesAsync(quizeId);
+            var degrees=  degreeService.GetQuizeDegrees(quizeId);
             return View(degrees);
         }
     }
