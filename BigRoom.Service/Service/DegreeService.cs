@@ -46,7 +46,7 @@ namespace BigRoom.Service.Service
         }
         public IEnumerable<DegreeDto> GetQuizeDegrees(int quizeId)
         {
-            return  degreeRepository.GetAllAsync(a=>a.QuizeId==quizeId).Include(u=>u.UserProfile)
+            return  degreeRepository.GetAllAsync(a=>a.QuizeId==quizeId).Include(u=>u.UserProfile.ApplicationUser)
                 .Select(mapper.Map<DegreeDto>).ToList();
         }
         #region Read AnswerFile

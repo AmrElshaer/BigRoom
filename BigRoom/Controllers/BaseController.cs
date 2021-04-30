@@ -9,9 +9,8 @@ namespace BigRoom.Controllers
 {
     public class BaseController: Controller
     {
-		protected  IUserManager UserManager=> userManager!=null?userManager: HttpContext.RequestServices.GetService<IUserManager>();
+		protected  IUserManager UserManager=>HttpContext.RequestServices.GetService<IUserManager>();
 		protected IUserProfileService UserProfileService => HttpContext.RequestServices.GetService<IUserProfileService>();
-		private IUserManager userManager;
 		protected async Task<int> GetUserProfileId()
         {
             const string userId = "UserId";
@@ -23,6 +22,6 @@ namespace BigRoom.Controllers
             }
             return id.Value;
         }
-        protected async Task<ApplicationUser> GetCurrentUserAsync() =>await UserManager.GetApplicationUserAsync(HttpContext.User);
+        protected async Task<ApplicationUser> GetCurrentUserAsync() => await UserManager.GetApplicationUserAsync(HttpContext.User.Identity.Name);
 	}
 }

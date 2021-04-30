@@ -22,6 +22,7 @@ namespace BigRoom.Controllers
 
         public async Task<IActionResult> Create()
         {
+            ViewBag.UserProfielId = await GetUserProfileId();
             return View();
         }
 
@@ -32,12 +33,11 @@ namespace BigRoom.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(UserGroupsDto userGroups)
         {
-            userGroups.UserProfileId =await GetUserProfileId();
             if (ModelState.IsValid)
             {
-                await userGroupService.CreateUserGroup(userGroups);
+               var groupId=  await userGroupService.CreateUserGroup(userGroups);
                 this.toastNotification.AddSuccessToastMessage($"Join to group is success", new ToastrOptions() { ToastClass = "btn-success" });
-                return RedirectToAction("GoToGroup", "Groups", new { codeJoin = userGroups.CodeJoin });
+                return RedirectToAction("GroupYouAdmin", "Groups", new { id = groupId });
             }
             return View(userGroups);
         }

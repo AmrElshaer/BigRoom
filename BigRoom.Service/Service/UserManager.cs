@@ -1,4 +1,6 @@
-﻿using BigRoom.Repository.Contexts;
+﻿using AutoMapper;
+using BigRoom.Repository.Contexts;
+using BigRoom.Service.DTO;
 using BigRoom.Service.IService;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Hosting;
@@ -32,11 +34,7 @@ namespace BigRoom.Service.Service
         {
             return _signInManager.IsSignedIn(user);
         }
-        public async Task<string> GetRole(ClaimsPrincipal user)
-        {
-            var appUser = await GetApplicationUserAsync(user);
-            return (await this._userManager.GetRolesAsync(appUser))?.FirstOrDefault();
-        }
+      
         public async Task<(IdentityResult result, string emailToken)> CreateAsync(ApplicationUser user, string password,string roleId)
         {
            
@@ -52,9 +50,9 @@ namespace BigRoom.Service.Service
             return (result, null);
         }
 
-        public async Task<ApplicationUser> GetApplicationUserAsync(ClaimsPrincipal user)
+        public async Task<ApplicationUser> GetApplicationUserAsync(string email)
         {
-            return await this._userManager.GetUserAsync(user);
+            return await this._userManager.FindByEmailAsync(email);
         }
 
         public async Task<IList<AuthenticationScheme>> GetExternalAuthenticationSchemesAsync()
@@ -83,6 +81,21 @@ namespace BigRoom.Service.Service
         public async Task<IdentityResult> ConfirmEmailAsync(ApplicationUser user, string code)
         {
             return await _userManager.ConfirmEmailAsync(user,code);
+        }
+
+        public async Task<bool> IsEmailConfirmedAsync(ApplicationUser user)
+        {
+            return await _userManager.IsEmailConfirmedAsync(user);
+        }
+
+        public async Task<string> GeneratePasswordResetTokenAsync(ApplicationUser user)
+        {
+            return await _userManager.GeneratePasswordResetTokenAsync(user);
+        }
+
+        public async Task<IdentityResult> ResetPasswordAsync(ApplicationUser user, string code, string password)
+        {
+            return await _userManager.ResetPasswordAsync(user,code,password);
         }
     }
 }

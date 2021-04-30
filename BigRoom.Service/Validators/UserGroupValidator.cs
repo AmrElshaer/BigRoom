@@ -15,10 +15,10 @@ namespace BigRoom.Service.Validators
             RuleFor(g => g).Custom((g, context) => {
                 var group = groupService.GetGroupByCodeAsync(g.CodeJoin).GetAwaiter().GetResult();
                 g.GroupId = group?.Id;
-                if (group!=null&& userGroupService.UserIsJoinGroup(group.Id, g.UserProfileId.Value))
+                if (group != null && userGroupService.UserIsJoinGroup(group.Id, g.UserProfileId.Value))
                 {
-                   context.AddFailure("You are Exiting in This group");
-                } 
+                    context.AddFailure("You are Exiting in This group");
+                }
             });
             
         }

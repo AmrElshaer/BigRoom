@@ -25,6 +25,7 @@
 
                     <form asp-action="Create" class="newsletter_form">
                         <input asp-for="CodeJoin" placeholder="Code To Join" />
+                        <input asp-for="UserProfileId" value="@ViewBag.UserProfielId" type="hidden"/>
                         <button type="submit">Join To Group</button>
                         <span asp-validation-for="CodeJoin" class="text-danger"></span>
                     </form>

@@ -21,21 +21,6 @@ namespace BigRoom.Controllers
             this.toastNotification = toastNotification;
         }
 
-        public async Task<IActionResult> GoToGroup(string codeJoin)
-        {
-            var group = await groupService.GetGroupByCodeAsync(codeJoin);
-            return RedirectToAction(nameof(Details), new { id = group.Id });
-        }
-
-        //Group You Join
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null) return NotFound();
-            var group = await groupService.GetByIdAsync(id.Value);
-            if (group == null) return NotFound();
-            return View(group);
-        }
-
         // GET: Groups/GroupYouAdmin/5
         //Group You Join
         public async Task<IActionResult> GroupYouAdmin(int? id)

@@ -29,10 +29,11 @@ namespace BigRoom.Service.Service
             this.mapper = mapper;
         }
 
-        public async Task CreateUserGroup(UserGroupsDto userGroupsDto)
+        public async Task<int> CreateUserGroup(UserGroupsDto userGroupsDto)
         {
-            await  userGroupRepository.AddAsync(mapper.Map<UserGroups>(userGroupsDto));
+            var gorup= await  userGroupRepository.AddAsync(mapper.Map<UserGroups>(userGroupsDto));
             await uniteOfWork.SaveChangesAsync();
+            return gorup.Id;
         }
 
         public bool IsExist(string codeJoin)

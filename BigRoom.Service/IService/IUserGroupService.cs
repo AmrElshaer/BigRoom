@@ -10,7 +10,7 @@ namespace BigRoom.Service.IService
     {
         bool IsExist(string codeJoin);
         bool UserIsJoinGroup(int groupId, int userId);
-        Task CreateUserGroup(UserGroupsDto userGroupsDto);
+        Task<int> CreateUserGroup(UserGroupsDto userGroupsDto);
         Task LeaveGroupAsync(int id);
         Task<IEnumerable<object>> GetUserInGroupAsync(int groupId);
     }

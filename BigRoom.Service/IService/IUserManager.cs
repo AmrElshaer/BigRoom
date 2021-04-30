@@ -15,10 +15,12 @@ namespace BigRoom.Service.IService
         Task<(SignInResult result, bool? emailConfirm)> SignInAsync(string email, string password, bool rememberMe, bool lockoutOnFailure = false);
         Task<IList<AuthenticationScheme>> GetExternalAuthenticationSchemesAsync();
         Task<(IdentityResult result, string emailToken)> CreateAsync(ApplicationUser user, string password, string roleId);
-        Task<ApplicationUser> GetApplicationUserAsync(ClaimsPrincipal user);
-        Task<string> GetRole(ClaimsPrincipal user);
+        Task<ApplicationUser> GetApplicationUserAsync(string email);
         bool UserIsSignIn(ClaimsPrincipal user);
         Task<ApplicationUser> FindByIdAsync(string userId);
         Task<IdentityResult> ConfirmEmailAsync(ApplicationUser user, string code);
+        Task<bool> IsEmailConfirmedAsync(ApplicationUser user);
+        Task<string> GeneratePasswordResetTokenAsync(ApplicationUser user);
+        Task<IdentityResult> ResetPasswordAsync(ApplicationUser user, string code, string password);
     }
 }

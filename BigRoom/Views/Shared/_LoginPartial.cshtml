@@ -3,7 +3,7 @@
 @if (userManager.UserIsSignIn(User))
 {
      
-        var user =await userManager.GetApplicationUserAsync(User);
+        var user =await userManager.GetApplicationUserAsync(User.Identity.Name);
     
     <div class="col-xl-3 col-lg-3 d-none d-lg-block">
         <div class="log_chat_area d-flex align-items-center">

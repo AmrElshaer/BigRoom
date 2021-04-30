@@ -23,7 +23,6 @@ namespace BigRoom.Repository
             services.Configure<IdentityOptions>(opts=> {
                 opts.User.RequireUniqueEmail = true;
                 opts.Password.RequiredLength = 8;
-                opts.SignIn.RequireConfirmedEmail = true;
             });
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddAllRepository();
