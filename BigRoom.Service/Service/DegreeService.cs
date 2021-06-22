@@ -2,6 +2,7 @@
 using AutoMapper.QueryableExtensions;
 using BigRoom.Repository.Entities;
 using BigRoom.Repository.IRepository;
+using BigRoom.Repository.Repository;
 using BigRoom.Service.DTO;
 using BigRoom.Service.IService;
 using Microsoft.AspNetCore.Hosting;
@@ -12,18 +13,18 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using BigRoom.Repository.Repository.Extensions;
 namespace BigRoom.Service.Service
 {
     public class DegreeService:IDegreeService
     {
         private readonly IQuizeRepository quizeRepository;
-        private readonly IDegreeRepository degreeRepository;
+        private readonly IRepositoryAsync<Degree> degreeRepository;
         private readonly IMapper mapper;
         private readonly IUniteOfWork uniteOfWork;
         private readonly IHostingEnvironment ihostEnv;
 
-        public DegreeService(IQuizeRepository quizeRepository,IDegreeRepository degreeRepository,IMapper mapper,IUniteOfWork uniteOfWork, IHostingEnvironment _IhostEnv)
+        public DegreeService(IQuizeRepository quizeRepository, IRepositoryAsync<Degree> degreeRepository,IMapper mapper,IUniteOfWork uniteOfWork, IHostingEnvironment _IhostEnv)
         {
             this.quizeRepository = quizeRepository;
             this.degreeRepository = degreeRepository;
