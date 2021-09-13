@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NToastNotify;
 using NToastNotify.Libraries;
-using System;
 using System.Threading.Tasks;
 
 namespace BigRoom.Controllers
@@ -15,7 +14,7 @@ namespace BigRoom.Controllers
         private readonly IGroupService groupService;
         private readonly IToastNotification toastNotification;
 
-        public GroupsController(IGroupService groupService,IToastNotification toastNotification)
+        public GroupsController(IGroupService groupService, IToastNotification toastNotification)
         {
             this.groupService = groupService;
             this.toastNotification = toastNotification;
@@ -48,9 +47,9 @@ namespace BigRoom.Controllers
             if (ModelState.IsValid)
             {
                 group.AdminId = await GetUserProfileId();
-                await groupService.CreateGroup(group);
-                this.toastNotification.AddSuccessToastMessage($"Group {group.Name} is created success",new ToastrOptions() { ToastClass= "btn-success" });
-                return RedirectToAction("Index", controllerName: "Exam"); 
+                await groupService.AddAsync(group);
+                this.toastNotification.AddSuccessToastMessage($"Group {group.Name} is created success", new ToastrOptions() { ToastClass = "btn-success" });
+                return RedirectToAction("Index", controllerName: "Exam");
             }
             return View(group);
         }
@@ -73,7 +72,7 @@ namespace BigRoom.Controllers
         {
             if (ModelState.IsValid)
             {
-                await groupService.UpdateGroup(group);
+                await groupService.UpdateAsync(group);
                 this.toastNotification.AddSuccessToastMessage($"Group {group.Name} is edit success", new ToastrOptions() { ToastClass = "btn-success" });
                 return RedirectToAction("Index", controllerName: "Exam");
             }
@@ -84,7 +83,7 @@ namespace BigRoom.Controllers
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null) return NotFound();
-            await groupService.DeleteGroup(id.Value);
+            await groupService.DeleteAsync(id.Value);
             this.toastNotification.AddSuccessToastMessage($"Group deleted success", new ToastrOptions() { ToastClass = "btn-success" });
             return RedirectToAction("Index", controllerName: "Exam");
         }
