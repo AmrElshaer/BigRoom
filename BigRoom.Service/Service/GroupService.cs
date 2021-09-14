@@ -4,14 +4,14 @@ using BigRoom.Repository.IRepository;
 using BigRoom.Service.DTO;
 using BigRoom.Service.IService;
 using System.Threading.Tasks;
-
+using BigRoom.Repository.Repository.Extensions;
 namespace BigRoom.Service.Service
 {
     public class GroupService : ServiceAsync<Group, GroupDto>, IGroupService
     {
-        private readonly IGroupRepository groupRepository;
+        private readonly IRepositoryAsync<Group> groupRepository;
         private readonly IMapper mapper;
-        public GroupService(IUniteOfWork uniteOfWork, IGroupRepository groupRepository, IMapper mapper)
+        public GroupService(IUniteOfWork uniteOfWork, IRepositoryAsync<Group> groupRepository, IMapper mapper)
             : base(uniteOfWork, groupRepository, mapper)
         {
             this.groupRepository = groupRepository;

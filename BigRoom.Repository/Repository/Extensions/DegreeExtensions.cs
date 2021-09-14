@@ -15,5 +15,14 @@ namespace BigRoom.Repository.Repository.Extensions
         {
             return (await repository.Entities.FirstOrDefaultAsync(a => a.QuizeId == id && a.UserProfileId == userId)) == null ? false : true;
         }
+        public static IQueryable<Degree> GetDegrees(this IRepositoryAsync<Degree> repository, int userId)
+        {
+            return repository.GetAllAsync(a => a.UserProfileId == userId)
+                .Include(a => a.Quize.Group);
+        }
+        public static IQueryable<Degree> GetQuizeDegrees(this IRepositoryAsync<Degree> repository, int quizeId)
+        {
+            return repository.GetAllAsync(a => a.QuizeId == quizeId).Include(u => u.UserProfile.ApplicationUser);
+        }
     }
 }

@@ -62,7 +62,7 @@ namespace BigRoom.Service.Service
                 stream.Position = 0;
                 #endregion
                 #region Copy contents to folder
-                using (FileStream writerFileStream = File.Create(questionFilePath))
+                using (FileStream writerFileStream = System.IO.File.Create(questionFilePath))
                 {
                     await stream.CopyToAsync(writerFileStream);
                     writerFileStream.Dispose();
@@ -81,7 +81,7 @@ namespace BigRoom.Service.Service
         {
             string webRootPath = hostingEnvironment.WebRootPath;
             string filePath =Path.Combine( Path.Combine(webRootPath, folderName),fileName);
-            File.Delete(filePath);
+            System.IO.File.Delete(filePath);
         }
         #endregion
         #region Read Question File

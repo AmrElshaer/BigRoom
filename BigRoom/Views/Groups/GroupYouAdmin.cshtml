@@ -24,9 +24,10 @@
                 <li class="list-group-item"><img style="max-width: 50px;margin-right: 5px" class="rounded float-left" src="@user.Image" /><h4>@(user.Email.GetNameFromEmail())</h4> </li>
             }
         </ol>
+        <a class="boxed_btn_orange" asp-action="Index" asp-controller="Quizes" asp-route-Groupid="@Model.Id">Quizes</a>
         @if ((int)ViewData["UserId"] == Model.AdminId)
         {
-            <a class="boxed_btn_orange" asp-action="Index" asp-controller="Quizes" asp-route-Groupid="@Model.Id">Quizes</a>
+
             <a class="boxed_btn_orange" asp-action="Create" asp-controller="Quizes" asp-route-groupid="@Model.Id"><i class="fas fa-plus"></i> Add Quize</a>
             <a class="btn btn-primary" asp-action="Index" asp-route-groupId="@Model.Id" asp-controller="GroupPermission">Manage permission</a>
         }
@@ -34,7 +35,7 @@
         {
             <a class="boxed_btn_orange" asp-action="Create" asp-controller="Quizes" asp-route-groupid="@Model.Id"><i class="fas fa-plus"></i> Add Quize</a>
         }
-        @if (Model.GroupPermissions.FirstOrDefault(a => a.UserProfileId == (int)ViewData["UserId"] && a.Edit||a.Delete) != null)
+        @if (Model.GroupPermissions.FirstOrDefault(a => a.UserProfileId == (int)ViewData["UserId"] && a.Edit || a.Delete) != null)
         {
             <a class="boxed_btn_orange" asp-action="Index" asp-controller="Quizes" asp-route-Groupid="@Model.Id">Quizes</a>
         }
