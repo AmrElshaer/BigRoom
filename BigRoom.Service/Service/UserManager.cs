@@ -43,7 +43,7 @@ namespace BigRoom.Service.Service
             {
                 var role = await _roleManager.FindByIdAsync(roleId);
                 await _userManager.AddToRoleAsync(user, role?.Name);
-                await _profileService.AddUserProfileAsync(user.Id);
+                await _profileService.AddAsync(new UserProfileDto() { UserId = user.Id});
                 var emailToken= await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 return (result, emailToken);
             }
