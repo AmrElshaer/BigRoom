@@ -2,25 +2,38 @@
 using BigRoom.Service.IService;
 using FluentValidation;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace BigRoom.Service.Validators
 {
-    public class UserGroupValidator:AbstractValidator<UserGroupsDto>
+    public class UserGroupValidator : AbstractValidator<UserGroupsDto>
     {
-        public UserGroupValidator(IUserGroupService userGroupService,IGroupService groupService)
+        public UserGroupValidator(IUserGroupService userGroupService, IGroupService groupService)
         {
-            RuleFor(g => g.CodeJoin).Must(userGroupService.IsExist).WithMessage("CodeJoin  is Not Exits Please Enter valid CodeJoin");
-            RuleFor(g => g).Custom((g, context) => {
-                var group = groupService.GetGroupByCodeAsync(g.CodeJoin).GetAwaiter().GetResult();
-                g.GroupId = group?.Id;
-                if (group != null && userGroupService.UserIsJoinGroup(group.Id, g.UserProfileId.Value))
+            RuleFor(g => g.CodeJoin).NotEmpty().NotNull();
+            RuleFor(g => g).Must(IsGroupExist).WithMessage("CodeJoin  is Not Exits Please Enter valid CodeJoin")
+            .Must(UserInGroup).WithMessage("You May Exiting in This group");
+
+            bool IsGroupExist(UserGroupsDto userGroupsDto)
+            {
+                try
                 {
-                    context.AddFailure("You are Exiting in This group");
+                    return (groupService.GetFirstAsync(a => a.CodeJion == userGroupsDto.CodeJoin).GetAwaiter().GetResult()) != null;
                 }
-            });
-            
+                catch (Exception)
+                {
+                    return false;
+                }
+            }
+            bool UserInGroup(UserGroupsDto userGroupsDto)
+            {
+                if (!IsGroupExist(userGroupsDto))
+                    return false;
+
+                var group = groupService.GetFirstAsync(a => a.CodeJion == userGroupsDto.CodeJoin).GetAwaiter().GetResult();
+                var userGroup = userGroupService.GetFirstAsync((a => a.GroupId == group.Id
+                && userGroupsDto.UserProfileId == userGroupsDto.UserProfileId)).GetAwaiter().GetResult();
+                return group != null && userGroup != null;
+            }
         }
     }
 }

@@ -35,7 +35,7 @@ namespace BigRoom.Controllers
         {
             if (ModelState.IsValid)
             {
-               var groupId=  await userGroupService.CreateUserGroup(userGroups);
+               var groupId=  await userGroupService.AddAsync(userGroups);
                 this.toastNotification.AddSuccessToastMessage($"Join to group is success", new ToastrOptions() { ToastClass = "btn-success" });
                 return RedirectToAction("GroupYouAdmin", "Groups", new { id = groupId });
             }
@@ -46,7 +46,7 @@ namespace BigRoom.Controllers
         {
             try
             {
-                await userGroupService.LeaveGroupAsync(id);
+                await userGroupService.DeleteAsync(id);
             }
             catch (System.Exception)
             {

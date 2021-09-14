@@ -24,10 +24,7 @@ namespace BigRoom.Service.Service
             return groupRepository.UniquesNameAsync(name).GetAwaiter().GetResult();
         }
 
-        public async Task<GroupDto> GetGroupByCodeAsync(string codeJoin)
-        {
-            return mapper.Map<GroupDto>(await groupRepository.GetGroupByCodeAsync(codeJoin));
-        }
+        
 
         public async Task<GroupDto> GroupDetailsByIdAsync(int id)
         {

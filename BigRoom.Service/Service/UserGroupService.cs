@@ -14,47 +14,24 @@ using System.Threading.Tasks;
 using BigRoom.Repository.Repository.Extensions;
 namespace BigRoom.Service.Service
 {
-    public class UserGroupService : IUserGroupService
+    public class UserGroupService :ServiceAsync<UserGroups,UserGroupsDto>, IUserGroupService
+
     {
-        private readonly IRepositoryAsync<Group> groupRepository;
-        private readonly IUserGroupRepository userGroupRepository;
-        private readonly IUniteOfWork uniteOfWork;
+        
+        private readonly IRepositoryAsync<UserGroups> userGroupRepository;
         private readonly IMapper mapper;
 
-        public UserGroupService(IRepositoryAsync<Group> groupRepository,IUserGroupRepository userGroupRepository,IUniteOfWork uniteOfWork,IMapper mapper)
+        public UserGroupService(IUserGroupRepository userGroupRepository,
+            IUniteOfWork uniteOfWork,IMapper mapper):base(uniteOfWork,userGroupRepository,mapper)
         {
-            this.groupRepository = groupRepository;
             this.userGroupRepository = userGroupRepository;
-            this.uniteOfWork = uniteOfWork;
             this.mapper = mapper;
         }
-
-        public async Task<int> CreateUserGroup(UserGroupsDto userGroupsDto)
+        public  IEnumerable<UserGroupsDto> GetUserInGroup(int groupId)
         {
-            var gorup= await  userGroupRepository.AddAsync(mapper.Map<UserGroups>(userGroupsDto));
-            await uniteOfWork.SaveChangesAsync();
-            return gorup.Id;
+          return   userGroupRepository.GetAll(a=>a.GroupId==groupId).Include(a=>a.UserProfile).ThenInclude(a=>a.ApplicationUser).Select(mapper.Map<UserGroupsDto>);
         }
 
-        public bool IsExist(string codeJoin)
-        {
-            return groupRepository.IsExistAsync(codeJoin).GetAwaiter().GetResult();
-        }
-        public bool UserIsJoinGroup(int groupId,int userId)
-        {
-           return userGroupRepository.UserIsJoinGroup(groupId,userId).GetAwaiter().GetResult();
-        }
-        public async Task<IEnumerable<object>> GetUserInGroupAsync(int groupId)
-        {
-          return await  userGroupRepository.GetAll(a=>a.GroupId==groupId)
-                .Select(a=>new {Id=a.UserProfileId,Name=a.UserProfile.ApplicationUser.UserName.GetNameFromEmail() }).ToListAsync();
-        }
-
-        public async Task LeaveGroupAsync(int id)
-        {
-            var userGroup = await userGroupRepository.GetByIdAsync(id)??throw  new Exception();
-            await userGroupRepository.DeleteAsync(userGroup);
-            await this.uniteOfWork.SaveChangesAsync();
-        }
+        
     }
 }

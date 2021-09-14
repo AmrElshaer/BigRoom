@@ -1,4 +1,5 @@
 ﻿using BigRoom.Helper;
+using BigRoom.Service.Common.Behavoir;
 using BigRoom.Service.DTO;
 using BigRoom.Service.IService;
 using Microsoft.AspNetCore.Authorization;
@@ -49,7 +50,8 @@ namespace BigRoom.Controllers
                 groupPermissionDto = groupPermission;
             }
             groupPermissionDto.Quizes = quzieService.GetQuziesByGroup(groupId);
-            groupPermissionDto.UserProfiles = await userGroupService.GetUserInGroupAsync(groupId);
+            groupPermissionDto.UserProfiles =  userGroupService.GetUserInGroup(groupId).Select(a=> new
+            { Id = a.UserProfileId, Name = a.UserProfile.ApplicationUser.Email.GetNameFromEmail() });
             return View(groupPermissionDto);
         }
         [HttpPost]

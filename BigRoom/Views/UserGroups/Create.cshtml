@@ -24,6 +24,7 @@
                     <h4>Your CodeJoin  is</h4>
 
                     <form asp-action="Create" class="newsletter_form">
+                        @Html.ValidationSummary()
                         <input asp-for="CodeJoin" placeholder="Code To Join" />
                         <input asp-for="UserProfileId" value="@ViewBag.UserProfielId" type="hidden"/>
                         <button type="submit">Join To Group</button>
