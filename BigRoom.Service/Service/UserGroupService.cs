@@ -24,7 +24,8 @@ namespace BigRoom.Service.Service
 
         public IEnumerable<UserGroupsDto> GetUserInGroup(int groupId)
         {
-            return userGroupRepository.GetAll(a => a.GroupId == groupId).Include(a => a.UserProfile).ThenInclude(a => a.ApplicationUser).Select(mapper.Map<UserGroupsDto>);
+            return userGroupRepository.GetAll(a => a.GroupId == groupId).Include(a => a.UserProfile)
+                .ThenInclude(a => a.ApplicationUser).Select(mapper.Map<UserGroupsDto>);
         }
     }
 }

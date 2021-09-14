@@ -25,22 +25,13 @@ namespace BigRoom.Controllers
             this.quzieService = quzieService;
             this.userGroupService = userGroupService;
         }
-        public  IActionResult Index(int groupId)
-        {
-            if (groupId==0)
-            {
-                return NotFound();
-            }
-            ViewBag.GroupId = groupId;
-            return View( groupPermissionService.GetGroupPermissions(groupId));
-        }
         [NoDirectAccess]
-        public async Task<IActionResult> CreateEdit(int groupId,int id = 0)
+        public async Task<IActionResult> CreateEdit(int groupId, int id = 0)
         {
             GroupPermissionDto groupPermissionDto;
             if (id == 0)
             {
-                groupPermissionDto=new GroupPermissionDto();
+                groupPermissionDto = new GroupPermissionDto();
                 groupPermissionDto.GroupId = groupId;
             }
             else
@@ -50,48 +41,42 @@ namespace BigRoom.Controllers
                 groupPermissionDto = groupPermission;
             }
             groupPermissionDto.Quizes = quzieService.GetQuziesByGroup(groupId);
-            groupPermissionDto.UserProfiles =  userGroupService.GetUserInGroup(groupId).Select(a=> new
+            groupPermissionDto.UserProfiles = userGroupService.GetUserInGroup(groupId).Select(a => new
             { Id = a.UserProfileId, Name = a.UserProfile.ApplicationUser.Email.GetNameFromEmail() });
             return View(groupPermissionDto);
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> CreateEdit([Bind("Id,QuizeId,GroupId,Edit,Create,Delete,UserProfileId")] GroupPermissionDto groupPermission)
+        public async Task<ActionResult> CreateEdit([Bind("Id,QuizeId,GroupId,Edit,Create,Delete,UserProfileId")] 
+        GroupPermissionDto groupPermission)
         {
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    await groupPermissionService.CreateEditAsync(groupPermission);
-                }
-                catch (Exception)
-                {
-                    throw;
-                }
+            if (!ModelState.IsValid)
                 return Json(new
                 {
-                    isValid = true,
-                    html = RenderRazorService.RenderRazorViewToString(this, "_ViewAll",
-                     groupPermissionService.GetGroupPermissions(groupPermission.GroupId)
-                    )
+                    isValid = false,
+                    html = RenderRazorService.RenderRazorViewToString(this, "_CreateEdit", groupPermission)
                 });
-            }
-            return Json(new { isValid = false, html = RenderRazorService.RenderRazorViewToString(this, "_CreateEdit", groupPermission) });
 
-
+            if (groupPermission.Id == 0)
+                await groupPermissionService.AddAsync(groupPermission);
+            else
+                await groupPermissionService.UpdateAsync(groupPermission);
+            return Json(new
+            {
+                isValid = true,
+                html = RenderRazorService.RenderRazorViewToString(this, "_ViewAll",
+                 groupPermissionService.GetGroupPermissions(groupPermission.GroupId)
+                )
+            });
         }
-        [HttpPost]
-        public async Task<IActionResult> Delete(int id,int groupId) {
-            try
-            {
-                await groupPermissionService.DeleteAsync(id);
-            }
-            catch (Exception)
-            {
 
-                throw;
-            }
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id, int groupId)
+        {
+           
+            await groupPermissionService.DeleteAsync(id);
             return Json(new
             {
                 isValid = true,
@@ -99,6 +84,16 @@ namespace BigRoom.Controllers
                     groupPermissionService.GetGroupPermissions(groupId)
                    )
             });
+        }
+
+        public IActionResult Index(int groupId)
+        {
+            if (groupId==0)
+            {
+                return NotFound();
+            }
+            ViewBag.GroupId = groupId;
+            return View( groupPermissionService.GetGroupPermissions(groupId));
         }
     }
 }

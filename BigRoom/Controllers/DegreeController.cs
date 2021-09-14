@@ -1,4 +1,5 @@
-﻿using BigRoom.Service.IService;
+﻿using BigRoom.Service.File;
+using BigRoom.Service.IService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NToastNotify;
@@ -12,17 +13,21 @@ namespace BigRoom.Controllers
     public class DegreeController : BaseController
     {
         private readonly IToastNotification toastNotification;
+        private readonly IFileService fileService;
         private readonly IDegreeService degreeService;
-
-        public DegreeController(IToastNotification toastNotification, IDegreeService degreeService)
+        private readonly IQuzieService quzieService;
+        public DegreeController(IToastNotification toastNotification, IFileService fileService,IDegreeService degreeService, IQuzieService quzieService)
         {
             this.toastNotification = toastNotification;
+            this.fileService = fileService;
             this.degreeService = degreeService;
+            this.quzieService = quzieService;
         }
 
         public async Task<IActionResult> CalculateDegree(IList<string> answers, int quizeId)
         {
-            await degreeService.CalCulateDegreeAsync(answers, quizeId, await GetUserProfileId());
+            var answerData = fileService.ReadAnswerfile((await quzieService.GetByIdAsync(quizeId)).Fileanswer);
+            await degreeService.CalCulateDegreeAsync(answers, answerData, quizeId, await GetUserProfileId());
             this.toastNotification.AddSuccessToastMessage($"Quize Send Success", new ToastrOptions() { ToastClass = "btn-success" });
             return RedirectToAction(nameof(Index));
         }

@@ -28,17 +28,6 @@ namespace BigRoom.Service.Service
                 .Include(a => a.UserProfile.ApplicationUser)
                 .Include(a => a.Quize).Select(mapper.Map<GroupPermissionDto>).ToList();
         }
-
-        public async Task CreateEditAsync(GroupPermissionDto groupPermissionDto)
-        {
-            if (groupPermissionDto.Id == 0)
-            {
-                await AddAsync(groupPermissionDto);
-            }
-            else
-            {
-                await UpdateAsync(groupPermissionDto);
-            }
-        }
+     
     }
 }

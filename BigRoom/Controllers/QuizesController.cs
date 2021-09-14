@@ -36,16 +36,14 @@ namespace BigRoom.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(QuizeDto quize)
         {
-            if (ModelState.IsValid)
-            {
-                quize.UserProfileId = await GetUserProfileId();
-                quize.File = await fileService.AddFileAsync(quize.FileQuestion, "quize");
-                quize.Fileanswer = await fileService.AddFileAsync(quize.FileAnswerForm, "answer");
-                await quzieService.AddAsync(quize);
-                this.toastNotification.AddSuccessToastMessage($"Quize {quize.Description} Created Success", new ToastrOptions() { ToastClass = "btn-success" });
-                return RedirectToAction(nameof(Index), new { Groupid = quize.GroupId });
-            }
-            return View(quize);
+            if (!ModelState.IsValid) return View(quize);
+            quize.UserProfileId = await GetUserProfileId();
+            quize.File = await fileService.AddFileAsync(quize.FileQuestion, "quize");
+            quize.Fileanswer = await fileService.AddFileAsync(quize.FileAnswerForm, "answer");
+            await quzieService.AddAsync(quize);
+            this.toastNotification.AddSuccessToastMessage($"Quize {quize.Description} Created Success", new ToastrOptions() { ToastClass = "btn-success" });
+            return RedirectToAction(nameof(Index), new { Groupid = quize.GroupId });
+            
         }
 
         public async Task<IActionResult> Delete(int id)
@@ -84,8 +82,7 @@ namespace BigRoom.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(QuizeDto quize)
         {
-            if (!ModelState.IsValid)
-                return View(quize);
+            if (!ModelState.IsValid)  return View(quize);
             if (quize.FileQuestion != null)
             {
                 fileService.RemoveFile(quize.File, "quize");
