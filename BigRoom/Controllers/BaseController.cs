@@ -13,8 +13,8 @@ namespace BigRoom.Controllers
 		protected IUserProfileService UserProfileService => HttpContext.RequestServices.GetService<IUserProfileService>();
 		protected async Task<int> GetUserProfileId()
         {
-            var id= (await UserProfileService.GetUserProfileIdAsync((await GetCurrentUserAsync()).Id));
-            return id;
+            var identityId = (await GetCurrentUserAsync()).Id;
+            return (await UserProfileService.GetFirstAsync(a => a.UserId == identityId)).Id;
         }
         protected async Task<ApplicationUser> GetCurrentUserAsync() => await UserManager.GetApplicationUserAsync(HttpContext.User.Identity.Name);
 	}

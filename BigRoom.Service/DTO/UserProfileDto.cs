@@ -4,7 +4,8 @@ using BigRoom.Repository.Contexts;
 using BigRoom.Service.Common.Mappings;
 using BigRoom.Service.Common.Models;
 using System.Collections.Generic;
-
+using System;
+using System.Linq.Expressions;
 namespace BigRoom.Service.DTO
 {
     public class UserProfileDto : EntityDto,IMapFrom
@@ -24,7 +25,7 @@ namespace BigRoom.Service.DTO
         public ICollection<QuizeDto> QuizesCreate { get; set; }
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<UserProfile, UserProfileDto>();
+            profile.CreateMap<UserProfile, UserProfileDto>().ReverseMap();
         }
     }
 }

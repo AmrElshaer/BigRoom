@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.Extensions.ExpressionMapping;
 using BigRoom.Repository;
 using BigRoom.Service.Common.Mappings;
 using BigRoom.Service.Validators;
@@ -13,7 +14,7 @@ namespace BigRoom.Service
     {
         public static IServiceCollection AddService(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddAutoMapper(typeof(MappingProfile).Assembly);
+            services.AddAutoMapper(cfg=> { cfg.AddExpressionMapping(); },typeof(MappingProfile).Assembly);
             AssemblyScanner.FindValidatorsInAssembly(typeof(GroupValidator).Assembly)
               .ForEach(item => services.AddScoped(item.InterfaceType, item.ValidatorType));
             services.AddRepository(configuration);

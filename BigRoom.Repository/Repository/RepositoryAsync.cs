@@ -48,6 +48,12 @@ namespace BigRoom.Repository.Repository
         {
             return await _dbContext.Set<T>().FindAsync(id);
         }
+
+        public async Task<T> GetFirstAsync(Expression<Func<T, bool>> expression)
+        {
+            return await _dbContext.Set<T>().FirstOrDefaultAsync(expression);
+        }
+
         public Task UpdateAsync(T entity)
         {
             _dbContext.Attach(entity);

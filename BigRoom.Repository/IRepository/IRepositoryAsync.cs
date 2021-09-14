@@ -15,6 +15,7 @@ namespace BigRoom.Repository.IRepository
         IQueryable<T> GetAll(Expression<Func<T, bool>> expression = null);
         Task<T> GetByIdAsync(int id);
         Task UpdateAsync(T entity);
+        Task<T> GetFirstAsync(Expression<Func<T, bool>> expression);
         IQueryable<T> Entities { get; }
     }
 }
