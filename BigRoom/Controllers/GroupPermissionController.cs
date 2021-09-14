@@ -44,7 +44,7 @@ namespace BigRoom.Controllers
             }
             else
             {
-                var groupPermission = await groupPermissionService.GetGroupPermissionById(id);
+                var groupPermission = await groupPermissionService.GetByIdAsync(id);
                 if (groupPermission == null) return NotFound();
                 groupPermissionDto = groupPermission;
             }

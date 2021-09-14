@@ -13,45 +13,33 @@ using System.Threading.Tasks;
 
 namespace BigRoom.Service.Service
 {
-    public class GroupPermissionService : IGroupPermissionService
+    public class GroupPermissionService :ServiceAsync<GroupPermission,GroupPermissionDto>, IGroupPermissionService
     {
         private readonly IMapper mapper;
-        private readonly IGroupPermissionRepository groupPermissionRepository;
-        private readonly IUniteOfWork uniteOfWork;
+        private readonly IRepositoryAsync<GroupPermission> groupPermissionRepository;
 
-        public GroupPermissionService(IMapper mapper,IGroupPermissionRepository groupPermissionRepository,IUniteOfWork uniteOfWork)
+        public GroupPermissionService(IMapper mapper, IRepositoryAsync<GroupPermission> groupPermissionRepository
+            ,IUniteOfWork uniteOfWork):base(uniteOfWork,groupPermissionRepository,mapper)
         {
             this.mapper = mapper;
             this.groupPermissionRepository = groupPermissionRepository;
-            this.uniteOfWork = uniteOfWork;
         }
         public  IEnumerable<GroupPermissionDto> GetGroupPermissions(int groupId)
         {
-            return  groupPermissionRepository.GetAll(a => a.GroupId == groupId).Include(a=>a.Group).Include(a=>a.UserProfile.ApplicationUser)
+            return  groupPermissionRepository.GetAll(a => a.GroupId == groupId).Include(a=>a.Group)
+                .Include(a=>a.UserProfile.ApplicationUser)
                 .Include(a=>a.Quize).Select(mapper.Map<GroupPermissionDto>).ToList();
         }
         public async Task CreateEditAsync(GroupPermissionDto groupPermissionDto)
         {
-            var groupPerm = mapper.Map<GroupPermission>(groupPermissionDto);
             if (groupPermissionDto.Id==0)
             {
-              await  groupPermissionRepository.AddAsync(groupPerm);
+              await  AddAsync(groupPermissionDto);
             }
             else
             {
-                await groupPermissionRepository.UpdateAsync(groupPerm);
+                await UpdateAsync(groupPermissionDto);
             }
-            await uniteOfWork.SaveChangesAsync();
-        }
-        public async Task DeleteAsync(int id)
-        {
-            var permission =await groupPermissionRepository.GetByIdAsync(id) ?? throw new Exception();
-            await groupPermissionRepository.DeleteAsync(permission);
-            await uniteOfWork.SaveChangesAsync();
-        }
-        public async Task<GroupPermissionDto> GetGroupPermissionById(int id)
-        {
-            return  mapper.Map<GroupPermissionDto>(await groupPermissionRepository.GetByIdAsync(id));
         }
     }
 }
