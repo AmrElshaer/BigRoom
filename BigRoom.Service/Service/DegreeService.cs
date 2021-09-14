@@ -16,7 +16,6 @@ namespace BigRoom.Service.Service
         private readonly IQuizeRepository quizeRepository;
         private readonly IRepositoryAsync<Degree> degreeRepository;
         private readonly IMapper mapper;
-        private readonly IUniteOfWork uniteOfWork;
         private readonly IFileService fileService;
 
         public DegreeService(IQuizeRepository quizeRepository, IRepositoryAsync<Degree> degreeRepository,
@@ -26,7 +25,6 @@ namespace BigRoom.Service.Service
             this.quizeRepository = quizeRepository;
             this.degreeRepository = degreeRepository;
             this.mapper = mapper;
-            this.uniteOfWork = uniteOfWork;
             this.fileService = fileService;
         }
 
@@ -39,9 +37,8 @@ namespace BigRoom.Service.Service
         {
             var answerData = fileService.ReadAnswerfile((await quizeRepository.GetByIdAsync(quizeId)).Fileanswer);
             var degree = (answerData.Count() - answerData.Except(answers).Count());
-            await degreeRepository.AddAsync(new Degree()
+            await AddAsync(new DegreeDto()
             { ExamDegree = degree, QuizeId = quizeId, UserProfileId = userId, TotalDegree = answerData.Count });
-            await uniteOfWork.SaveChangesAsync();
         }
 
         public IEnumerable<DegreeDto> GetQuizeDegrees(int quizeId)

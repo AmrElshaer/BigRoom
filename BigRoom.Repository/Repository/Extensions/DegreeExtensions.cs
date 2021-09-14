@@ -13,7 +13,8 @@ namespace BigRoom.Repository.Repository.Extensions
     {
         public static async Task<bool> IsDoExamAsync(this IRepositoryAsync<Degree> repository, int id, int userId)
         {
-            return (await repository.Entities.FirstOrDefaultAsync(a => a.QuizeId == id && a.UserProfileId == userId)) == null ? false : true;
+            return (await repository.Entities.FirstOrDefaultAsync
+                (a => a.QuizeId == id && a.UserProfileId == userId)) != null;
         }
         public static IQueryable<Degree> GetDegrees(this IRepositoryAsync<Degree> repository, int userId)
         {

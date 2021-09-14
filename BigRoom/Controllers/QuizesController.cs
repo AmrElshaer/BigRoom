@@ -75,7 +75,7 @@ namespace BigRoom.Controllers
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) return NotFound();
-            var quize = await quzieService.GetQuizeByIdAsync(id.Value);
+            var quize = await quzieService.GetByIdAsync(id.Value);
             if (quize == null) return NotFound();
             return View(quize);
         }
@@ -99,9 +99,9 @@ namespace BigRoom.Controllers
         //// GET: Quizes/Delete/5
         public async Task<IActionResult> Delete(int id)
         {
-            var quize = await quzieService.GetQuizeByIdAsync(id);
+            var quize = await quzieService.GetByIdAsync(id);
             if (quize == null) return NotFound();
-            await quzieService.DeleteAsync(id);
+            await quzieService.DeleteQuzieAsync(id);
             this.toastNotification.AddSuccessToastMessage($"Quize {quize.Description} deleted Success", new ToastrOptions() { ToastClass = "btn-success" });
             return RedirectToAction(nameof(Index), new { Groupid = quize.GroupId });
         }

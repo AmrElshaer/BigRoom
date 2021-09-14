@@ -20,7 +20,7 @@ namespace BigRoom.Service.DTO
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<Degree,DegreeDto>();
+            profile.CreateMap<Degree,DegreeDto>().ReverseMap();
         }
     }
 }
