@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="IRepository\IGroupRepository.cs" />
     <Compile Remove="Migrations\20210415132520_InitContext.cs" />
     <Compile Remove="Migrations\20210415132520_InitContext.Designer.cs" />
     <Compile Remove="Migrations\20210415133133_InitContext.cs" />
@@ -19,6 +20,7 @@
     <Compile Remove="Migrations\20210420123859_updateModel.Designer.cs" />
     <Compile Remove="Migrations\20210420133047_updateModelQuize.cs" />
     <Compile Remove="Migrations\20210420133047_updateModelQuize.Designer.cs" />
+    <Compile Remove="Repository\GroupRepository.cs" />
   </ItemGroup>
 
   <ItemGroup>

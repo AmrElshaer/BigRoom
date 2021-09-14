@@ -11,17 +11,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using BigRoom.Repository.Repository.Extensions;
 namespace BigRoom.Service.Service
 {
     public class UserGroupService : IUserGroupService
     {
-        private readonly IGroupRepository groupRepository;
+        private readonly IRepositoryAsync<Group> groupRepository;
         private readonly IUserGroupRepository userGroupRepository;
         private readonly IUniteOfWork uniteOfWork;
         private readonly IMapper mapper;
 
-        public UserGroupService(IGroupRepository groupRepository,IUserGroupRepository userGroupRepository,IUniteOfWork uniteOfWork,IMapper mapper)
+        public UserGroupService(IRepositoryAsync<Group> groupRepository,IUserGroupRepository userGroupRepository,IUniteOfWork uniteOfWork,IMapper mapper)
         {
             this.groupRepository = groupRepository;
             this.userGroupRepository = userGroupRepository;
