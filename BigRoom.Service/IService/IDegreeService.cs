@@ -12,6 +12,5 @@ namespace BigRoom.Service.IService
         IEnumerable<DegreeDto> GetDegrees(int userId);
         Task  CalCulateDegreeAsync(IList<string> answers, int quizeId, int userId);
         IEnumerable<DegreeDto> GetQuizeDegrees(int quizeId);
-        Task<bool> IsDoExamAsync(int id, int userId);
     }
 }

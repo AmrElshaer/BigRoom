@@ -1,7 +1,8 @@
-﻿using BigRoom.Service.DTO;
+﻿using BigRoom.Service.Common.Models;
+using BigRoom.Service.DTO;
+using BigRoom.Service.File;
 using BigRoom.Service.IService;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using NToastNotify;
 using NToastNotify.Libraries;
@@ -12,66 +13,65 @@ namespace BigRoom.Controllers
     [Authorize]
     public class QuizesController : BaseController
     {
-        private readonly IHostingEnvironment _IhostEnv;
-        private readonly IToastNotification toastNotification;
         private readonly IDegreeService degreeService;
+        private readonly IFileService fileService;
         private readonly IQuzieService quzieService;
-        private readonly IUserProfileService userProfileService;
+        private readonly IToastNotification toastNotification;
 
-        public QuizesController(IHostingEnvironment hostingEnvironment,IToastNotification toastNotification,IDegreeService degreeService,IQuzieService quzieService, IUserProfileService userProfileService)
+        public QuizesController(IToastNotification toastNotification, IDegreeService degreeService, IQuzieService quzieService, IFileService fileService)
         {
-            _IhostEnv = hostingEnvironment;
             this.toastNotification = toastNotification;
             this.degreeService = degreeService;
             this.quzieService = quzieService;
-            this.userProfileService = userProfileService;
+            this.fileService = fileService;
         }
 
-        // GET: Quizes
-
-        public async Task<IActionResult> Index(int groupId)
-        {
-            ViewData["UserId"] = await GetUserProfileId();
-            var result =  quzieService.GetQuziesByGroup(groupId);
-            return View(result);
-        }
-
-        // GET: Quizes/Details/5
-        public async Task<IActionResult> Details(int id)
-        {
-            var isDoExam =await degreeService.IsDoExamAsync(id, await GetUserProfileId());
-            if (isDoExam)
-            {
-                this.toastNotification.AddWarningToastMessage($"You Do this exam before", new ToastrOptions() { ToastClass = "btn-warning" });
-                return RedirectToAction("Index",controllerName:"Degree");
-            }
-            var quizeModel = await quzieService.GetQuizeDetailsAsync(id);
-            return View(quizeModel);
-        }
-        // GET: Quizes/Create
         public IActionResult Create(string groupid)
         {
             ViewData["groupid"] = groupid;
             return View();
         }
-        // POST: Quizes/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(QuizeDto quize)
         {
             if (ModelState.IsValid)
             {
-                quize.UserProfileId =await GetUserProfileId();
-                await quzieService.CreateQuizeAsync(quize);
+                quize.UserProfileId = await GetUserProfileId();
+                quize.File = await fileService.AddFileAsync(quize.FileQuestion, "quize");
+                quize.Fileanswer = await fileService.AddFileAsync(quize.FileAnswerForm, "answer");
+                await quzieService.AddAsync(quize);
                 this.toastNotification.AddSuccessToastMessage($"Quize {quize.Description} Created Success", new ToastrOptions() { ToastClass = "btn-success" });
                 return RedirectToAction(nameof(Index), new { Groupid = quize.GroupId });
             }
             return View(quize);
         }
 
-        // GET: Quizes/Edit/5
+        public async Task<IActionResult> Delete(int id)
+        {
+            var quize = await quzieService.GetByIdAsync(id);
+            if (quize == null) return NotFound();
+            fileService.RemoveFile(quize.Fileanswer, "answer");
+            fileService.RemoveFile(quize.File, "quize");
+            await quzieService.DeleteAsync(id);
+            this.toastNotification.AddSuccessToastMessage($"Quize {quize.Description} deleted Success", new ToastrOptions() { ToastClass = "btn-success" });
+            return RedirectToAction(nameof(Index), new { Groupid = quize.GroupId });
+        }
+
+        public async Task<IActionResult> Details(int id)
+        {
+            var userId = await GetUserProfileId();
+            if ((await degreeService.GetFirstAsync(a => a.QuizeId == id && a.UserProfileId == userId)) != null)
+            {
+                this.toastNotification.AddWarningToastMessage($"You Do this exam before", new ToastrOptions() { ToastClass = "btn-warning" });
+                return RedirectToAction("Index", controllerName: "Degree");
+            }
+            var quize = await quzieService.GetByIdAsync(id);
+            var questions = await fileService.ReaderQuestionsAsync(quize.File);
+            return View(new QuizeModel(questions, quize));
+        }
+
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) return NotFound();
@@ -80,30 +80,32 @@ namespace BigRoom.Controllers
             return View(quize);
         }
 
-        // POST: Quizes/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(QuizeDto quize)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
+                return View(quize);
+            if (quize.FileQuestion != null)
             {
-                await quzieService.UpdateQuizeAsync(quize);
-                this.toastNotification.AddSuccessToastMessage($"Quize {quize.Description} edit Success", new ToastrOptions() { ToastClass = "btn-success" });
-                return RedirectToAction(nameof(Index), new { Groupid = quize.GroupId });
+                fileService.RemoveFile(quize.File, "quize");
+                quize.File = await fileService.AddFileAsync(quize.FileQuestion, "quize");
             }
-            return View(quize);
+            if (quize.FileAnswerForm != null)
+            {
+                fileService.RemoveFile(quize.Fileanswer, "answer");
+                quize.Fileanswer = await fileService.AddFileAsync(quize.FileAnswerForm, "answer");
+            }
+            await quzieService.UpdateAsync(quize);
+            this.toastNotification.AddSuccessToastMessage($"Quize {quize.Description} edit Success", new ToastrOptions() { ToastClass = "btn-success" });
+            return RedirectToAction(nameof(Index), new { Groupid = quize.GroupId });
         }
 
-        //// GET: Quizes/Delete/5
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Index(int groupId)
         {
-            var quize = await quzieService.GetByIdAsync(id);
-            if (quize == null) return NotFound();
-            await quzieService.DeleteQuzieAsync(id);
-            this.toastNotification.AddSuccessToastMessage($"Quize {quize.Description} deleted Success", new ToastrOptions() { ToastClass = "btn-success" });
-            return RedirectToAction(nameof(Index), new { Groupid = quize.GroupId });
+            ViewData["UserId"] = await GetUserProfileId();
+            var result = quzieService.GetQuziesByGroup(groupId);
+            return View(result);
         }
     }
 }

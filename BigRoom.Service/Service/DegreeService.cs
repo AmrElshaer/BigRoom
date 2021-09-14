@@ -47,10 +47,5 @@ namespace BigRoom.Service.Service
             return degreeRepository.GetAll(a => a.QuizeId == quizeId).Include(u => u.UserProfile.ApplicationUser)
                 .Select(mapper.Map<DegreeDto>).ToList();
         }
-
-        public async Task<bool> IsDoExamAsync(int id, int userId)
-        {
-            return (await degreeRepository.GetFirstAsync(a => a.QuizeId == id && a.UserProfileId == userId)) != null;
-        }
     }
 }
