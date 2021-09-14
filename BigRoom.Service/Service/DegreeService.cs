@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using BigRoom.Repository.Entities;
 using BigRoom.Repository.IRepository;
-using BigRoom.Repository.Repository.Extensions;
 using BigRoom.Service.DTO;
 using BigRoom.Service.File;
 using BigRoom.Service.IService;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -30,7 +30,8 @@ namespace BigRoom.Service.Service
 
         public IEnumerable<DegreeDto> GetDegrees(int userId)
         {
-            return degreeRepository.GetDegrees(userId).Select(mapper.Map<DegreeDto>);
+            return degreeRepository.GetAll(a => a.UserProfileId == userId)
+                .Include(a => a.Quize.Group).Select(mapper.Map<DegreeDto>);
         }
 
         public async Task CalCulateDegreeAsync(IList<string> answers, int quizeId, int userId)
@@ -43,12 +44,13 @@ namespace BigRoom.Service.Service
 
         public IEnumerable<DegreeDto> GetQuizeDegrees(int quizeId)
         {
-            return degreeRepository.GetQuizeDegrees(quizeId).Select(mapper.Map<DegreeDto>).ToList();
+            return degreeRepository.GetAll(a => a.QuizeId == quizeId).Include(u => u.UserProfile.ApplicationUser)
+                .Select(mapper.Map<DegreeDto>).ToList();
         }
 
         public async Task<bool> IsDoExamAsync(int id, int userId)
         {
-            return await degreeRepository.IsDoExamAsync(id, userId);
+            return (await degreeRepository.GetFirstAsync(a => a.QuizeId == id && a.UserProfileId == userId)) != null;
         }
     }
 }

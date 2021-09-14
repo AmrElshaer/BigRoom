@@ -9,7 +9,6 @@ namespace BigRoom.Service.IService
 {
     public interface IGroupService : IServiceAsync<Group, GroupDto>
     {
-        bool IsUniqueName(string name);
         Task<GroupDto> GroupDetailsByIdAsync(int id);
     }
 }
