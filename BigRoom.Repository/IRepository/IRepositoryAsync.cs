@@ -12,7 +12,7 @@ namespace BigRoom.Repository.IRepository
     {
         Task<T> AddAsync(T entity);
         Task DeleteAsync(T entity);
-        IQueryable<T> GetAllAsync(Expression<Func<T, bool>> expression = null);
+        IQueryable<T> GetAll(Expression<Func<T, bool>> expression = null);
         Task<T> GetByIdAsync(int id);
         Task UpdateAsync(T entity);
         IQueryable<T> Entities { get; }

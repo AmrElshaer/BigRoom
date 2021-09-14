@@ -13,12 +13,12 @@ namespace BigRoom.Service.Service
 {
     public class DegreeService : ServiceAsync<Degree, DegreeDto>, IDegreeService
     {
-        private readonly IQuizeRepository quizeRepository;
+        private readonly IRepositoryAsync<Quize> quizeRepository;
         private readonly IRepositoryAsync<Degree> degreeRepository;
         private readonly IMapper mapper;
         private readonly IFileService fileService;
 
-        public DegreeService(IQuizeRepository quizeRepository, IRepositoryAsync<Degree> degreeRepository,
+        public DegreeService(IRepositoryAsync<Quize> quizeRepository, IRepositoryAsync<Degree> degreeRepository,
             IMapper mapper, IUniteOfWork uniteOfWork, IFileService fileService)
             : base(uniteOfWork, degreeRepository, mapper)
         {

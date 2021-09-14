@@ -46,7 +46,7 @@ namespace BigRoom.Service.Service
         }
         public async Task<IEnumerable<object>> GetUserInGroupAsync(int groupId)
         {
-          return await  userGroupRepository.GetAllAsync(a=>a.GroupId==groupId)
+          return await  userGroupRepository.GetAll(a=>a.GroupId==groupId)
                 .Select(a=>new {Id=a.UserProfileId,Name=a.UserProfile.ApplicationUser.UserName.GetNameFromEmail() }).ToListAsync();
         }
 

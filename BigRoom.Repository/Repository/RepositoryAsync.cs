@@ -36,7 +36,7 @@ namespace BigRoom.Repository.Repository
 
       
 
-        public IQueryable<T> GetAllAsync(Expression<Func<T, bool>> expression = null)
+        public IQueryable<T> GetAll(Expression<Func<T, bool>> expression = null)
         {
             var result = _dbContext.Set<T>().AsNoTracking();
             if (expression != null)

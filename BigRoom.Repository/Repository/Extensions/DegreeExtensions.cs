@@ -18,12 +18,12 @@ namespace BigRoom.Repository.Repository.Extensions
         }
         public static IQueryable<Degree> GetDegrees(this IRepositoryAsync<Degree> repository, int userId)
         {
-            return repository.GetAllAsync(a => a.UserProfileId == userId)
+            return repository.GetAll(a => a.UserProfileId == userId)
                 .Include(a => a.Quize.Group);
         }
         public static IQueryable<Degree> GetQuizeDegrees(this IRepositoryAsync<Degree> repository, int quizeId)
         {
-            return repository.GetAllAsync(a => a.QuizeId == quizeId).Include(u => u.UserProfile.ApplicationUser);
+            return repository.GetAll(a => a.QuizeId == quizeId).Include(u => u.UserProfile.ApplicationUser);
         }
     }
 }

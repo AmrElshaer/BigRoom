@@ -27,7 +27,7 @@ namespace BigRoom.Service.Service
         }
         public  IEnumerable<GroupPermissionDto> GetGroupPermissions(int groupId)
         {
-            return  groupPermissionRepository.GetAllAsync(a => a.GroupId == groupId).Include(a=>a.Group).Include(a=>a.UserProfile.ApplicationUser)
+            return  groupPermissionRepository.GetAll(a => a.GroupId == groupId).Include(a=>a.Group).Include(a=>a.UserProfile.ApplicationUser)
                 .Include(a=>a.Quize).Select(mapper.Map<GroupPermissionDto>).ToList();
         }
         public async Task CreateEditAsync(GroupPermissionDto groupPermissionDto)

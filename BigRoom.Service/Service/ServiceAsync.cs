@@ -41,10 +41,10 @@ namespace BigRoom.Service.Service
         }
 
 
-        public  IEnumerable<TDto> GetAllAsync(Func<TDto, bool> expression = null)
+        public  IEnumerable<TDto> GetAll(Func<TDto, bool> expression = null)
         {
             var predicate = _mapper.Map<Expression<Func<TEntity,bool>>>(expression);
-            return  _repository.GetAllAsync(predicate).Select(_mapper.Map<TDto>).ToList(); ;
+            return  _repository.GetAll(predicate).Select(_mapper.Map<TDto>).ToList(); ;
         }
 
         public async Task<TDto> GetByIdAsync(int id)

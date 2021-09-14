@@ -50,7 +50,7 @@ namespace BigRoom.Service.Service
 
         public IEnumerable<QuizeDto> GetQuziesByGroup(int groupId)
         {
-            return quizeRepository.GetAllAsync(a => a.GroupId == groupId).Include(a => a.GroupPermissions)
+            return quizeRepository.GetAll(a => a.GroupId == groupId).Include(a => a.GroupPermissions)
                 .Select(mapper.Map<QuizeDto>).ToList();
         }
 
