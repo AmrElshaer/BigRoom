@@ -1,5 +1,6 @@
 ﻿using BigRoom.Service.DTO;
 using BigRoom.Service.IService;
+using BigRoom.Service.UOW;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NToastNotify;
@@ -13,11 +14,14 @@ namespace BigRoom.Controllers
     {
         private readonly IGroupService groupService;
         private readonly IToastNotification toastNotification;
+        private readonly IUniteOfWork uniteOfWork;
 
-        public GroupsController(IGroupService groupService, IToastNotification toastNotification)
+        public GroupsController(IGroupService groupService, IToastNotification toastNotification
+            ,IUniteOfWork uniteOfWork)
         {
             this.groupService = groupService;
             this.toastNotification = toastNotification;
+            this.uniteOfWork = uniteOfWork;
         }
 
         // GET: Groups/GroupYouAdmin/5
@@ -44,14 +48,14 @@ namespace BigRoom.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(GroupDto group)
         {
-            if (ModelState.IsValid)
-            {
-                group.AdminId = await GetUserProfileId();
-                await groupService.AddAsync(group);
-                this.toastNotification.AddSuccessToastMessage($"Group {group.Name} is created success", new ToastrOptions() { ToastClass = "btn-success" });
-                return RedirectToAction("Index", controllerName: "Exam");
-            }
-            return View(group);
+            if (!ModelState.IsValid) return View(group);
+            group.AdminId = await GetUserProfileId();
+            await groupService.AddAsync(group);
+            await uniteOfWork.SaveChangesAsync();
+            this.toastNotification.AddSuccessToastMessage($"Group {group.Name} is created success",
+                new ToastrOptions() { ToastClass = "btn-success" });
+            return RedirectToAction("Index", controllerName: "Exam");
+           
         }
 
         // GET: Groups/Edit/5
@@ -73,6 +77,7 @@ namespace BigRoom.Controllers
             if (ModelState.IsValid)
             {
                 await groupService.UpdateAsync(group);
+                await uniteOfWork.SaveChangesAsync();
                 this.toastNotification.AddSuccessToastMessage($"Group {group.Name} is edit success", new ToastrOptions() { ToastClass = "btn-success" });
                 return RedirectToAction("Index", controllerName: "Exam");
             }
@@ -84,6 +89,7 @@ namespace BigRoom.Controllers
         {
             if (id == null) return NotFound();
             await groupService.DeleteAsync(id.Value);
+            await uniteOfWork.SaveChangesAsync();
             this.toastNotification.AddSuccessToastMessage($"Group deleted success", new ToastrOptions() { ToastClass = "btn-success" });
             return RedirectToAction("Index", controllerName: "Exam");
         }

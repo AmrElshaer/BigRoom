@@ -18,8 +18,8 @@ namespace BigRoom.Service.Service
         private readonly IMapper mapper;
         private readonly IRepositoryAsync<Quize> quizeRepository;
 
-        public QuzieService(IRepositoryAsync<Quize> quizeRepository, IMapper mapper,
-            IUniteOfWork uniteOfWork) : base(uniteOfWork, quizeRepository, mapper)
+        public QuzieService(IRepositoryAsync<Quize> quizeRepository, IMapper mapper)
+            : base(quizeRepository, mapper)
         {
             this.quizeRepository = quizeRepository;
             this.mapper = mapper;

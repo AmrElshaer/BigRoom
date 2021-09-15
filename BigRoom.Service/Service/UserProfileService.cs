@@ -13,8 +13,8 @@ namespace BigRoom.Service.Service
         private readonly IMapper mapper;
         private readonly IRepositoryAsync<UserProfile> userProfileRepository;
 
-        public UserProfileService(IUniteOfWork uniteOfWork, IRepositoryAsync<UserProfile> userProfileRepository
-            , IMapper mapper) : base(uniteOfWork, userProfileRepository, mapper)
+        public UserProfileService(IRepositoryAsync<UserProfile> userProfileRepository
+            , IMapper mapper) : base(userProfileRepository, mapper)
         {
             this.userProfileRepository = userProfileRepository;
             this.mapper = mapper;

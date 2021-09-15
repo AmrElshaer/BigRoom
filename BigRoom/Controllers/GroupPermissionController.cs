@@ -2,10 +2,9 @@
 using BigRoom.Service.Common.Behavoir;
 using BigRoom.Service.DTO;
 using BigRoom.Service.IService;
+using BigRoom.Service.UOW;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using static BigRoom.Helper.RenderRazorService;
@@ -18,13 +17,17 @@ namespace BigRoom.Controllers
         private readonly IGroupPermissionService groupPermissionService;
         private readonly IQuzieService quzieService;
         private readonly IUserGroupService userGroupService;
+        private readonly IUniteOfWork uniteOfWork;
 
-        public GroupPermissionController(IGroupPermissionService groupPermissionService, IQuzieService quzieService,IUserGroupService userGroupService)
+        public GroupPermissionController(IGroupPermissionService groupPermissionService,
+            IQuzieService quzieService, IUserGroupService userGroupService, IUniteOfWork uniteOfWork)
         {
             this.groupPermissionService = groupPermissionService;
             this.quzieService = quzieService;
             this.userGroupService = userGroupService;
+            this.uniteOfWork = uniteOfWork;
         }
+
         [NoDirectAccess]
         public async Task<IActionResult> CreateEdit(int groupId, int id = 0)
         {
@@ -48,10 +51,9 @@ namespace BigRoom.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> CreateEdit([Bind("Id,QuizeId,GroupId,Edit,Create,Delete,UserProfileId")] 
+        public async Task<ActionResult> CreateEdit([Bind("Id,QuizeId,GroupId,Edit,Create,Delete,UserProfileId")]
         GroupPermissionDto groupPermission)
         {
-
             if (!ModelState.IsValid)
                 return Json(new
                 {
@@ -63,6 +65,7 @@ namespace BigRoom.Controllers
                 await groupPermissionService.AddAsync(groupPermission);
             else
                 await groupPermissionService.UpdateAsync(groupPermission);
+            await uniteOfWork.SaveChangesAsync();
             return Json(new
             {
                 isValid = true,
@@ -75,8 +78,8 @@ namespace BigRoom.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete(int id, int groupId)
         {
-           
             await groupPermissionService.DeleteAsync(id);
+            await uniteOfWork.SaveChangesAsync();
             return Json(new
             {
                 isValid = true,
@@ -88,12 +91,12 @@ namespace BigRoom.Controllers
 
         public IActionResult Index(int groupId)
         {
-            if (groupId==0)
+            if (groupId == 0)
             {
                 return NotFound();
             }
             ViewBag.GroupId = groupId;
-            return View( groupPermissionService.GetGroupPermissions(groupId));
+            return View(groupPermissionService.GetGroupPermissions(groupId));
         }
     }
 }

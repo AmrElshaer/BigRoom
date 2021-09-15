@@ -16,7 +16,8 @@ namespace BigRoom.Controllers
         private readonly IFileService fileService;
         private readonly IDegreeService degreeService;
         private readonly IQuzieService quzieService;
-        public DegreeController(IToastNotification toastNotification, IFileService fileService,IDegreeService degreeService, IQuzieService quzieService)
+        public DegreeController(IToastNotification toastNotification, IFileService fileService
+            ,IDegreeService degreeService, IQuzieService quzieService)
         {
             this.toastNotification = toastNotification;
             this.fileService = fileService;

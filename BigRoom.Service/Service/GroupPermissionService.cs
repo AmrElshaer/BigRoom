@@ -16,7 +16,7 @@ namespace BigRoom.Service.Service
         private readonly IRepositoryAsync<GroupPermission> groupPermissionRepository;
 
         public GroupPermissionService(IMapper mapper, IRepositoryAsync<GroupPermission> groupPermissionRepository
-            , IUniteOfWork uniteOfWork) : base(uniteOfWork, groupPermissionRepository, mapper)
+            ) : base(groupPermissionRepository, mapper)
         {
             this.mapper = mapper;
             this.groupPermissionRepository = groupPermissionRepository;

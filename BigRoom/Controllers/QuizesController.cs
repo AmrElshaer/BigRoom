@@ -2,6 +2,7 @@
 using BigRoom.Service.DTO;
 using BigRoom.Service.File;
 using BigRoom.Service.IService;
+using BigRoom.Service.UOW;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NToastNotify;
@@ -14,14 +15,17 @@ namespace BigRoom.Controllers
     public class QuizesController : BaseController
     {
         private readonly IDegreeService degreeService;
+        private readonly IUniteOfWork uniteOfWork;
         private readonly IFileService fileService;
         private readonly IQuzieService quzieService;
         private readonly IToastNotification toastNotification;
 
-        public QuizesController(IToastNotification toastNotification, IDegreeService degreeService, IQuzieService quzieService, IFileService fileService)
+        public QuizesController(IToastNotification toastNotification, IDegreeService degreeService
+            ,IUniteOfWork uniteOfWork,IQuzieService quzieService, IFileService fileService)
         {
             this.toastNotification = toastNotification;
             this.degreeService = degreeService;
+            this.uniteOfWork = uniteOfWork;
             this.quzieService = quzieService;
             this.fileService = fileService;
         }
@@ -41,7 +45,9 @@ namespace BigRoom.Controllers
             quize.File = await fileService.AddFileAsync(quize.FileQuestion, "quize");
             quize.Fileanswer = await fileService.AddFileAsync(quize.FileAnswerForm, "answer");
             await quzieService.AddAsync(quize);
-            this.toastNotification.AddSuccessToastMessage($"Quize {quize.Description} Created Success", new ToastrOptions() { ToastClass = "btn-success" });
+            await uniteOfWork.SaveChangesAsync();
+            this.toastNotification.AddSuccessToastMessage($"Quize {quize.Description} Created Success",
+                new ToastrOptions() { ToastClass = "btn-success" });
             return RedirectToAction(nameof(Index), new { Groupid = quize.GroupId });
             
         }
@@ -53,7 +59,9 @@ namespace BigRoom.Controllers
             fileService.RemoveFile(quize.Fileanswer, "answer");
             fileService.RemoveFile(quize.File, "quize");
             await quzieService.DeleteAsync(id);
-            this.toastNotification.AddSuccessToastMessage($"Quize {quize.Description} deleted Success", new ToastrOptions() { ToastClass = "btn-success" });
+            await uniteOfWork.SaveChangesAsync();
+            this.toastNotification.AddSuccessToastMessage($"Quize {quize.Description} deleted Success",
+                new ToastrOptions() { ToastClass = "btn-success" });
             return RedirectToAction(nameof(Index), new { Groupid = quize.GroupId });
         }
 
@@ -62,7 +70,8 @@ namespace BigRoom.Controllers
             var userId = await GetUserProfileId();
             if ((await degreeService.GetFirstAsync(a => a.QuizeId == id && a.UserProfileId == userId)) != null)
             {
-                this.toastNotification.AddWarningToastMessage($"You Do this exam before", new ToastrOptions() { ToastClass = "btn-warning" });
+                this.toastNotification.AddWarningToastMessage($"You Do this exam before",
+                    new ToastrOptions() { ToastClass = "btn-warning" });
                 return RedirectToAction("Index", controllerName: "Degree");
             }
             var quize = await quzieService.GetByIdAsync(id);
@@ -94,6 +103,7 @@ namespace BigRoom.Controllers
                 quize.Fileanswer = await fileService.AddFileAsync(quize.FileAnswerForm, "answer");
             }
             await quzieService.UpdateAsync(quize);
+            await uniteOfWork.SaveChangesAsync();
             this.toastNotification.AddSuccessToastMessage($"Quize {quize.Description} edit Success", new ToastrOptions() { ToastClass = "btn-success" });
             return RedirectToAction(nameof(Index), new { Groupid = quize.GroupId });
         }

@@ -10,7 +10,7 @@ namespace BigRoom.Repository.IRepository
 {
     public interface IRepositoryAsync<T> where T:Entity
     {
-        Task<T> AddAsync(T entity);
+        Task AddAsync(T entity);
         Task DeleteAsync(T entity);
         IQueryable<T> GetAll(Expression<Func<T, bool>> expression = null);
         Task<T> GetByIdAsync(int id);

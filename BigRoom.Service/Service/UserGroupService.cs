@@ -15,8 +15,8 @@ namespace BigRoom.Service.Service
         private readonly IRepositoryAsync<UserGroups> userGroupRepository;
         private readonly IMapper mapper;
 
-        public UserGroupService(IRepositoryAsync<UserGroups> userGroupRepository,
-            IUniteOfWork uniteOfWork, IMapper mapper) : base(uniteOfWork, userGroupRepository, mapper)
+        public UserGroupService(IRepositoryAsync<UserGroups> userGroupRepository, IMapper mapper)
+            : base(userGroupRepository, mapper)
         {
             this.userGroupRepository = userGroupRepository;
             this.mapper = mapper;

@@ -7,33 +7,42 @@ namespace BigRoom.Service.Validators
 {
     public class UserGroupValidator : AbstractValidator<UserGroupsDto>
     {
+        private readonly IUserGroupService userGroupService;
+        private readonly IGroupService groupService;
+
         public UserGroupValidator(IUserGroupService userGroupService, IGroupService groupService)
         {
+            this.userGroupService = userGroupService;
+            this.groupService = groupService;
             RuleFor(g => g.CodeJoin).NotEmpty().NotNull();
             RuleFor(g => g).Must(IsGroupExist).WithMessage("CodeJoin  is Not Exits Please Enter valid CodeJoin")
-            .Must(UserInGroup).WithMessage("You May Exiting in This group");
+           .DependentRules(() => { RuleFor(g => g).Must(UserNotInGroup).WithMessage("You May Exiting in This group"); });
+            
+            
+        }
 
-            bool IsGroupExist(UserGroupsDto userGroupsDto)
+        private bool IsGroupExist(UserGroupsDto userGroupsDto)
+        {
+            try
             {
-                try
-                {
-                    return (groupService.GetFirstAsync(a => a.CodeJion == userGroupsDto.CodeJoin).GetAwaiter().GetResult()) != null;
-                }
-                catch (Exception)
-                {
-                    return false;
-                }
+                return (groupService.GetFirstAsync(a => a.CodeJion == userGroupsDto.CodeJoin).GetAwaiter().GetResult()) != null;
             }
-            bool UserInGroup(UserGroupsDto userGroupsDto)
+            catch (Exception)
             {
-                if (!IsGroupExist(userGroupsDto))
-                    return false;
+                return false;
+            }
+        }
 
-                var group = groupService.GetFirstAsync(a => a.CodeJion == userGroupsDto.CodeJoin).GetAwaiter().GetResult();
-                var userGroup = userGroupService.GetFirstAsync((a => a.GroupId == group.Id
-                && userGroupsDto.UserProfileId == userGroupsDto.UserProfileId)).GetAwaiter().GetResult();
-                return group != null && userGroup != null;
-            }
+        private bool UserNotInGroup(UserGroupsDto userGroupsDto)
+        {
+
+            var group = groupService.GetFirstAsync(a => a.CodeJion == userGroupsDto.CodeJoin).GetAwaiter().GetResult();
+            userGroupsDto.GroupId = group.Id;
+            var userGroup= userGroupService.GetFirstAsync((a => a.GroupId == group.Id
+            && userGroupsDto.UserProfileId == userGroupsDto.UserProfileId)).GetAwaiter().GetResult();
+            return userGroup == null;
+
+
         }
     }
 }

@@ -22,10 +22,9 @@ namespace BigRoom.Repository.Repository
 
         public IQueryable<T> Entities => _dbContext.Set<T>();
 
-        public async Task<T> AddAsync(T entity)
+        public async Task AddAsync(T entity)
         {
             await _dbContext.Set<T>().AddAsync(entity);
-            return entity;
         }
 
         public Task DeleteAsync(T entity)

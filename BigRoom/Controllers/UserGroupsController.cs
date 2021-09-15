@@ -1,5 +1,6 @@
 ﻿using BigRoom.Service.DTO;
 using BigRoom.Service.IService;
+using BigRoom.Service.UOW;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NToastNotify;
@@ -11,11 +12,13 @@ namespace BigRoom.Controllers
     [Authorize]
     public class UserGroupsController : BaseController
     {
+        private readonly IUniteOfWork uniteOfWork;
         private readonly IUserGroupService userGroupService;
         private readonly IToastNotification toastNotification;
 
-        public UserGroupsController(IUserGroupService userGroupService, IToastNotification toastNotification)
+        public UserGroupsController(IUniteOfWork uniteOfWork,IUserGroupService userGroupService, IToastNotification toastNotification)
         {
+            this.uniteOfWork = uniteOfWork;
             this.userGroupService = userGroupService;
             this.toastNotification = toastNotification;
         }
@@ -26,18 +29,17 @@ namespace BigRoom.Controllers
             return View();
         }
 
-        // POST: UserGroups/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+       
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(UserGroupsDto userGroups)
         {
             if (ModelState.IsValid)
             {
-               var groupId=  await userGroupService.AddAsync(userGroups);
+                await userGroupService.AddAsync(userGroups);
+                await uniteOfWork.SaveChangesAsync();
                 this.toastNotification.AddSuccessToastMessage($"Join to group is success", new ToastrOptions() { ToastClass = "btn-success" });
-                return RedirectToAction("GroupYouAdmin", "Groups", new { id = groupId });
+                return RedirectToAction("GroupYouAdmin", "Groups", new { id = userGroups.GroupId });
             }
             return View(userGroups);
         }
@@ -47,6 +49,7 @@ namespace BigRoom.Controllers
             try
             {
                 await userGroupService.DeleteAsync(id);
+                await uniteOfWork.SaveChangesAsync();
             }
             catch (System.Exception)
             {
