@@ -3,8 +3,6 @@ using BigRoom.Service.IService;
 using BigRoom.Service.UOW;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using NToastNotify;
-using NToastNotify.Libraries;
 using System.Threading.Tasks;
 
 namespace BigRoom.Controllers
@@ -15,13 +13,12 @@ namespace BigRoom.Controllers
         private readonly IGroupService groupService;
         private readonly IUniteOfWork uniteOfWork;
 
-        public GroupsController(IGroupService groupService,IUniteOfWork uniteOfWork)
+        public GroupsController(IGroupService groupService, IUniteOfWork uniteOfWork)
         {
             this.groupService = groupService;
             this.uniteOfWork = uniteOfWork;
         }
 
-       
         public async Task<IActionResult> GroupYouAdmin(int? id)
         {
             if (id == null) return NotFound();
@@ -31,13 +28,11 @@ namespace BigRoom.Controllers
             return View(group);
         }
 
-       
         public IActionResult Create()
         {
             return View();
         }
 
-        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(GroupDto group)
@@ -48,7 +43,6 @@ namespace BigRoom.Controllers
             await uniteOfWork.SaveChangesAsync();
             ShowSuccess($"Group {group.Name} is created success");
             return RedirectToAction("Index", controllerName: "Exam");
-           
         }
 
         public async Task<IActionResult> Edit(int? id)
@@ -59,7 +53,6 @@ namespace BigRoom.Controllers
             return View(group);
         }
 
-      
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(GroupDto group)
@@ -74,7 +67,6 @@ namespace BigRoom.Controllers
             return View(group);
         }
 
-        
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null) return NotFound();
