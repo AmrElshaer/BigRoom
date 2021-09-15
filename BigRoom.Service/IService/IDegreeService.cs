@@ -10,7 +10,8 @@ namespace BigRoom.Service.IService
     public  interface IDegreeService : IServiceAsync<Degree, DegreeDto>
     {
         IEnumerable<DegreeDto> GetDegrees(int userId);
-        Task CalCulateDegreeAsync(IList<string> answers, IList<string> answerData, int quizeId, int userId);
+        Task CalCulateDegreeAsync(IList<string> answers, int quizeId, int userId);
         IEnumerable<DegreeDto> GetQuizeDegrees(int quizeId);
+        Task<bool> IsDoExam(int quizeId, int userId);
     }
 }

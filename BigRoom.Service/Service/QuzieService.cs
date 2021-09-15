@@ -16,11 +16,13 @@ namespace BigRoom.Service.Service
     {
         
         private readonly IMapper mapper;
+        private readonly IFileService fileService;
         private readonly IRepositoryAsync<Quize> quizeRepository;
 
-        public QuzieService(IRepositoryAsync<Quize> quizeRepository, IMapper mapper)
+        public QuzieService(IFileService fileService,IRepositoryAsync<Quize> quizeRepository, IMapper mapper)
             : base(quizeRepository, mapper)
         {
+            this.fileService = fileService;
             this.quizeRepository = quizeRepository;
             this.mapper = mapper;
         }
@@ -30,6 +32,38 @@ namespace BigRoom.Service.Service
             return quizeRepository.GetAll(a => a.GroupId == groupId).Include(a => a.GroupPermissions)
                 .Select(mapper.Map<QuizeDto>).ToList();
         }
-      
+        public async Task<QuizeModel> GenerateQuzie(int quizeId)
+        {
+            var quize = await GetByIdAsync(quizeId);
+            var questions = await fileService.ReaderQuestionsAsync(quize.File);
+            return new QuizeModel(questions, quize);
+        }
+        public async Task RemoveQuzie(int id)
+        {
+            var quize = await GetByIdAsync(id);
+            fileService.RemoveFile(quize.Fileanswer, "answer");
+            fileService.RemoveFile(quize.File, "quize");
+            await DeleteAsync(id);
+        }
+        public async Task AddQuzieAsync(QuizeDto quize)
+        {
+            quize.File = await fileService.AddFileAsync(quize.FileQuestion, "quize");
+            quize.Fileanswer = await fileService.AddFileAsync(quize.FileAnswerForm, "answer");
+            await AddAsync(quize);
+        }
+        public async Task UpdateQuzieAsync(QuizeDto quize)
+        {
+            if (quize.FileQuestion != null)
+            {
+                fileService.RemoveFile(quize.File, "quize");
+                quize.File = await fileService.AddFileAsync(quize.FileQuestion, "quize");
+            }
+            if (quize.FileAnswerForm != null)
+            {
+                fileService.RemoveFile(quize.Fileanswer, "answer");
+                quize.Fileanswer = await fileService.AddFileAsync(quize.FileAnswerForm, "answer");
+            }
+            await UpdateAsync(quize);
+        }
     }
 }

@@ -16,18 +16,14 @@ namespace BigRoom.Controllers
     {
         private readonly IDegreeService degreeService;
         private readonly IUniteOfWork uniteOfWork;
-        private readonly IFileService fileService;
         private readonly IQuzieService quzieService;
-        private readonly IToastNotification toastNotification;
 
-        public QuizesController(IToastNotification toastNotification, IDegreeService degreeService
-            ,IUniteOfWork uniteOfWork,IQuzieService quzieService, IFileService fileService)
+        public QuizesController(IDegreeService degreeService
+            ,IUniteOfWork uniteOfWork,IQuzieService quzieService)
         {
-            this.toastNotification = toastNotification;
             this.degreeService = degreeService;
             this.uniteOfWork = uniteOfWork;
             this.quzieService = quzieService;
-            this.fileService = fileService;
         }
 
         public IActionResult Create(string groupid)
@@ -42,41 +38,34 @@ namespace BigRoom.Controllers
         {
             if (!ModelState.IsValid) return View(quize);
             quize.UserProfileId = await GetUserProfileId();
-            quize.File = await fileService.AddFileAsync(quize.FileQuestion, "quize");
-            quize.Fileanswer = await fileService.AddFileAsync(quize.FileAnswerForm, "answer");
-            await quzieService.AddAsync(quize);
+            await quzieService.AddQuzieAsync(quize);
             await uniteOfWork.SaveChangesAsync();
-            this.toastNotification.AddSuccessToastMessage($"Quize {quize.Description} Created Success",
-                new ToastrOptions() { ToastClass = "btn-success" });
+            ShowSuccess($"Quize {quize.Description} Created Success");
             return RedirectToAction(nameof(Index), new { Groupid = quize.GroupId });
-            
+
+           
         }
 
         public async Task<IActionResult> Delete(int id)
         {
             var quize = await quzieService.GetByIdAsync(id);
             if (quize == null) return NotFound();
-            fileService.RemoveFile(quize.Fileanswer, "answer");
-            fileService.RemoveFile(quize.File, "quize");
-            await quzieService.DeleteAsync(id);
+            await quzieService.RemoveQuzie(id);
             await uniteOfWork.SaveChangesAsync();
-            this.toastNotification.AddSuccessToastMessage($"Quize {quize.Description} deleted Success",
-                new ToastrOptions() { ToastClass = "btn-success" });
+            ShowSuccess($"Quize {quize.Description} deleted Success");
             return RedirectToAction(nameof(Index), new { Groupid = quize.GroupId });
+
+           
         }
 
         public async Task<IActionResult> Details(int id)
         {
-            var userId = await GetUserProfileId();
-            if ((await degreeService.GetFirstAsync(a => a.QuizeId == id && a.UserProfileId == userId)) != null)
+            if (await degreeService.IsDoExam(id, await GetUserProfileId()))
             {
-                this.toastNotification.AddWarningToastMessage($"You Do this exam before",
-                    new ToastrOptions() { ToastClass = "btn-warning" });
+                ShowWarning("You Do this exam before");
                 return RedirectToAction("Index", controllerName: "Degree");
             }
-            var quize = await quzieService.GetByIdAsync(id);
-            var questions = await fileService.ReaderQuestionsAsync(quize.File);
-            return View(new QuizeModel(questions, quize));
+            return View(await quzieService.GenerateQuzie(id));
         }
 
         public async Task<IActionResult> Edit(int? id)
@@ -91,21 +80,13 @@ namespace BigRoom.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(QuizeDto quize)
         {
-            if (!ModelState.IsValid)  return View(quize);
-            if (quize.FileQuestion != null)
-            {
-                fileService.RemoveFile(quize.File, "quize");
-                quize.File = await fileService.AddFileAsync(quize.FileQuestion, "quize");
-            }
-            if (quize.FileAnswerForm != null)
-            {
-                fileService.RemoveFile(quize.Fileanswer, "answer");
-                quize.Fileanswer = await fileService.AddFileAsync(quize.FileAnswerForm, "answer");
-            }
-            await quzieService.UpdateAsync(quize);
+            if (!ModelState.IsValid) return View(quize);
+            await quzieService.UpdateQuzieAsync(quize);
             await uniteOfWork.SaveChangesAsync();
-            this.toastNotification.AddSuccessToastMessage($"Quize {quize.Description} edit Success", new ToastrOptions() { ToastClass = "btn-success" });
+            ShowSuccess($"Quize {quize.Description} edit Success");
             return RedirectToAction(nameof(Index), new { Groupid = quize.GroupId });
+
+         
         }
 
         public async Task<IActionResult> Index(int groupId)

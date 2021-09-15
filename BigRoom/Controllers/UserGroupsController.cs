@@ -3,8 +3,6 @@ using BigRoom.Service.IService;
 using BigRoom.Service.UOW;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using NToastNotify;
-using NToastNotify.Libraries;
 using System.Threading.Tasks;
 
 namespace BigRoom.Controllers
@@ -14,13 +12,11 @@ namespace BigRoom.Controllers
     {
         private readonly IUniteOfWork uniteOfWork;
         private readonly IUserGroupService userGroupService;
-        private readonly IToastNotification toastNotification;
 
-        public UserGroupsController(IUniteOfWork uniteOfWork,IUserGroupService userGroupService, IToastNotification toastNotification)
+        public UserGroupsController(IUniteOfWork uniteOfWork, IUserGroupService userGroupService)
         {
             this.uniteOfWork = uniteOfWork;
             this.userGroupService = userGroupService;
-            this.toastNotification = toastNotification;
         }
 
         public async Task<IActionResult> Create()
@@ -29,7 +25,6 @@ namespace BigRoom.Controllers
             return View();
         }
 
-       
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(UserGroupsDto userGroups)
@@ -38,25 +33,19 @@ namespace BigRoom.Controllers
             {
                 await userGroupService.AddAsync(userGroups);
                 await uniteOfWork.SaveChangesAsync();
-                this.toastNotification.AddSuccessToastMessage($"Join to group is success", new ToastrOptions() { ToastClass = "btn-success" });
+                ShowSuccess("Join to group is success");
                 return RedirectToAction("GroupYouAdmin", "Groups", new { id = userGroups.GroupId });
             }
             return View(userGroups);
         }
-        [HttpPost]
-        public async Task LeaveFromGroup(int id)
-        {
-            try
-            {
-                await userGroupService.DeleteAsync(id);
-                await uniteOfWork.SaveChangesAsync();
-            }
-            catch (System.Exception)
-            {
 
-                throw;
-            }
-           
+        [HttpPost]
+        public async Task<IActionResult> LeaveFromGroup(int id)
+        {
+            await userGroupService.DeleteAsync(id);
+            await uniteOfWork.SaveChangesAsync();
+            ShowSuccess("Leave Group Sucess");
+            return RedirectToAction("Index","Exam");
         }
     }
 }

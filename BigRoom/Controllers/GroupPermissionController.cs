@@ -16,9 +16,8 @@ namespace BigRoom.Controllers
     {
         private readonly IGroupPermissionService groupPermissionService;
         private readonly IQuzieService quzieService;
-        private readonly IUserGroupService userGroupService;
         private readonly IUniteOfWork uniteOfWork;
-
+        private readonly IUserGroupService userGroupService;
         public GroupPermissionController(IGroupPermissionService groupPermissionService,
             IQuzieService quzieService, IUserGroupService userGroupService, IUniteOfWork uniteOfWork)
         {
@@ -40,7 +39,6 @@ namespace BigRoom.Controllers
             else
             {
                 var groupPermission = await groupPermissionService.GetByIdAsync(id);
-                if (groupPermission == null) return NotFound();
                 groupPermissionDto = groupPermission;
             }
             groupPermissionDto.Quizes = quzieService.GetQuziesByGroup(groupId);
