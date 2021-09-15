@@ -2,19 +2,17 @@
 using BigRoom.Repository.Common;
 using BigRoom.Repository.IRepository;
 using BigRoom.Service.Common.Models;
-using BigRoom.Service.DTO;
 using BigRoom.Service.IService;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace BigRoom.Service.Service
 {
-    public class ServiceAsync<TEntity, TDto> : IServiceAsync<TEntity,TDto> where TDto : EntityDto where TEntity : Entity
+    public class ServiceAsync<TEntity, TDto> : IServiceAsync<TEntity, TDto> 
+        where TDto : EntityDto where TEntity : Entity
     {
         private readonly IRepositoryAsync<TEntity> _repository;
         private readonly IMapper _mapper;
@@ -36,15 +34,15 @@ namespace BigRoom.Service.Service
             await _repository.DeleteAsync(await _repository.GetByIdAsync(id));
         }
 
-        public  IEnumerable<TDto> GetAll(Expression<Func<TDto, bool>> expression = null)
+        public IEnumerable<TDto> GetAll(Expression<Func<TDto, bool>> expression = null)
         {
-            var predicate = _mapper.Map<Expression<Func<TEntity,bool>>>(expression);
-            return  _repository.GetAll(predicate).Select(_mapper.Map<TDto>).ToList();
+            var predicate = _mapper.Map<Expression<Func<TEntity, bool>>>(expression);
+            return _repository.GetAll(predicate).Select(_mapper.Map<TDto>).ToList();
         }
 
         public async Task<TDto> GetByIdAsync(int id)
         {
-            var entity =await _repository.GetByIdAsync(id);
+            var entity = await _repository.GetByIdAsync(id);
             return _mapper.Map<TDto>(entity);
         }
 

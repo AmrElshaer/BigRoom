@@ -6,8 +6,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System.Linq;
-using System.Reflection;
 
 namespace BigRoom.Repository
 {
@@ -20,12 +18,13 @@ namespace BigRoom.Repository
                  configuration.GetConnectionString("DefaultConnection")));
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<BigRoomDbContext>().AddDefaultTokenProviders();
-            services.Configure<IdentityOptions>(opts=> {
+            services.Configure<IdentityOptions>(opts =>
+            {
                 opts.User.RequireUniqueEmail = true;
                 opts.Password.RequiredLength = 8;
             });
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddAllRepository();
+            services.AddScoped(typeof(IRepositoryAsync<>), typeof(RepositoryAsync<>));
             return services;
         }
     }
