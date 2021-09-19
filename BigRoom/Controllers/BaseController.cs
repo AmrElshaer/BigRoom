@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Http;
 using NToastNotify;
-using NToastNotify.Libraries;
 
 namespace BigRoom.Controllers
 {

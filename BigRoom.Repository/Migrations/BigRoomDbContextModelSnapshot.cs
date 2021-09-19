@@ -15,58 +15,73 @@ namespace BigRoom.Repository.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
+                .HasAnnotation("ProductVersion", "5.0.10")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("BigRoom.Repository.Contexts.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("AccessFailedCount");
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
 
                     b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken();
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
-                    b.Property<bool>("EmailConfirmed");
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
 
-                    b.Property<string>("Image");
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("LockoutEnabled");
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
 
-                    b.Property<DateTimeOffset?>("LockoutEnd");
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
-                    b.Property<string>("PasswordHash");
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PhoneNumber");
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("PhoneNumberConfirmed");
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
 
-                    b.Property<string>("SecurityStamp");
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("TwoFactorEnabled");
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
 
                     b.Property<string>("UserName")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
-                        .HasName("EmailIndex");
+                        .HasDatabaseName("EmailIndex");
 
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
-                        .HasName("UserNameIndex")
+                        .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
@@ -76,15 +91,20 @@ namespace BigRoom.Repository.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("ExamDegree");
+                    b.Property<int>("ExamDegree")
+                        .HasColumnType("int");
 
-                    b.Property<int?>("QuizeId");
+                    b.Property<int?>("QuizeId")
+                        .HasColumnType("int");
 
-                    b.Property<int>("TotalDegree");
+                    b.Property<int>("TotalDegree")
+                        .HasColumnType("int");
 
-                    b.Property<int?>("UserProfileId");
+                    b.Property<int?>("UserProfileId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -99,21 +119,29 @@ namespace BigRoom.Repository.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("AdminId");
+                    b.Property<int>("AdminId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("CodeJion");
+                    b.Property<string>("CodeJion")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("CreatedBy");
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("CreatedOn");
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
 
-                    b.Property<string>("LastModifiedBy");
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("LastModifiedOn");
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("datetime2");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -126,27 +154,38 @@ namespace BigRoom.Repository.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool>("Create");
+                    b.Property<bool>("Create")
+                        .HasColumnType("bit");
 
-                    b.Property<string>("CreatedBy");
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("CreatedOn");
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
 
-                    b.Property<bool>("Delete");
+                    b.Property<bool>("Delete")
+                        .HasColumnType("bit");
 
-                    b.Property<bool>("Edit");
+                    b.Property<bool>("Edit")
+                        .HasColumnType("bit");
 
-                    b.Property<int>("GroupId");
+                    b.Property<int>("GroupId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("LastModifiedBy");
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("LastModifiedOn");
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("datetime2");
 
-                    b.Property<int?>("QuizeId");
+                    b.Property<int?>("QuizeId")
+                        .HasColumnType("int");
 
-                    b.Property<int?>("UserProfileId");
+                    b.Property<int?>("UserProfileId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -163,33 +202,47 @@ namespace BigRoom.Repository.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("CreatedBy");
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("CreatedOn");
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("File");
+                    b.Property<string>("File")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Fileanswer");
+                    b.Property<string>("Fileanswer")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("GroupId");
+                    b.Property<int>("GroupId")
+                        .HasColumnType("int");
 
-                    b.Property<int?>("Hour");
+                    b.Property<int?>("Hour")
+                        .HasColumnType("int");
 
-                    b.Property<string>("LastModifiedBy");
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("LastModifiedOn");
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("datetime2");
 
-                    b.Property<int?>("Minute");
+                    b.Property<int?>("Minute")
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("TimeEnd");
+                    b.Property<DateTime>("TimeEnd")
+                        .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("TimeStart");
+                    b.Property<DateTime>("TimeStart")
+                        .HasColumnType("datetime2");
 
-                    b.Property<int?>("UserProfileId");
+                    b.Property<int?>("UserProfileId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -204,11 +257,14 @@ namespace BigRoom.Repository.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("GroupId");
+                    b.Property<int?>("GroupId")
+                        .HasColumnType("int");
 
-                    b.Property<int?>("UserProfileId");
+                    b.Property<int?>("UserProfileId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -223,9 +279,11 @@ namespace BigRoom.Repository.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("UserId");
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -237,22 +295,25 @@ namespace BigRoom.Repository.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken();
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("NormalizedName")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
-                        .HasName("RoleNameIndex")
+                        .HasDatabaseName("RoleNameIndex")
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
@@ -261,14 +322,14 @@ namespace BigRoom.Repository.Migrations
                         new
                         {
                             Id = "1",
-                            ConcurrencyStamp = "1b50f33f-41c7-42db-826f-d11c0800fb40",
+                            ConcurrencyStamp = "969bca14-690a-4768-a702-a6276f960fdf",
                             Name = "Teacher",
                             NormalizedName = "TEACHER"
                         },
                         new
                         {
                             Id = "2",
-                            ConcurrencyStamp = "b4f569b3-3581-4b39-bff5-010ae8f619c5",
+                            ConcurrencyStamp = "bdbd2fef-5538-416a-8627-7d2c2600d4cb",
                             Name = "Student",
                             NormalizedName = "STUDENT"
                         });
@@ -278,14 +339,18 @@ namespace BigRoom.Repository.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("ClaimType");
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ClaimValue");
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RoleId")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -298,14 +363,18 @@ namespace BigRoom.Repository.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("ClaimType");
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ClaimValue");
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -316,14 +385,18 @@ namespace BigRoom.Repository.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.Property<string>("LoginProvider");
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("ProviderKey");
+                    b.Property<string>("ProviderKey")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("ProviderDisplayName");
+                    b.Property<string>("ProviderDisplayName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -334,9 +407,11 @@ namespace BigRoom.Repository.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
-                    b.Property<string>("UserId");
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("RoleId");
+                    b.Property<string>("RoleId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -347,13 +422,17 @@ namespace BigRoom.Repository.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.Property<string>("UserId");
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("LoginProvider");
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Value");
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
@@ -369,6 +448,10 @@ namespace BigRoom.Repository.Migrations
                     b.HasOne("BigRoom.Repository.Entities.UserProfile", "UserProfile")
                         .WithMany("Degrees")
                         .HasForeignKey("UserProfileId");
+
+                    b.Navigation("Quize");
+
+                    b.Navigation("UserProfile");
                 });
 
             modelBuilder.Entity("BigRoom.Repository.Entities.Group", b =>
@@ -376,7 +459,10 @@ namespace BigRoom.Repository.Migrations
                     b.HasOne("BigRoom.Repository.Entities.UserProfile", "Admin")
                         .WithMany("GroupsThatAdmin")
                         .HasForeignKey("AdminId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Admin");
                 });
 
             modelBuilder.Entity("BigRoom.Repository.Entities.GroupPermission", b =>
@@ -384,7 +470,8 @@ namespace BigRoom.Repository.Migrations
                     b.HasOne("BigRoom.Repository.Entities.Group", "Group")
                         .WithMany("GroupPermissions")
                         .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("BigRoom.Repository.Entities.Quize", "Quize")
                         .WithMany("GroupPermissions")
@@ -393,6 +480,12 @@ namespace BigRoom.Repository.Migrations
                     b.HasOne("BigRoom.Repository.Entities.UserProfile", "UserProfile")
                         .WithMany("GroupPermissions")
                         .HasForeignKey("UserProfileId");
+
+                    b.Navigation("Group");
+
+                    b.Navigation("Quize");
+
+                    b.Navigation("UserProfile");
                 });
 
             modelBuilder.Entity("BigRoom.Repository.Entities.Quize", b =>
@@ -400,11 +493,16 @@ namespace BigRoom.Repository.Migrations
                     b.HasOne("BigRoom.Repository.Entities.Group", "Group")
                         .WithMany("Quizes")
                         .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("BigRoom.Repository.Entities.UserProfile", "UserProfile")
                         .WithMany("QuizesCreate")
                         .HasForeignKey("UserProfileId");
+
+                    b.Navigation("Group");
+
+                    b.Navigation("UserProfile");
                 });
 
             modelBuilder.Entity("BigRoom.Repository.Entities.UserGroups", b =>
@@ -416,6 +514,10 @@ namespace BigRoom.Repository.Migrations
                     b.HasOne("BigRoom.Repository.Entities.UserProfile", "UserProfile")
                         .WithMany("Groups")
                         .HasForeignKey("UserProfileId");
+
+                    b.Navigation("Group");
+
+                    b.Navigation("UserProfile");
                 });
 
             modelBuilder.Entity("BigRoom.Repository.Entities.UserProfile", b =>
@@ -423,51 +525,93 @@ namespace BigRoom.Repository.Migrations
                     b.HasOne("BigRoom.Repository.Contexts.ApplicationUser", "ApplicationUser")
                         .WithMany("UserProfiles")
                         .HasForeignKey("UserId");
+
+                    b.Navigation("ApplicationUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole")
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("BigRoom.Repository.Contexts.ApplicationUser")
+                    b.HasOne("BigRoom.Repository.Contexts.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("BigRoom.Repository.Contexts.ApplicationUser")
+                    b.HasOne("BigRoom.Repository.Contexts.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole")
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("BigRoom.Repository.Contexts.ApplicationUser")
+                    b.HasOne("BigRoom.Repository.Contexts.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("BigRoom.Repository.Contexts.ApplicationUser")
+                    b.HasOne("BigRoom.Repository.Contexts.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("BigRoom.Repository.Contexts.ApplicationUser", b =>
+                {
+                    b.Navigation("UserProfiles");
+                });
+
+            modelBuilder.Entity("BigRoom.Repository.Entities.Group", b =>
+                {
+                    b.Navigation("GroupPermissions");
+
+                    b.Navigation("Groups");
+
+                    b.Navigation("Quizes");
+                });
+
+            modelBuilder.Entity("BigRoom.Repository.Entities.Quize", b =>
+                {
+                    b.Navigation("Degrees");
+
+                    b.Navigation("GroupPermissions");
+                });
+
+            modelBuilder.Entity("BigRoom.Repository.Entities.UserProfile", b =>
+                {
+                    b.Navigation("Degrees");
+
+                    b.Navigation("GroupPermissions");
+
+                    b.Navigation("Groups");
+
+                    b.Navigation("GroupsThatAdmin");
+
+                    b.Navigation("QuizesCreate");
                 });
 #pragma warning restore 612, 618
         }

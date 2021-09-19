@@ -2,6 +2,7 @@
 using BigRoom.Repository.Contexts;
 using BigRoom.Service.DTO;
 using BigRoom.Service.IService;
+using BigRoom.Service.UOW;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -21,14 +22,15 @@ namespace BigRoom.Service.Service
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IUserProfileService _profileService;
-
+        private readonly IUniteOfWork uniteOfWork;
         public UserManager(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager,
-            SignInManager<ApplicationUser> signInManager,IUserProfileService profileService)
+            SignInManager<ApplicationUser> signInManager, IUserProfileService profileService, IUniteOfWork uniteOfWork)
         {
             this._userManager = userManager;
             this._roleManager = roleManager;
             this._signInManager = signInManager;
             this._profileService = profileService;
+            this.uniteOfWork = uniteOfWork;
         }
         public bool UserIsSignIn(ClaimsPrincipal user)
         {
@@ -44,6 +46,7 @@ namespace BigRoom.Service.Service
                 var role = await _roleManager.FindByIdAsync(roleId);
                 await _userManager.AddToRoleAsync(user, role?.Name);
                 await _profileService.AddAsync(new UserProfileDto() { UserId = user.Id});
+                await uniteOfWork.SaveChangesAsync();
                 var emailToken= await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 return (result, emailToken);
             }

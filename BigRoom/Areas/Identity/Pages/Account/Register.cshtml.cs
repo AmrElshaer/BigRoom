@@ -48,7 +48,7 @@ namespace Classroom.Areas.Identity.Pages.Account
                         values: new { userId = user.Id, code = userAdd.emailToken },
                         protocol: Request.Scheme);
 
-                    await _emailService.SendAsync(Input.Email, 
+                    await _emailService.SendAsync(Input.Email,
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>."
                         , "Confirm your email");
                     return RedirectToPage("/Account/Login");

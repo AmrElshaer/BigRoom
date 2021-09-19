@@ -6,7 +6,6 @@ using BigRoom.Service.UOW;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NToastNotify;
-using NToastNotify.Libraries;
 using System.Threading.Tasks;
 
 namespace BigRoom.Controllers
