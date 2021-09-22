@@ -17,7 +17,7 @@ namespace BigRoom.Service
             foreach (var intfc in allProviderTypes.Where(t => t.IsInterface))
             {
                 var impl = allProviderTypes.FirstOrDefault(c => c.IsClass && intfc.Name.Substring(1) == c.Name);
-                if (impl != null) services.AddTransient(intfc, impl);
+                if (impl != null) services.AddScoped(intfc, impl);
             }
             return services;
         }
