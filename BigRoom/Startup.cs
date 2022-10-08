@@ -9,6 +9,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NToastNotify;
 using System.Net;
+using BigRoom.Repository.Contexts;
+using Microsoft.EntityFrameworkCore;
 
 namespace Classroom
 {
@@ -24,12 +26,16 @@ namespace Classroom
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<BigRoomDbContext>(options => options
+                .UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
+                    b => b.MigrationsAssembly(typeof(BigRoomDbContext).Assembly.FullName)));
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
+            //services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddService(Configuration);
             services.AddMvc().AddFluentValidation().AddNToastNotifyToastr(new ToastrOptions() { 
                 ProgressBar=false,

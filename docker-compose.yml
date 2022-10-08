@@ -1,0 +1,20 @@
+version: '3.4'
+
+services:
+  db:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+        - SA_PASSWORD=1Secure*Password1
+        - ACCEPT_EULA=Y
+    ports:
+        - "1433:1433"
+  bigroom:
+    image: ${DOCKER_REGISTRY-}bigroom
+    build:
+      context: .
+      dockerfile: BigRoom/Dockerfile
+    restart: on-failure
+    depends_on:
+      - db
+  
+    

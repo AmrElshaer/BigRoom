@@ -1,4 +1,5 @@
-﻿using BigRoom.Repository.Contexts;
+﻿using System.Linq;
+using BigRoom.Repository.Contexts;
 using BigRoom.Repository.IRepository;
 using BigRoom.Repository.Repository;
 using Microsoft.AspNetCore.Http;
@@ -13,9 +14,6 @@ namespace BigRoom.Repository
     {
         public static IServiceCollection AddRepository(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<BigRoomDbContext>(options =>
-             options.UseSqlServer(
-                 configuration.GetConnectionString("DefaultConnection")));
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<BigRoomDbContext>().AddDefaultTokenProviders();
             services.Configure<IdentityOptions>(opts =>
@@ -27,5 +25,7 @@ namespace BigRoom.Repository
             services.AddScoped(typeof(IRepositoryAsync<>), typeof(RepositoryAsync<>));
             return services;
         }
+       
+      
     }
 }
