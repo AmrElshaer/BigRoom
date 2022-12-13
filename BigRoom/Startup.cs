@@ -27,7 +27,8 @@ namespace Classroom
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<BigRoomDbContext>(options => options
-                .UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
+                // .UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
+                .UseNpgsql(Configuration.GetConnectionString("DefaultConnection"),
                     b => b.MigrationsAssembly(typeof(BigRoomDbContext).Assembly.FullName)));
             services.Configure<CookiePolicyOptions>(options =>
             {
